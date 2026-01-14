@@ -1,0 +1,297 @@
+{
+  "S77": {
+    "latitude": 1.2937,
+    "longitude": 103.8125,
+    "name": "Alexandra Road"
+  },
+  "S216": {
+    "latitude": 1.36019,
+    "longitude": 103.85335,
+    "name": "Ang Mo Kio Avenue 10"
+  },
+  "S109": {
+    "latitude": 1.3764,
+    "longitude": 103.8492,
+    "name": "Ang Mo Kio Avenue 5"
+  },
+  "S117": {
+    "latitude": 1.256,
+    "longitude": 103.679,
+    "name": "Banyan Road"
+  },
+  "S217": {
+    "latitude": 1.35041,
+    "longitude": 103.85526,
+    "name": "Bishan Street 13"
+  },
+  "S218": {
+    "latitude": 1.36491,
+    "longitude": 103.75065,
+    "name": "Bukit Batok Street 34"
+  },
+  "S64": {
+    "latitude": 1.3824,
+    "longitude": 103.7603,
+    "name": "Bukit Panjang Road"
+  },
+  "S90": {
+    "latitude": 1.3191,
+    "longitude": 103.8191,
+    "name": "Bukit Timah Road"
+  },
+  "S208": {
+    "latitude": 1.3136,
+    "longitude": 104.00317,
+    "name": "Changi East Close"
+  },
+  "S50": {
+    "latitude": 1.3337,
+    "longitude": 103.7768,
+    "name": "Clementi Road"
+  },
+  "S220": {
+    "latitude": 1.38666,
+    "longitude": 103.89797,
+    "name": "Compassvale Lane"
+  },
+  "S213": {
+    "latitude": 1.32427,
+    "longitude": 103.8097,
+    "name": "Coronation Walk"
+  },
+  "S215": {
+    "latitude": 1.32785,
+    "longitude": 103.88899,
+    "name": "Geylang East Central"
+  },
+  "S222": {
+    "latitude": 1.28987,
+    "longitude": 103.82364,
+    "name": "Henderson Road"
+  },
+  "S120": {
+    "latitude": 1.30874,
+    "longitude": 103.818,
+    "name": "Holland Road"
+  },
+  "S221": {
+    "latitude": 1.35691,
+    "longitude": 103.89088,
+    "name": "Hougang Avenue 1"
+  },
+  "S33": {
+    "latitude": 1.3081,
+    "longitude": 103.71,
+    "name": "Jurong Pier Road"
+  },
+  "S229": {
+    "latitude": 1.35167,
+    "longitude": 103.72195,
+    "name": "Jurong West Street 42"
+  },
+  "S228": {
+    "latitude": 1.34703,
+    "longitude": 103.70073,
+    "name": "Jurong West Street 73"
+  },
+  "S71": {
+    "latitude": 1.2923,
+    "longitude": 103.7815,
+    "name": "Kent Ridge Road"
+  },
+  "S43": {
+    "latitude": 1.3399,
+    "longitude": 103.8878,
+    "name": "Kim Chuan Road"
+  },
+  "S211": {
+    "latitude": 1.42918,
+    "longitude": 103.75711,
+    "name": "Kranji Road"
+  },
+  "S66": {
+    "latitude": 1.4387,
+    "longitude": 103.7363,
+    "name": "Kranji Way"
+  },
+  "S112": {
+    "latitude": 1.43854,
+    "longitude": 103.70131,
+    "name": "Lim Chu Kang Road"
+  },
+  "S07": {
+    "latitude": 1.3415,
+    "longitude": 103.8334,
+    "name": "Lornie Road"
+  },
+  "S226": {
+    "latitude": 1.27472,
+    "longitude": 103.80389,
+    "name": "Malan Road"
+  },
+  "S40": {
+    "latitude": 1.4044,
+    "longitude": 103.78962,
+    "name": "Mandai Lake Road"
+  },
+  "S223": {
+    "latitude": 1.29984,
+    "longitude": 103.80264,
+    "name": "Margaret Drive"
+  },
+  "S108": {
+    "latitude": 1.2799,
+    "longitude": 103.8703,
+    "name": "Marina Gardens Drive"
+  },
+  "S113": {
+    "latitude": 1.30648,
+    "longitude": 103.9104,
+    "name": "Marine Parade Road"
+  },
+  "S44": {
+    "latitude": 1.34583,
+    "longitude": 103.68166,
+    "name": "Nanyang Avenue"
+  },
+  "S119": {
+    "latitude": 1.30105,
+    "longitude": 103.8666,
+    "name": "Nicoll Highway"
+  },
+  "S35": {
+    "latitude": 1.3329,
+    "longitude": 103.7556,
+    "name": "Old Toh Tuck Road"
+  },
+  "S203": {
+    "latitude": 1.29164,
+    "longitude": 103.7702,
+    "name": "Pasir Panjang"
+  },
+  "S94": {
+    "latitude": 1.3662,
+    "longitude": 103.9528,
+    "name": "Pasir Ris Street 51"
+  },
+  "S06": {
+    "latitude": 1.3524,
+    "longitude": 103.9007,
+    "name": "Paya Lebar"
+  },
+  "S78": {
+    "latitude": 1.30703,
+    "longitude": 103.89067,
+    "name": "Poole Road"
+  },
+  "S106": {
+    "latitude": 1.4168,
+    "longitude": 103.9673,
+    "name": "Pulau Ubin"
+  },
+  "S81": {
+    "latitude": 1.4029,
+    "longitude": 103.9092,
+    "name": "Punggol Central"
+  },
+  "S111": {
+    "latitude": 1.31055,
+    "longitude": 103.8365,
+    "name": "Scotts Road"
+  },
+  "S900": {
+    "latitude": 1.41284,
+    "longitude": 103.86922,
+    "name": "Seletar Aerospace View"
+  },
+  "S102": {
+    "latitude": 1.189,
+    "longitude": 103.768,
+    "name": "Semakau Landfill"
+  },
+  "S60": {
+    "latitude": 1.25,
+    "longitude": 103.8279,
+    "name": "Sentosa"
+  },
+  "S84": {
+    "latitude": 1.3437,
+    "longitude": 103.9444,
+    "name": "Simei Avenue"
+  },
+  "S79": {
+    "latitude": 1.3004,
+    "longitude": 103.8372,
+    "name": "Somerset Road"
+  },
+  "S92": {
+    "latitude": 1.2841,
+    "longitude": 103.7886,
+    "name": "South Buona Vista Road"
+  },
+  "S214": {
+    "latitude": 1.29911,
+    "longitude": 103.88289,
+    "name": "Tanjong Rhu"
+  },
+  "S88": {
+    "latitude": 1.3427,
+    "longitude": 103.8482,
+    "name": "Toa Payoh North"
+  },
+  "S123": {
+    "latitude": 1.3214,
+    "longitude": 103.8577,
+    "name": "Towner Road"
+  },
+  "S115": {
+    "latitude": 1.29377,
+    "longitude": 103.61843,
+    "name": "Tuas South Avenue 3"
+  },
+  "S24": {
+    "latitude": 1.3678,
+    "longitude": 103.9826,
+    "name": "Upper Changi Road North"
+  },
+  "S69": {
+    "latitude": 1.37,
+    "longitude": 103.805,
+    "name": "Upper Peirce Reservoir Park"
+  },
+  "S08": {
+    "latitude": 1.3701,
+    "longitude": 103.8271,
+    "name": "Upper Thomson Road"
+  },
+  "S230": {
+    "latitude": 1.30167,
+    "longitude": 103.76444,
+    "name": "West Coast Road"
+  },
+  "S104": {
+    "latitude": 1.44387,
+    "longitude": 103.78538,
+    "name": "Woodlands Avenue 9"
+  },
+  "S210": {
+    "latitude": 1.44003,
+    "longitude": 103.76904,
+    "name": "Woodlands Centre"
+  },
+  "S227": {
+    "latitude": 1.43944,
+    "longitude": 103.80389,
+    "name": "Woodlands Drive 62"
+  },
+  "S219": {
+    "latitude": 1.37999,
+    "longitude": 103.87643,
+    "name": "Yio Chu Kang Road"
+  },
+  "S209": {
+    "latitude": 1.42111,
+    "longitude": 103.84472,
+    "name": "Yishun Ring Road"
+  }
+}

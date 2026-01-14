@@ -2,6 +2,7 @@ requests>=2.31.0
 python-dotenv>=1.0.0
 matplotlib>=3.7.0
 pandas>=2.0.0
+pyarrow>=14.0.0
 folium>=0.15.0
 polyline>=2.0.0
 shapely>=2.0.0
