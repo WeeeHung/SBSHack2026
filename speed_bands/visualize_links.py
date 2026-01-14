@@ -22,16 +22,17 @@ def get_road_category_color(road_category):
     """
     Get color based on road category
     """
-    category_colors = {
-        "1": "#FF0000",  # Red - Expressways
-        "2": "#FF8C00",  # Dark Orange - Major Arterial Roads
-        "3": "#FFA500",  # Orange - Arterial Roads
-        "4": "#FFD700",  # Gold - Minor Arterial Roads
-        "5": "#90EE90",  # Light Green - Small Roads
-        "6": "#87CEEB",  # Sky Blue - Slip Roads
-        "8": "#9370DB"   # Medium Purple - Short Tunnels
-    }
-    return category_colors.get(str(road_category), "#808080")  # Gray for unknown
+    # category_colors = {
+    #     "1": "#FF0000",  # Red - Expressways
+    #     "2": "#FF8C00",  # Dark Orange - Major Arterial Roads
+    #     "3": "#FFA500",  # Orange - Arterial Roads
+    #     "4": "#FFD700",  # Gold - Minor Arterial Roads
+    #     "5": "#90EE90",  # Light Green - Small Roads
+    #     "6": "#87CEEB",  # Sky Blue - Slip Roads
+    #     "8": "#9370DB"   # Medium Purple - Short Tunnels
+    # }
+    # return category_colors.get(str(road_category), "#808080")  # Gray for unknown
+    return "#000000"
 
 
 def get_road_category_name(category):
@@ -210,8 +211,8 @@ def main():
     print("Singapore Road Links Visualizer")
     print("=" * 60)
     
-    input_file = "speed_bands/data/links.json"
-    output_file = "speed_bands/data/links_map.html"
+    input_file = "speed_bands/data/links_147_1.json"
+    output_file = "speed_bands/data/links_map_147_1.html"
     
     try:
         # Load links
