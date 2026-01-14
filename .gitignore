@@ -32,3 +32,6 @@ wheels/
 *.swp
 *.swo
 *~
+
+# Remove large files
+speed_bands/data/links_map.html
