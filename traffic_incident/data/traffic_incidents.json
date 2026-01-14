@@ -1,0 +1,153 @@
+{
+  "timestamp": "2026-01-14T18:34:26.118304",
+  "count": 24,
+  "data": {
+    "odata.metadata": "https://datamall2.mytransport.sg/ltaodataservice/$metadata#IncidentSet",
+    "value": [
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.346080681123213,
+        "Longitude": 103.96737560880172,
+        "Message": "(14/1)18:24 Heavy Traffic on PIE (towards Tuas) at TPE Exit."
+      },
+      {
+        "Type": "Vehicle breakdown",
+        "Latitude": 1.3309806295110562,
+        "Longitude": 103.81935760111683,
+        "Message": "(14/1)18:24 Vehicle Breakdown on PIE (towards Changi) after Lornie Rd."
+      },
+      {
+        "Type": "Accident",
+        "Latitude": 1.3513237910588027,
+        "Longitude": 103.85744241928376,
+        "Message": "(14/1)18:23 Accident on CTE (towards SLE) after Braddell Rd with congestion till Braddell Rd. Avoid lane 1."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.3357436031313585,
+        "Longitude": 103.97899058207598,
+        "Message": "(14/1)18:21 Heavy Traffic on ECP (towards Changi) at PIE Exit."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.3475679126915607,
+        "Longitude": 103.96632485104597,
+        "Message": "(14/1)18:18 Heavy Traffic on PIE (towards Tuas) at TPE Exit."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.4186793819017753,
+        "Longitude": 103.77103023099507,
+        "Message": "(14/1)18:17 Heavy Traffic on BKE (towards W'lands) at SLE Exit."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.3132126603882546,
+        "Longitude": 103.84530139916252,
+        "Message": "(14/1)18:14 Heavy Traffic on Central Expressway (towards AYE) at Bukit Timah Rd Exit."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.4368348044706656,
+        "Longitude": 103.7684677685431,
+        "Message": "(14/1)18:05 Heavy Traffic on BKE (towards W'lands) at Woodlands Checkpoint Exit."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.4223277636023341,
+        "Longitude": 103.77222803450503,
+        "Message": "(14/1)18:02 Heavy Traffic on SLE (towards CTE) before Mandai Ave."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.3053823447333641,
+        "Longitude": 103.85027200364851,
+        "Message": "(14/1)18:01 Heavy Traffic on Bukit Timah Road (towards W'lands) before Balmoral Road."
+      },
+      {
+        "Type": "Vehicle breakdown",
+        "Latitude": 1.2657335426489256,
+        "Longitude": 103.82117980426992,
+        "Message": "(14/1)17:57 Vehicle Breakdown on West Coast Highway (City) at W Coast Hwy Flyover. Avoid lane 3."
+      },
+      {
+        "Type": "Accident",
+        "Latitude": 1.394313933975413,
+        "Longitude": 103.83423109412173,
+        "Message": "(14/1)18:00 Accident on SLE (towards BKE) after Lentor Ave. Avoid lane 4."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.3906657129522577,
+        "Longitude": 103.77296420314566,
+        "Message": "(14/1)17:57 Heavy Traffic on KJE (towards BKE) at BKE(Woodlands) Exit."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.3249893903556567,
+        "Longitude": 103.97209475302354,
+        "Message": "(14/1)17:56 Heavy Traffic on ECP (towards City) between Bedok South Ave 1 and Changi Coast Rd."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.3305944272070434,
+        "Longitude": 103.86051897833318,
+        "Message": "(14/1)17:50 Heavy Traffic on PIE (towards Changi) at Upper Serangoon Rd Exit."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.318469990245733,
+        "Longitude": 103.8507422758949,
+        "Message": "(14/1)17:44 Heavy Traffic on CTE (towards SLE) at Moulmein Rd Exit."
+      },
+      {
+        "Type": "Accident",
+        "Latitude": 1.3412082903881777,
+        "Longitude": 103.64415787317165,
+        "Message": "(14/1)17:38 Accident on AYE (towards Tuas) after Tuas West Rd."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.3325332818770999,
+        "Longitude": 103.76882963794753,
+        "Message": "(14/1)17:26 Heavy Traffic on PIE (towards Changi) between BKE and Bukit Batok East Ave 3."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.3246497959737074,
+        "Longitude": 103.89958248361984,
+        "Message": "(14/1)17:25 Heavy Traffic on PIE (towards Tuas) between BKE and Jalan Eunos."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.3238441394366696,
+        "Longitude": 103.87284348282697,
+        "Message": "(14/1)17:09 Heavy Traffic on PIE (towards Changi) at KPE(ECP) Exit."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.3266643917722916,
+        "Longitude": 103.73284904156944,
+        "Message": "(14/1)16:58 Heavy Traffic on AYE (towards MCE) between Clementi Ave 2 and Yuan Ching."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.292493519114894,
+        "Longitude": 103.78803611762689,
+        "Message": "(14/1)16:55 Heavy Traffic on AYE (towards MCE) between Lower Delta Rd and Buona Vista."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.307744848051847,
+        "Longitude": 103.84116183541808,
+        "Message": "(14/1)16:54 Heavy Traffic on CTE (towards SLE) between Moulmein Rd and Merchant Rd."
+      },
+      {
+        "Type": "Heavy Traffic",
+        "Latitude": 1.2758778064747802,
+        "Longitude": 103.82801210529328,
+        "Message": "(14/1)16:50 Heavy Traffic on AYE (towards Tuas) between Normanton and Telok Blangah Rd."
+      }
+    ]
+  }
+}

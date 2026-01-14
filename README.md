@@ -13,7 +13,7 @@ This project tests the LTA DataMall Traffic Speed Band API.
 2. **Create a `.env` file** in the project root with your LTA DataMall credentials:
 
    ```
-   LTA_ACCOUNT_KEY=your_account_key_here
+   LTA_DATAMALL=your_account_key_here
    ```
 
    Replace `your_account_key_here` with your actual AccountKey from LTA DataMall.
@@ -61,7 +61,7 @@ This will generate:
 
 The `.env` file should contain:
 
-- `LTA_ACCOUNT_KEY`: Your LTA DataMall AccountKey (required for API authentication)
+- `LTA_DATAMALL`: Your LTA DataMall AccountKey (required for API authentication)
 
 ## API Information
 

@@ -1,0 +1,2094 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_82ee0a977f64e56c9fd121f69d433543 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+</head>
+<body>
+    
+    
+    <div style="position: fixed; 
+                bottom: 50px; right: 50px; width: 220px; height: auto; 
+                background-color: white; border:2px solid grey; z-index:9999; 
+                font-size:14px; padding: 10px">
+    <h4 style="margin-top: 0;">Rainfall Intensity</h4>
+    <p style="margin: 5px 0; font-size: 12px;"><strong>Timestamp:</strong><br>2026-01-14T18:30:00+08:00</p>
+    <p style="margin: 5px 0; font-size: 11px;"><strong>Statistics:</strong></p>
+    <p style="margin: 2px 0; font-size: 11px;">Total Stations: 59</p>
+    <p style="margin: 2px 0; font-size: 11px;">Stations with Rain: 8</p>
+    <p style="margin: 2px 0; font-size: 11px;">Max Rainfall: 4.60 mm</p>
+    <p style="margin: 2px 0; font-size: 11px;">Avg Rainfall: 0.16 mm</p>
+    <hr style="margin: 8px 0;">
+    <p style="margin: 5px 0; font-size: 11px;"><strong>Color Scale (mm):</strong></p>
+    <p style="margin: 2px 0; font-size: 10px;">
+        <span style="color: #e3f2fd;">●</span> 0 (No rain)
+    </p>
+    <p style="margin: 2px 0; font-size: 10px;">
+        <span style="color: #90caf9;">●</span> &lt; 0.5 (Light)
+    </p>
+    <p style="margin: 2px 0; font-size: 10px;">
+        <span style="color: #42a5f5;">●</span> 1-2 (Moderate)
+    </p>
+    <p style="margin: 2px 0; font-size: 10px;">
+        <span style="color: #2196f3;">●</span> 2-5 (Heavy)
+    </p>
+    <p style="margin: 2px 0; font-size: 10px;">
+        <span style="color: #1565c0;">●</span> 5-20 (Very Heavy)
+    </p>
+    <p style="margin: 2px 0; font-size: 10px;">
+        <span style="color: #4a148c;">●</span> &gt; 50 (Extreme)
+    </p>
+    </div>
+    
+    
+            <div class="folium-map" id="map_82ee0a977f64e56c9fd121f69d433543" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_82ee0a977f64e56c9fd121f69d433543 = L.map(
+                "map_82ee0a977f64e56c9fd121f69d433543",
+                {
+                    center: [1.3422932203389832, 103.82250559322037],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 11,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_4ae9903656f87ff5817af54ee426dbef = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_4ae9903656f87ff5817af54ee426dbef.addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+            var circle_marker_c138ecae516abc9f24a9549df161427b = L.circleMarker(
+                [1.2937, 103.8125],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_be85464fcf3abad00847fed129493063 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_c39fa7492ff2fba81684c1df24713e25 = $(`<div id="html_c39fa7492ff2fba81684c1df24713e25" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Alexandra Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S77</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.293700, 103.812500             </p>         </div>         </div>`)[0];
+                popup_be85464fcf3abad00847fed129493063.setContent(html_c39fa7492ff2fba81684c1df24713e25);
+            
+        
+
+        circle_marker_c138ecae516abc9f24a9549df161427b.bindPopup(popup_be85464fcf3abad00847fed129493063)
+        ;
+
+        
+    
+    
+            circle_marker_c138ecae516abc9f24a9549df161427b.bindTooltip(
+                `<div>
+                     Alexandra Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7fe6231dfe97cb0d6d631618e33722ff = L.circleMarker(
+                [1.36019, 103.85335],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_0f55301d41d8d85933a562e8af64ba95 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d28a432838f1e4f2c5f07df603696e41 = $(`<div id="html_d28a432838f1e4f2c5f07df603696e41" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Ang Mo Kio Avenue 10</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S216</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.360190, 103.853350             </p>         </div>         </div>`)[0];
+                popup_0f55301d41d8d85933a562e8af64ba95.setContent(html_d28a432838f1e4f2c5f07df603696e41);
+            
+        
+
+        circle_marker_7fe6231dfe97cb0d6d631618e33722ff.bindPopup(popup_0f55301d41d8d85933a562e8af64ba95)
+        ;
+
+        
+    
+    
+            circle_marker_7fe6231dfe97cb0d6d631618e33722ff.bindTooltip(
+                `<div>
+                     Ang Mo Kio Avenue 10: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_397bdb9a652e174af75c69ea5cd5d39d = L.circleMarker(
+                [1.3764, 103.8492],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_1fadb2e9c463901e38affff36c6fc6e8 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_cf2ceb30aa25c9659e39427afa055c8b = $(`<div id="html_cf2ceb30aa25c9659e39427afa055c8b" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Ang Mo Kio Avenue 5</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S109</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.376400, 103.849200             </p>         </div>         </div>`)[0];
+                popup_1fadb2e9c463901e38affff36c6fc6e8.setContent(html_cf2ceb30aa25c9659e39427afa055c8b);
+            
+        
+
+        circle_marker_397bdb9a652e174af75c69ea5cd5d39d.bindPopup(popup_1fadb2e9c463901e38affff36c6fc6e8)
+        ;
+
+        
+    
+    
+            circle_marker_397bdb9a652e174af75c69ea5cd5d39d.bindTooltip(
+                `<div>
+                     Ang Mo Kio Avenue 5: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_51977c5a242699d9d9a27ed2c6140ca5 = L.circleMarker(
+                [1.256, 103.679],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_cc1498115a746778eea7cc9db09ad23b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_e61dfeef6588924b4621f076ac2ab612 = $(`<div id="html_e61dfeef6588924b4621f076ac2ab612" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Banyan Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S117</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.256000, 103.679000             </p>         </div>         </div>`)[0];
+                popup_cc1498115a746778eea7cc9db09ad23b.setContent(html_e61dfeef6588924b4621f076ac2ab612);
+            
+        
+
+        circle_marker_51977c5a242699d9d9a27ed2c6140ca5.bindPopup(popup_cc1498115a746778eea7cc9db09ad23b)
+        ;
+
+        
+    
+    
+            circle_marker_51977c5a242699d9d9a27ed2c6140ca5.bindTooltip(
+                `<div>
+                     Banyan Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5f8bc3c4af1161487ffd65aa74755746 = L.circleMarker(
+                [1.35041, 103.85526],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_b2c65759ba5fd6a621b0e9c532b1edc1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_367b230ea70ba956e6c7dc4d5fda63a6 = $(`<div id="html_367b230ea70ba956e6c7dc4d5fda63a6" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Bishan Street 13</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S217</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.350410, 103.855260             </p>         </div>         </div>`)[0];
+                popup_b2c65759ba5fd6a621b0e9c532b1edc1.setContent(html_367b230ea70ba956e6c7dc4d5fda63a6);
+            
+        
+
+        circle_marker_5f8bc3c4af1161487ffd65aa74755746.bindPopup(popup_b2c65759ba5fd6a621b0e9c532b1edc1)
+        ;
+
+        
+    
+    
+            circle_marker_5f8bc3c4af1161487ffd65aa74755746.bindTooltip(
+                `<div>
+                     Bishan Street 13: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0cd90206e782d2f2ee67728e353a9838 = L.circleMarker(
+                [1.36491, 103.75065],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_70850dedd087fb0e2d97fa276592e1db = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_101a049fa16da8fea6608ebb8b22edd5 = $(`<div id="html_101a049fa16da8fea6608ebb8b22edd5" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Bukit Batok Street 34</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S218</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.364910, 103.750650             </p>         </div>         </div>`)[0];
+                popup_70850dedd087fb0e2d97fa276592e1db.setContent(html_101a049fa16da8fea6608ebb8b22edd5);
+            
+        
+
+        circle_marker_0cd90206e782d2f2ee67728e353a9838.bindPopup(popup_70850dedd087fb0e2d97fa276592e1db)
+        ;
+
+        
+    
+    
+            circle_marker_0cd90206e782d2f2ee67728e353a9838.bindTooltip(
+                `<div>
+                     Bukit Batok Street 34: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b84a4f148cbb5c4c9c8a131fe53d4bde = L.circleMarker(
+                [1.3824, 103.7603],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_866b15ad6d0aef5605f47c108cb61d1a = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_84451a5045c0ed64e4628a10005163a6 = $(`<div id="html_84451a5045c0ed64e4628a10005163a6" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Bukit Panjang Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S64</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.382400, 103.760300             </p>         </div>         </div>`)[0];
+                popup_866b15ad6d0aef5605f47c108cb61d1a.setContent(html_84451a5045c0ed64e4628a10005163a6);
+            
+        
+
+        circle_marker_b84a4f148cbb5c4c9c8a131fe53d4bde.bindPopup(popup_866b15ad6d0aef5605f47c108cb61d1a)
+        ;
+
+        
+    
+    
+            circle_marker_b84a4f148cbb5c4c9c8a131fe53d4bde.bindTooltip(
+                `<div>
+                     Bukit Panjang Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_30c61e773288eac22e4c16697c64209c = L.circleMarker(
+                [1.3191, 103.8191],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_7fd10d216904aac71cd3edd401e4cc4e = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_f0335901d058594725f0032e51cdb3ed = $(`<div id="html_f0335901d058594725f0032e51cdb3ed" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Bukit Timah Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S90</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.319100, 103.819100             </p>         </div>         </div>`)[0];
+                popup_7fd10d216904aac71cd3edd401e4cc4e.setContent(html_f0335901d058594725f0032e51cdb3ed);
+            
+        
+
+        circle_marker_30c61e773288eac22e4c16697c64209c.bindPopup(popup_7fd10d216904aac71cd3edd401e4cc4e)
+        ;
+
+        
+    
+    
+            circle_marker_30c61e773288eac22e4c16697c64209c.bindTooltip(
+                `<div>
+                     Bukit Timah Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_be1d1bce0992d390c163ab8372bb08ea = L.circleMarker(
+                [1.3136, 104.00317],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#64b5f6", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_3f7e7208847a414a4cf4f83f417417f1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_f5eb5fcfe325e4f20457216bec5c1009 = $(`<div id="html_f5eb5fcfe325e4f20457216bec5c1009" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Changi East Close</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S208</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> 0.80 mm</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.313600, 104.003170             </p>         </div>         </div>`)[0];
+                popup_3f7e7208847a414a4cf4f83f417417f1.setContent(html_f5eb5fcfe325e4f20457216bec5c1009);
+            
+        
+
+        circle_marker_be1d1bce0992d390c163ab8372bb08ea.bindPopup(popup_3f7e7208847a414a4cf4f83f417417f1)
+        ;
+
+        
+    
+    
+            circle_marker_be1d1bce0992d390c163ab8372bb08ea.bindTooltip(
+                `<div>
+                     Changi East Close: 0.80 mm
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d76f06097e1d77b8f9607fe718a58d44 = L.circleMarker(
+                [1.3337, 103.7768],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_19f7f9eee179cc691b88e2a9d2e3701a = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_32260b3722ca6d997b99501fd7bd5009 = $(`<div id="html_32260b3722ca6d997b99501fd7bd5009" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Clementi Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S50</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.333700, 103.776800             </p>         </div>         </div>`)[0];
+                popup_19f7f9eee179cc691b88e2a9d2e3701a.setContent(html_32260b3722ca6d997b99501fd7bd5009);
+            
+        
+
+        circle_marker_d76f06097e1d77b8f9607fe718a58d44.bindPopup(popup_19f7f9eee179cc691b88e2a9d2e3701a)
+        ;
+
+        
+    
+    
+            circle_marker_d76f06097e1d77b8f9607fe718a58d44.bindTooltip(
+                `<div>
+                     Clementi Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f73cbf484cdc8e7823a24818cc757cc4 = L.circleMarker(
+                [1.38666, 103.89797],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#64b5f6", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_aecb499279ce44f0f8e7d2bf026a4c37 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_beb523058dbc7e90e376f8734620630d = $(`<div id="html_beb523058dbc7e90e376f8734620630d" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Compassvale Lane</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S220</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> 0.60 mm</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.386660, 103.897970             </p>         </div>         </div>`)[0];
+                popup_aecb499279ce44f0f8e7d2bf026a4c37.setContent(html_beb523058dbc7e90e376f8734620630d);
+            
+        
+
+        circle_marker_f73cbf484cdc8e7823a24818cc757cc4.bindPopup(popup_aecb499279ce44f0f8e7d2bf026a4c37)
+        ;
+
+        
+    
+    
+            circle_marker_f73cbf484cdc8e7823a24818cc757cc4.bindTooltip(
+                `<div>
+                     Compassvale Lane: 0.60 mm
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_49e77d0c53878ddb9728be8547260819 = L.circleMarker(
+                [1.32427, 103.8097],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_e9d4c0ffa92c746534f26c45605f317d = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_1505c29b4a53965cbe7e62b77fbe8af5 = $(`<div id="html_1505c29b4a53965cbe7e62b77fbe8af5" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Coronation Walk</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S213</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.324270, 103.809700             </p>         </div>         </div>`)[0];
+                popup_e9d4c0ffa92c746534f26c45605f317d.setContent(html_1505c29b4a53965cbe7e62b77fbe8af5);
+            
+        
+
+        circle_marker_49e77d0c53878ddb9728be8547260819.bindPopup(popup_e9d4c0ffa92c746534f26c45605f317d)
+        ;
+
+        
+    
+    
+            circle_marker_49e77d0c53878ddb9728be8547260819.bindTooltip(
+                `<div>
+                     Coronation Walk: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_02492bffd913594cf4d530a7165d726b = L.circleMarker(
+                [1.32785, 103.88899],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_73fbd86ef8298f939ea122199b8d7621 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a47919c8c956667f08ca0184fe7f0df0 = $(`<div id="html_a47919c8c956667f08ca0184fe7f0df0" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Geylang East Central</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S215</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.327850, 103.888990             </p>         </div>         </div>`)[0];
+                popup_73fbd86ef8298f939ea122199b8d7621.setContent(html_a47919c8c956667f08ca0184fe7f0df0);
+            
+        
+
+        circle_marker_02492bffd913594cf4d530a7165d726b.bindPopup(popup_73fbd86ef8298f939ea122199b8d7621)
+        ;
+
+        
+    
+    
+            circle_marker_02492bffd913594cf4d530a7165d726b.bindTooltip(
+                `<div>
+                     Geylang East Central: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_55411e2976c84fba1bfaad8c80bc4443 = L.circleMarker(
+                [1.28987, 103.82364],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_a589ae2e05641ade4974ae4be96c4dc2 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_96f046bbe7000d241352fc53cfdab856 = $(`<div id="html_96f046bbe7000d241352fc53cfdab856" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Henderson Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S222</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.289870, 103.823640             </p>         </div>         </div>`)[0];
+                popup_a589ae2e05641ade4974ae4be96c4dc2.setContent(html_96f046bbe7000d241352fc53cfdab856);
+            
+        
+
+        circle_marker_55411e2976c84fba1bfaad8c80bc4443.bindPopup(popup_a589ae2e05641ade4974ae4be96c4dc2)
+        ;
+
+        
+    
+    
+            circle_marker_55411e2976c84fba1bfaad8c80bc4443.bindTooltip(
+                `<div>
+                     Henderson Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a993917d7ffc9f62049198b470360ba3 = L.circleMarker(
+                [1.30874, 103.818],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_bd1df75b5f340a8d65c7380159a4ec4b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_6e03364266c3eaf439bc50922610d989 = $(`<div id="html_6e03364266c3eaf439bc50922610d989" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Holland Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S120</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.308740, 103.818000             </p>         </div>         </div>`)[0];
+                popup_bd1df75b5f340a8d65c7380159a4ec4b.setContent(html_6e03364266c3eaf439bc50922610d989);
+            
+        
+
+        circle_marker_a993917d7ffc9f62049198b470360ba3.bindPopup(popup_bd1df75b5f340a8d65c7380159a4ec4b)
+        ;
+
+        
+    
+    
+            circle_marker_a993917d7ffc9f62049198b470360ba3.bindTooltip(
+                `<div>
+                     Holland Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_213dc3976d3d0b96176ad0a2279aaa71 = L.circleMarker(
+                [1.35691, 103.89088],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_4a0b52e33b9a6df3bdc547ce55d68358 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_8d08b3b66412e423860c20cb74eff29b = $(`<div id="html_8d08b3b66412e423860c20cb74eff29b" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Hougang Avenue 1</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S221</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.356910, 103.890880             </p>         </div>         </div>`)[0];
+                popup_4a0b52e33b9a6df3bdc547ce55d68358.setContent(html_8d08b3b66412e423860c20cb74eff29b);
+            
+        
+
+        circle_marker_213dc3976d3d0b96176ad0a2279aaa71.bindPopup(popup_4a0b52e33b9a6df3bdc547ce55d68358)
+        ;
+
+        
+    
+    
+            circle_marker_213dc3976d3d0b96176ad0a2279aaa71.bindTooltip(
+                `<div>
+                     Hougang Avenue 1: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ffc0dddba3f3deacfbd313cf2ca35df7 = L.circleMarker(
+                [1.3081, 103.71],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_85f50ef5ee6d912cfa78f7948eba6444 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_0f9be1ff984fcfa4146e531ee5a246ff = $(`<div id="html_0f9be1ff984fcfa4146e531ee5a246ff" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Jurong Pier Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S33</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.308100, 103.710000             </p>         </div>         </div>`)[0];
+                popup_85f50ef5ee6d912cfa78f7948eba6444.setContent(html_0f9be1ff984fcfa4146e531ee5a246ff);
+            
+        
+
+        circle_marker_ffc0dddba3f3deacfbd313cf2ca35df7.bindPopup(popup_85f50ef5ee6d912cfa78f7948eba6444)
+        ;
+
+        
+    
+    
+            circle_marker_ffc0dddba3f3deacfbd313cf2ca35df7.bindTooltip(
+                `<div>
+                     Jurong Pier Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5ac12c8cdf2e110e98a3f101da8ff7e3 = L.circleMarker(
+                [1.35167, 103.72195],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_84b1c2ba4c79bf4c20c21e8cbd24daa5 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_87121376966107c95b898a582b860c8a = $(`<div id="html_87121376966107c95b898a582b860c8a" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Jurong West Street 42</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S229</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.351670, 103.721950             </p>         </div>         </div>`)[0];
+                popup_84b1c2ba4c79bf4c20c21e8cbd24daa5.setContent(html_87121376966107c95b898a582b860c8a);
+            
+        
+
+        circle_marker_5ac12c8cdf2e110e98a3f101da8ff7e3.bindPopup(popup_84b1c2ba4c79bf4c20c21e8cbd24daa5)
+        ;
+
+        
+    
+    
+            circle_marker_5ac12c8cdf2e110e98a3f101da8ff7e3.bindTooltip(
+                `<div>
+                     Jurong West Street 42: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_87239c940531ea60d3bc6d480f36d5ad = L.circleMarker(
+                [1.34703, 103.70073],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_e52e4114933a504ddd07b7acae026448 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_61d2613e931bc8a88683a627862d6102 = $(`<div id="html_61d2613e931bc8a88683a627862d6102" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Jurong West Street 73</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S228</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.347030, 103.700730             </p>         </div>         </div>`)[0];
+                popup_e52e4114933a504ddd07b7acae026448.setContent(html_61d2613e931bc8a88683a627862d6102);
+            
+        
+
+        circle_marker_87239c940531ea60d3bc6d480f36d5ad.bindPopup(popup_e52e4114933a504ddd07b7acae026448)
+        ;
+
+        
+    
+    
+            circle_marker_87239c940531ea60d3bc6d480f36d5ad.bindTooltip(
+                `<div>
+                     Jurong West Street 73: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1ac2fe411747a5f47d2db315457aa7b4 = L.circleMarker(
+                [1.2923, 103.7815],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_41b20b78cdc968d110e4f50b053be013 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_7c839fc0e1cfed2e51a8e31271bf6602 = $(`<div id="html_7c839fc0e1cfed2e51a8e31271bf6602" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Kent Ridge Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S71</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.292300, 103.781500             </p>         </div>         </div>`)[0];
+                popup_41b20b78cdc968d110e4f50b053be013.setContent(html_7c839fc0e1cfed2e51a8e31271bf6602);
+            
+        
+
+        circle_marker_1ac2fe411747a5f47d2db315457aa7b4.bindPopup(popup_41b20b78cdc968d110e4f50b053be013)
+        ;
+
+        
+    
+    
+            circle_marker_1ac2fe411747a5f47d2db315457aa7b4.bindTooltip(
+                `<div>
+                     Kent Ridge Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_86f201b61a929b565130fc9dc64231a2 = L.circleMarker(
+                [1.3399, 103.8878],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_08ae112bbfd896748f3815542ee9d363 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_38592fc39fa36b75f421483cab6206ee = $(`<div id="html_38592fc39fa36b75f421483cab6206ee" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Kim Chuan Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S43</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.339900, 103.887800             </p>         </div>         </div>`)[0];
+                popup_08ae112bbfd896748f3815542ee9d363.setContent(html_38592fc39fa36b75f421483cab6206ee);
+            
+        
+
+        circle_marker_86f201b61a929b565130fc9dc64231a2.bindPopup(popup_08ae112bbfd896748f3815542ee9d363)
+        ;
+
+        
+    
+    
+            circle_marker_86f201b61a929b565130fc9dc64231a2.bindTooltip(
+                `<div>
+                     Kim Chuan Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_47dd7cb70398b8c16b77efddc6980450 = L.circleMarker(
+                [1.42918, 103.75711],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#90caf9", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_cca33db3476edc6a366917fd9f13d176 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_6edd6f883115cc2cda45e354c448f75f = $(`<div id="html_6edd6f883115cc2cda45e354c448f75f" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Kranji Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S211</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> 0.20 mm</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.429180, 103.757110             </p>         </div>         </div>`)[0];
+                popup_cca33db3476edc6a366917fd9f13d176.setContent(html_6edd6f883115cc2cda45e354c448f75f);
+            
+        
+
+        circle_marker_47dd7cb70398b8c16b77efddc6980450.bindPopup(popup_cca33db3476edc6a366917fd9f13d176)
+        ;
+
+        
+    
+    
+            circle_marker_47dd7cb70398b8c16b77efddc6980450.bindTooltip(
+                `<div>
+                     Kranji Road: 0.20 mm
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5a8b91afe0d959e55a983323024de09a = L.circleMarker(
+                [1.4387, 103.7363],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_0de1218ad04c85d8e3ff10c92cbb70d8 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_6a05bcd2168d7c05d768f8d0711e24c3 = $(`<div id="html_6a05bcd2168d7c05d768f8d0711e24c3" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Kranji Way</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S66</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.438700, 103.736300             </p>         </div>         </div>`)[0];
+                popup_0de1218ad04c85d8e3ff10c92cbb70d8.setContent(html_6a05bcd2168d7c05d768f8d0711e24c3);
+            
+        
+
+        circle_marker_5a8b91afe0d959e55a983323024de09a.bindPopup(popup_0de1218ad04c85d8e3ff10c92cbb70d8)
+        ;
+
+        
+    
+    
+            circle_marker_5a8b91afe0d959e55a983323024de09a.bindTooltip(
+                `<div>
+                     Kranji Way: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4149692ce5064e289a244ef276a9b309 = L.circleMarker(
+                [1.43854, 103.70131],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_8b553edbc4a6a7b68e4ce40204bf982d = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d4d7139d7d40ad739342260339cab341 = $(`<div id="html_d4d7139d7d40ad739342260339cab341" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Lim Chu Kang Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S112</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.438540, 103.701310             </p>         </div>         </div>`)[0];
+                popup_8b553edbc4a6a7b68e4ce40204bf982d.setContent(html_d4d7139d7d40ad739342260339cab341);
+            
+        
+
+        circle_marker_4149692ce5064e289a244ef276a9b309.bindPopup(popup_8b553edbc4a6a7b68e4ce40204bf982d)
+        ;
+
+        
+    
+    
+            circle_marker_4149692ce5064e289a244ef276a9b309.bindTooltip(
+                `<div>
+                     Lim Chu Kang Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f519b1df3308a716408fdd137b69d93c = L.circleMarker(
+                [1.3415, 103.8334],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_f90b9fd6a302623f2be47036b7d8400b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_23ca6c3bc6b4f458a2b99f2f73425815 = $(`<div id="html_23ca6c3bc6b4f458a2b99f2f73425815" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Lornie Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S07</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.341500, 103.833400             </p>         </div>         </div>`)[0];
+                popup_f90b9fd6a302623f2be47036b7d8400b.setContent(html_23ca6c3bc6b4f458a2b99f2f73425815);
+            
+        
+
+        circle_marker_f519b1df3308a716408fdd137b69d93c.bindPopup(popup_f90b9fd6a302623f2be47036b7d8400b)
+        ;
+
+        
+    
+    
+            circle_marker_f519b1df3308a716408fdd137b69d93c.bindTooltip(
+                `<div>
+                     Lornie Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_306b3c453d19a4c17e68776e07d5ed18 = L.circleMarker(
+                [1.27472, 103.80389],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_cd22c9345777923949edc6f8656989b1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_85268460b479b6094cfe2141b653c923 = $(`<div id="html_85268460b479b6094cfe2141b653c923" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Malan Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S226</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.274720, 103.803890             </p>         </div>         </div>`)[0];
+                popup_cd22c9345777923949edc6f8656989b1.setContent(html_85268460b479b6094cfe2141b653c923);
+            
+        
+
+        circle_marker_306b3c453d19a4c17e68776e07d5ed18.bindPopup(popup_cd22c9345777923949edc6f8656989b1)
+        ;
+
+        
+    
+    
+            circle_marker_306b3c453d19a4c17e68776e07d5ed18.bindTooltip(
+                `<div>
+                     Malan Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_36c101042ca8ee40c203526f7e4cd742 = L.circleMarker(
+                [1.4044, 103.78962],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#64b5f6", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_4625519163c5f94a0ec73850272e6489 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_fe45ea0c82a61901b81ad2aadaa08f9f = $(`<div id="html_fe45ea0c82a61901b81ad2aadaa08f9f" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Mandai Lake Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S40</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> 0.60 mm</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.404400, 103.789620             </p>         </div>         </div>`)[0];
+                popup_4625519163c5f94a0ec73850272e6489.setContent(html_fe45ea0c82a61901b81ad2aadaa08f9f);
+            
+        
+
+        circle_marker_36c101042ca8ee40c203526f7e4cd742.bindPopup(popup_4625519163c5f94a0ec73850272e6489)
+        ;
+
+        
+    
+    
+            circle_marker_36c101042ca8ee40c203526f7e4cd742.bindTooltip(
+                `<div>
+                     Mandai Lake Road: 0.60 mm
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2faa17f2c717a3b4e8df6faec0fe6165 = L.circleMarker(
+                [1.29984, 103.80264],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_fa9362388fd622ca0289dc977562f0b1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_4f698b827347b0c97c6404f0d97aa044 = $(`<div id="html_4f698b827347b0c97c6404f0d97aa044" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Margaret Drive</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S223</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.299840, 103.802640             </p>         </div>         </div>`)[0];
+                popup_fa9362388fd622ca0289dc977562f0b1.setContent(html_4f698b827347b0c97c6404f0d97aa044);
+            
+        
+
+        circle_marker_2faa17f2c717a3b4e8df6faec0fe6165.bindPopup(popup_fa9362388fd622ca0289dc977562f0b1)
+        ;
+
+        
+    
+    
+            circle_marker_2faa17f2c717a3b4e8df6faec0fe6165.bindTooltip(
+                `<div>
+                     Margaret Drive: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ad4aa448fcc6b973648359ef1cee8d51 = L.circleMarker(
+                [1.2799, 103.8703],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_124bb3b37f9b177d2fee23477c447872 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_95283a4bd911d4134cb1dc59a8270c4d = $(`<div id="html_95283a4bd911d4134cb1dc59a8270c4d" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Marina Gardens Drive</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S108</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.279900, 103.870300             </p>         </div>         </div>`)[0];
+                popup_124bb3b37f9b177d2fee23477c447872.setContent(html_95283a4bd911d4134cb1dc59a8270c4d);
+            
+        
+
+        circle_marker_ad4aa448fcc6b973648359ef1cee8d51.bindPopup(popup_124bb3b37f9b177d2fee23477c447872)
+        ;
+
+        
+    
+    
+            circle_marker_ad4aa448fcc6b973648359ef1cee8d51.bindTooltip(
+                `<div>
+                     Marina Gardens Drive: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b4e3e8cc6947ee23581606e13cdd5921 = L.circleMarker(
+                [1.30648, 103.9104],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_8580a35aaa1beb5d186c87ff33ff14fe = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_c3e0dbc8707a7dce448f228aef441e17 = $(`<div id="html_c3e0dbc8707a7dce448f228aef441e17" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Marine Parade Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S113</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.306480, 103.910400             </p>         </div>         </div>`)[0];
+                popup_8580a35aaa1beb5d186c87ff33ff14fe.setContent(html_c3e0dbc8707a7dce448f228aef441e17);
+            
+        
+
+        circle_marker_b4e3e8cc6947ee23581606e13cdd5921.bindPopup(popup_8580a35aaa1beb5d186c87ff33ff14fe)
+        ;
+
+        
+    
+    
+            circle_marker_b4e3e8cc6947ee23581606e13cdd5921.bindTooltip(
+                `<div>
+                     Marine Parade Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3f74c94e5de4f716b002ad5977f26d55 = L.circleMarker(
+                [1.34583, 103.68166],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_7ec8290a5ba1b8bf8176488791388bb0 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_1185eef2cda4bdd4553a80a51612d1bf = $(`<div id="html_1185eef2cda4bdd4553a80a51612d1bf" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Nanyang Avenue</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S44</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.345830, 103.681660             </p>         </div>         </div>`)[0];
+                popup_7ec8290a5ba1b8bf8176488791388bb0.setContent(html_1185eef2cda4bdd4553a80a51612d1bf);
+            
+        
+
+        circle_marker_3f74c94e5de4f716b002ad5977f26d55.bindPopup(popup_7ec8290a5ba1b8bf8176488791388bb0)
+        ;
+
+        
+    
+    
+            circle_marker_3f74c94e5de4f716b002ad5977f26d55.bindTooltip(
+                `<div>
+                     Nanyang Avenue: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a3bf0981d5b60c49947c8bf3fe00c987 = L.circleMarker(
+                [1.30105, 103.8666],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_c2447b90572ecbaee9a74eb8a354c84b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_9b0cf07f9f583f58077f6de37e99fc18 = $(`<div id="html_9b0cf07f9f583f58077f6de37e99fc18" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Nicoll Highway</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S119</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.301050, 103.866600             </p>         </div>         </div>`)[0];
+                popup_c2447b90572ecbaee9a74eb8a354c84b.setContent(html_9b0cf07f9f583f58077f6de37e99fc18);
+            
+        
+
+        circle_marker_a3bf0981d5b60c49947c8bf3fe00c987.bindPopup(popup_c2447b90572ecbaee9a74eb8a354c84b)
+        ;
+
+        
+    
+    
+            circle_marker_a3bf0981d5b60c49947c8bf3fe00c987.bindTooltip(
+                `<div>
+                     Nicoll Highway: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_85cf0e06acb7c133cbddf09db1d00a32 = L.circleMarker(
+                [1.3329, 103.7556],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#90caf9", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_72a64e981c558c13afdea06b669defe6 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_04de4aa14b190001a1c4d6c0d35425a5 = $(`<div id="html_04de4aa14b190001a1c4d6c0d35425a5" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Old Toh Tuck Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S35</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> 0.40 mm</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.332900, 103.755600             </p>         </div>         </div>`)[0];
+                popup_72a64e981c558c13afdea06b669defe6.setContent(html_04de4aa14b190001a1c4d6c0d35425a5);
+            
+        
+
+        circle_marker_85cf0e06acb7c133cbddf09db1d00a32.bindPopup(popup_72a64e981c558c13afdea06b669defe6)
+        ;
+
+        
+    
+    
+            circle_marker_85cf0e06acb7c133cbddf09db1d00a32.bindTooltip(
+                `<div>
+                     Old Toh Tuck Road: 0.40 mm
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_695c231c55202d67d2e669c1367c488f = L.circleMarker(
+                [1.29164, 103.7702],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_0edd2b1884d593d79cb1e564da355693 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_c08ebd22f3dacc841646cf125a7cb136 = $(`<div id="html_c08ebd22f3dacc841646cf125a7cb136" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Pasir Panjang</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S203</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.291640, 103.770200             </p>         </div>         </div>`)[0];
+                popup_0edd2b1884d593d79cb1e564da355693.setContent(html_c08ebd22f3dacc841646cf125a7cb136);
+            
+        
+
+        circle_marker_695c231c55202d67d2e669c1367c488f.bindPopup(popup_0edd2b1884d593d79cb1e564da355693)
+        ;
+
+        
+    
+    
+            circle_marker_695c231c55202d67d2e669c1367c488f.bindTooltip(
+                `<div>
+                     Pasir Panjang: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_13754e3fd4ff53096836d80588edaf95 = L.circleMarker(
+                [1.3662, 103.9528],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_9b13d6bd9812235b7b4b6c7b554e48dc = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_74e02e836de018305feecacd0f79176b = $(`<div id="html_74e02e836de018305feecacd0f79176b" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Pasir Ris Street 51</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S94</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.366200, 103.952800             </p>         </div>         </div>`)[0];
+                popup_9b13d6bd9812235b7b4b6c7b554e48dc.setContent(html_74e02e836de018305feecacd0f79176b);
+            
+        
+
+        circle_marker_13754e3fd4ff53096836d80588edaf95.bindPopup(popup_9b13d6bd9812235b7b4b6c7b554e48dc)
+        ;
+
+        
+    
+    
+            circle_marker_13754e3fd4ff53096836d80588edaf95.bindTooltip(
+                `<div>
+                     Pasir Ris Street 51: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_081ae2ebf195142b814c22d6a58d5d7f = L.circleMarker(
+                [1.3524, 103.9007],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_d9f6739f7af69af26dc807ba8577ee32 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_8591e4a88afd77bbcc24c3796b179c10 = $(`<div id="html_8591e4a88afd77bbcc24c3796b179c10" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Paya Lebar</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S06</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.352400, 103.900700             </p>         </div>         </div>`)[0];
+                popup_d9f6739f7af69af26dc807ba8577ee32.setContent(html_8591e4a88afd77bbcc24c3796b179c10);
+            
+        
+
+        circle_marker_081ae2ebf195142b814c22d6a58d5d7f.bindPopup(popup_d9f6739f7af69af26dc807ba8577ee32)
+        ;
+
+        
+    
+    
+            circle_marker_081ae2ebf195142b814c22d6a58d5d7f.bindTooltip(
+                `<div>
+                     Paya Lebar: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_dfd13fc8b3e8e6c9e7cb611b79f6a916 = L.circleMarker(
+                [1.30703, 103.89067],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_02040a7f8ff033884127d6a3fd780c61 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_6412e99885853ff386229ad9f1815e27 = $(`<div id="html_6412e99885853ff386229ad9f1815e27" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Poole Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S78</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.307030, 103.890670             </p>         </div>         </div>`)[0];
+                popup_02040a7f8ff033884127d6a3fd780c61.setContent(html_6412e99885853ff386229ad9f1815e27);
+            
+        
+
+        circle_marker_dfd13fc8b3e8e6c9e7cb611b79f6a916.bindPopup(popup_02040a7f8ff033884127d6a3fd780c61)
+        ;
+
+        
+    
+    
+            circle_marker_dfd13fc8b3e8e6c9e7cb611b79f6a916.bindTooltip(
+                `<div>
+                     Poole Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_611f26f97b6e66357441b2ad884aae6e = L.circleMarker(
+                [1.4168, 103.9673],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_ee64c6973b7aeb27ff6035854bee9de6 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_faddc2fcb930a563f97f4ad13404b343 = $(`<div id="html_faddc2fcb930a563f97f4ad13404b343" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Pulau Ubin</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S106</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.416800, 103.967300             </p>         </div>         </div>`)[0];
+                popup_ee64c6973b7aeb27ff6035854bee9de6.setContent(html_faddc2fcb930a563f97f4ad13404b343);
+            
+        
+
+        circle_marker_611f26f97b6e66357441b2ad884aae6e.bindPopup(popup_ee64c6973b7aeb27ff6035854bee9de6)
+        ;
+
+        
+    
+    
+            circle_marker_611f26f97b6e66357441b2ad884aae6e.bindTooltip(
+                `<div>
+                     Pulau Ubin: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ef3ed7b8e84ea5e13d5c6516faf7c777 = L.circleMarker(
+                [1.4029, 103.9092],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_dc2b2aca3e417b9a3cf07c5428082767 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_51b8fa57a1e06eef05afc8df6796ab5d = $(`<div id="html_51b8fa57a1e06eef05afc8df6796ab5d" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Punggol Central</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S81</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.402900, 103.909200             </p>         </div>         </div>`)[0];
+                popup_dc2b2aca3e417b9a3cf07c5428082767.setContent(html_51b8fa57a1e06eef05afc8df6796ab5d);
+            
+        
+
+        circle_marker_ef3ed7b8e84ea5e13d5c6516faf7c777.bindPopup(popup_dc2b2aca3e417b9a3cf07c5428082767)
+        ;
+
+        
+    
+    
+            circle_marker_ef3ed7b8e84ea5e13d5c6516faf7c777.bindTooltip(
+                `<div>
+                     Punggol Central: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_799117c087f645e9129aa73b075800c5 = L.circleMarker(
+                [1.31055, 103.8365],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_5c75f4c8e5a5a7e5ddf22585a321073d = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_e1f5df9d669731ba858207e354637212 = $(`<div id="html_e1f5df9d669731ba858207e354637212" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Scotts Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S111</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.310550, 103.836500             </p>         </div>         </div>`)[0];
+                popup_5c75f4c8e5a5a7e5ddf22585a321073d.setContent(html_e1f5df9d669731ba858207e354637212);
+            
+        
+
+        circle_marker_799117c087f645e9129aa73b075800c5.bindPopup(popup_5c75f4c8e5a5a7e5ddf22585a321073d)
+        ;
+
+        
+    
+    
+            circle_marker_799117c087f645e9129aa73b075800c5.bindTooltip(
+                `<div>
+                     Scotts Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_fcedc65d5381f9be25004d0f46c9903c = L.circleMarker(
+                [1.41284, 103.86922],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_4f5aeccf0e4e62bb0612bae46fc24b83 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_5551624849c1ef6399cb671fe2748cd6 = $(`<div id="html_5551624849c1ef6399cb671fe2748cd6" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Seletar Aerospace View</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S900</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.412840, 103.869220             </p>         </div>         </div>`)[0];
+                popup_4f5aeccf0e4e62bb0612bae46fc24b83.setContent(html_5551624849c1ef6399cb671fe2748cd6);
+            
+        
+
+        circle_marker_fcedc65d5381f9be25004d0f46c9903c.bindPopup(popup_4f5aeccf0e4e62bb0612bae46fc24b83)
+        ;
+
+        
+    
+    
+            circle_marker_fcedc65d5381f9be25004d0f46c9903c.bindTooltip(
+                `<div>
+                     Seletar Aerospace View: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_01f00f8b1911215bcd8100e1615e8782 = L.circleMarker(
+                [1.189, 103.768],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_d9e65b3f8bb29a8526522ea16f99b681 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_7fd1f1231c41b8bf58214909a21891fe = $(`<div id="html_7fd1f1231c41b8bf58214909a21891fe" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Semakau Landfill</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S102</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.189000, 103.768000             </p>         </div>         </div>`)[0];
+                popup_d9e65b3f8bb29a8526522ea16f99b681.setContent(html_7fd1f1231c41b8bf58214909a21891fe);
+            
+        
+
+        circle_marker_01f00f8b1911215bcd8100e1615e8782.bindPopup(popup_d9e65b3f8bb29a8526522ea16f99b681)
+        ;
+
+        
+    
+    
+            circle_marker_01f00f8b1911215bcd8100e1615e8782.bindTooltip(
+                `<div>
+                     Semakau Landfill: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a6c081dcae5d3cb0ba640fa0d8edabc1 = L.circleMarker(
+                [1.25, 103.8279],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_081ecad7bccbcc55370f2a7ecbc7a1cf = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a0e6135186a356cc45b77f2a11c6906f = $(`<div id="html_a0e6135186a356cc45b77f2a11c6906f" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Sentosa</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S60</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.250000, 103.827900             </p>         </div>         </div>`)[0];
+                popup_081ecad7bccbcc55370f2a7ecbc7a1cf.setContent(html_a0e6135186a356cc45b77f2a11c6906f);
+            
+        
+
+        circle_marker_a6c081dcae5d3cb0ba640fa0d8edabc1.bindPopup(popup_081ecad7bccbcc55370f2a7ecbc7a1cf)
+        ;
+
+        
+    
+    
+            circle_marker_a6c081dcae5d3cb0ba640fa0d8edabc1.bindTooltip(
+                `<div>
+                     Sentosa: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_20811813fa98eda9969bb397c1485cae = L.circleMarker(
+                [1.3437, 103.9444],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_625af6683cd3922b5e1e8a1dc99254c4 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_194177f6c42a87c09afaab86a48a15ee = $(`<div id="html_194177f6c42a87c09afaab86a48a15ee" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Simei Avenue</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S84</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.343700, 103.944400             </p>         </div>         </div>`)[0];
+                popup_625af6683cd3922b5e1e8a1dc99254c4.setContent(html_194177f6c42a87c09afaab86a48a15ee);
+            
+        
+
+        circle_marker_20811813fa98eda9969bb397c1485cae.bindPopup(popup_625af6683cd3922b5e1e8a1dc99254c4)
+        ;
+
+        
+    
+    
+            circle_marker_20811813fa98eda9969bb397c1485cae.bindTooltip(
+                `<div>
+                     Simei Avenue: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4de79b3020c4beec498822f808e5abfb = L.circleMarker(
+                [1.3004, 103.8372],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_d25583ca4f08f73ad8af98570115c42c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d88bf702e468369803a1690d96a8bdfb = $(`<div id="html_d88bf702e468369803a1690d96a8bdfb" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Somerset Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S79</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.300400, 103.837200             </p>         </div>         </div>`)[0];
+                popup_d25583ca4f08f73ad8af98570115c42c.setContent(html_d88bf702e468369803a1690d96a8bdfb);
+            
+        
+
+        circle_marker_4de79b3020c4beec498822f808e5abfb.bindPopup(popup_d25583ca4f08f73ad8af98570115c42c)
+        ;
+
+        
+    
+    
+            circle_marker_4de79b3020c4beec498822f808e5abfb.bindTooltip(
+                `<div>
+                     Somerset Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_07ba36de0bfdd1df9b4039391b00fc0c = L.circleMarker(
+                [1.2841, 103.7886],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_356ecdc8129f0c90a7d4e14758ddffcc = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_777ea2da18e806896586695aa88866f5 = $(`<div id="html_777ea2da18e806896586695aa88866f5" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">South Buona Vista Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S92</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.284100, 103.788600             </p>         </div>         </div>`)[0];
+                popup_356ecdc8129f0c90a7d4e14758ddffcc.setContent(html_777ea2da18e806896586695aa88866f5);
+            
+        
+
+        circle_marker_07ba36de0bfdd1df9b4039391b00fc0c.bindPopup(popup_356ecdc8129f0c90a7d4e14758ddffcc)
+        ;
+
+        
+    
+    
+            circle_marker_07ba36de0bfdd1df9b4039391b00fc0c.bindTooltip(
+                `<div>
+                     South Buona Vista Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b42d380d3acd0695814c0c634cfe6cdf = L.circleMarker(
+                [1.29911, 103.88289],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_c665969d49969280f85570be6d38cc53 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_4f48cdd59cd9bc46b9d9ddca1e019c07 = $(`<div id="html_4f48cdd59cd9bc46b9d9ddca1e019c07" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Tanjong Rhu</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S214</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.299110, 103.882890             </p>         </div>         </div>`)[0];
+                popup_c665969d49969280f85570be6d38cc53.setContent(html_4f48cdd59cd9bc46b9d9ddca1e019c07);
+            
+        
+
+        circle_marker_b42d380d3acd0695814c0c634cfe6cdf.bindPopup(popup_c665969d49969280f85570be6d38cc53)
+        ;
+
+        
+    
+    
+            circle_marker_b42d380d3acd0695814c0c634cfe6cdf.bindTooltip(
+                `<div>
+                     Tanjong Rhu: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_197890e82948f3e5cc4606c61493fd50 = L.circleMarker(
+                [1.3427, 103.8482],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_238a93ea74ae2ffde5e8f143b834223a = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_2043f672d485720a1331ebfbbdae14ef = $(`<div id="html_2043f672d485720a1331ebfbbdae14ef" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Toa Payoh North</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S88</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.342700, 103.848200             </p>         </div>         </div>`)[0];
+                popup_238a93ea74ae2ffde5e8f143b834223a.setContent(html_2043f672d485720a1331ebfbbdae14ef);
+            
+        
+
+        circle_marker_197890e82948f3e5cc4606c61493fd50.bindPopup(popup_238a93ea74ae2ffde5e8f143b834223a)
+        ;
+
+        
+    
+    
+            circle_marker_197890e82948f3e5cc4606c61493fd50.bindTooltip(
+                `<div>
+                     Toa Payoh North: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_15ed0a91fee0b2c496e22a8b46043872 = L.circleMarker(
+                [1.3214, 103.8577],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_ca3635f513af50f0d8d2c6d9fec76883 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a3f11285797ec53f4fb20f23e421de2a = $(`<div id="html_a3f11285797ec53f4fb20f23e421de2a" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Towner Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S123</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.321400, 103.857700             </p>         </div>         </div>`)[0];
+                popup_ca3635f513af50f0d8d2c6d9fec76883.setContent(html_a3f11285797ec53f4fb20f23e421de2a);
+            
+        
+
+        circle_marker_15ed0a91fee0b2c496e22a8b46043872.bindPopup(popup_ca3635f513af50f0d8d2c6d9fec76883)
+        ;
+
+        
+    
+    
+            circle_marker_15ed0a91fee0b2c496e22a8b46043872.bindTooltip(
+                `<div>
+                     Towner Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d95a4dbc306c5175e0e121331ff71e58 = L.circleMarker(
+                [1.29377, 103.61843],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_b37945ae1d3622b114211cadf37b03b6 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_78eb7f444c176c6d60b6a558127fe459 = $(`<div id="html_78eb7f444c176c6d60b6a558127fe459" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Tuas South Avenue 3</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S115</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.293770, 103.618430             </p>         </div>         </div>`)[0];
+                popup_b37945ae1d3622b114211cadf37b03b6.setContent(html_78eb7f444c176c6d60b6a558127fe459);
+            
+        
+
+        circle_marker_d95a4dbc306c5175e0e121331ff71e58.bindPopup(popup_b37945ae1d3622b114211cadf37b03b6)
+        ;
+
+        
+    
+    
+            circle_marker_d95a4dbc306c5175e0e121331ff71e58.bindTooltip(
+                `<div>
+                     Tuas South Avenue 3: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2d1bb2cd2435012a83ec4e3cfbd278e2 = L.circleMarker(
+                [1.3678, 103.9826],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#64b5f6", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_1704db9311f6e3a33ade554572d1072f = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_c55a3f43cc4706ce8a90144fb822d90d = $(`<div id="html_c55a3f43cc4706ce8a90144fb822d90d" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Upper Changi Road North</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S24</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> 0.60 mm</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.367800, 103.982600             </p>         </div>         </div>`)[0];
+                popup_1704db9311f6e3a33ade554572d1072f.setContent(html_c55a3f43cc4706ce8a90144fb822d90d);
+            
+        
+
+        circle_marker_2d1bb2cd2435012a83ec4e3cfbd278e2.bindPopup(popup_1704db9311f6e3a33ade554572d1072f)
+        ;
+
+        
+    
+    
+            circle_marker_2d1bb2cd2435012a83ec4e3cfbd278e2.bindTooltip(
+                `<div>
+                     Upper Changi Road North: 0.60 mm
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_72f58f314d6575ccd8eaaa14989bc149 = L.circleMarker(
+                [1.37, 103.805],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_14a7d2061569c16f023ae8b7c1ca7741 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_2da3338920beb481adc1ac87ef49398d = $(`<div id="html_2da3338920beb481adc1ac87ef49398d" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Upper Peirce Reservoir Park</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S69</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.370000, 103.805000             </p>         </div>         </div>`)[0];
+                popup_14a7d2061569c16f023ae8b7c1ca7741.setContent(html_2da3338920beb481adc1ac87ef49398d);
+            
+        
+
+        circle_marker_72f58f314d6575ccd8eaaa14989bc149.bindPopup(popup_14a7d2061569c16f023ae8b7c1ca7741)
+        ;
+
+        
+    
+    
+            circle_marker_72f58f314d6575ccd8eaaa14989bc149.bindTooltip(
+                `<div>
+                     Upper Peirce Reservoir Park: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_74fc0dcb9e831dc626b1b6647ff1749d = L.circleMarker(
+                [1.3701, 103.8271],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_b4888f8ab3d930cc15f7975160fcecb6 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d6f3ad52563c1994e082a7b26584b2ab = $(`<div id="html_d6f3ad52563c1994e082a7b26584b2ab" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Upper Thomson Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S08</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.370100, 103.827100             </p>         </div>         </div>`)[0];
+                popup_b4888f8ab3d930cc15f7975160fcecb6.setContent(html_d6f3ad52563c1994e082a7b26584b2ab);
+            
+        
+
+        circle_marker_74fc0dcb9e831dc626b1b6647ff1749d.bindPopup(popup_b4888f8ab3d930cc15f7975160fcecb6)
+        ;
+
+        
+    
+    
+            circle_marker_74fc0dcb9e831dc626b1b6647ff1749d.bindTooltip(
+                `<div>
+                     Upper Thomson Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_17052efb8c6dbe58f891046ed755043c = L.circleMarker(
+                [1.30167, 103.76444],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_0c2d69415d6552d4bb7916fdd0f20eab = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_4edc04657f702647e1e34d0ad92a82ae = $(`<div id="html_4edc04657f702647e1e34d0ad92a82ae" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">West Coast Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S230</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.301670, 103.764440             </p>         </div>         </div>`)[0];
+                popup_0c2d69415d6552d4bb7916fdd0f20eab.setContent(html_4edc04657f702647e1e34d0ad92a82ae);
+            
+        
+
+        circle_marker_17052efb8c6dbe58f891046ed755043c.bindPopup(popup_0c2d69415d6552d4bb7916fdd0f20eab)
+        ;
+
+        
+    
+    
+            circle_marker_17052efb8c6dbe58f891046ed755043c.bindTooltip(
+                `<div>
+                     West Coast Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7f126233715f290b321128e955bde844 = L.circleMarker(
+                [1.44387, 103.78538],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#42a5f5", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_f379d7b7e328b3c91831e0f02c90567d = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_284392d2d0e26d18a7b15921e1ae5195 = $(`<div id="html_284392d2d0e26d18a7b15921e1ae5195" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Woodlands Avenue 9</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S104</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> 1.80 mm</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.443870, 103.785380             </p>         </div>         </div>`)[0];
+                popup_f379d7b7e328b3c91831e0f02c90567d.setContent(html_284392d2d0e26d18a7b15921e1ae5195);
+            
+        
+
+        circle_marker_7f126233715f290b321128e955bde844.bindPopup(popup_f379d7b7e328b3c91831e0f02c90567d)
+        ;
+
+        
+    
+    
+            circle_marker_7f126233715f290b321128e955bde844.bindTooltip(
+                `<div>
+                     Woodlands Avenue 9: 1.80 mm
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2024949bdbbf787bee8c7f995be5438a = L.circleMarker(
+                [1.44003, 103.76904],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_c4d21f82d5208d368bb4b78eaed773bc = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_bf55167a2db73acf3b4f316dad072639 = $(`<div id="html_bf55167a2db73acf3b4f316dad072639" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Woodlands Centre</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S210</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.440030, 103.769040             </p>         </div>         </div>`)[0];
+                popup_c4d21f82d5208d368bb4b78eaed773bc.setContent(html_bf55167a2db73acf3b4f316dad072639);
+            
+        
+
+        circle_marker_2024949bdbbf787bee8c7f995be5438a.bindPopup(popup_c4d21f82d5208d368bb4b78eaed773bc)
+        ;
+
+        
+    
+    
+            circle_marker_2024949bdbbf787bee8c7f995be5438a.bindTooltip(
+                `<div>
+                     Woodlands Centre: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4a9ec55d2d7df2d99200e98bdeec67d2 = L.circleMarker(
+                [1.43944, 103.80389],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2196f3", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_c2f799e02d57db26ef81e219745b9b0b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_317095945c8ccc09a614e88ed7030045 = $(`<div id="html_317095945c8ccc09a614e88ed7030045" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Woodlands Drive 62</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S227</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> 4.60 mm</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.439440, 103.803890             </p>         </div>         </div>`)[0];
+                popup_c2f799e02d57db26ef81e219745b9b0b.setContent(html_317095945c8ccc09a614e88ed7030045);
+            
+        
+
+        circle_marker_4a9ec55d2d7df2d99200e98bdeec67d2.bindPopup(popup_c2f799e02d57db26ef81e219745b9b0b)
+        ;
+
+        
+    
+    
+            circle_marker_4a9ec55d2d7df2d99200e98bdeec67d2.bindTooltip(
+                `<div>
+                     Woodlands Drive 62: 4.60 mm
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f32b60ad2e4323c672cce0a0e1245182 = L.circleMarker(
+                [1.37999, 103.87643],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_1feb4dc2ef7a72bed1e5e54427ad6ac2 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_9e6f7d79b5c4572f376957a945b96f6f = $(`<div id="html_9e6f7d79b5c4572f376957a945b96f6f" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Yio Chu Kang Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S219</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.379990, 103.876430             </p>         </div>         </div>`)[0];
+                popup_1feb4dc2ef7a72bed1e5e54427ad6ac2.setContent(html_9e6f7d79b5c4572f376957a945b96f6f);
+            
+        
+
+        circle_marker_f32b60ad2e4323c672cce0a0e1245182.bindPopup(popup_1feb4dc2ef7a72bed1e5e54427ad6ac2)
+        ;
+
+        
+    
+    
+            circle_marker_f32b60ad2e4323c672cce0a0e1245182.bindTooltip(
+                `<div>
+                     Yio Chu Kang Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_fd0423a1400fe164ffbe3074859e91cd = L.circleMarker(
+                [1.42111, 103.84472],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+    
+        var popup_df74e935a1361e7ff092e2acd0a7477c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_01e9f08c30a0b9d91c74fd35b9280717 = $(`<div id="html_01e9f08c30a0b9d91c74fd35b9280717" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0;">Yishun Ring Road</h4>             <p style="margin: 5px 0;"><strong>Station ID:</strong> S209</p>             <p style="margin: 5px 0;"><strong>Rainfall:</strong> No rainfall</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.421110, 103.844720             </p>         </div>         </div>`)[0];
+                popup_df74e935a1361e7ff092e2acd0a7477c.setContent(html_01e9f08c30a0b9d91c74fd35b9280717);
+            
+        
+
+        circle_marker_fd0423a1400fe164ffbe3074859e91cd.bindPopup(popup_df74e935a1361e7ff092e2acd0a7477c)
+        ;
+
+        
+    
+    
+            circle_marker_fd0423a1400fe164ffbe3074859e91cd.bindTooltip(
+                `<div>
+                     Yishun Ring Road: No rainfall
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            L.control.fullscreen(
+                {
+  "position": "topleft",
+  "title": "Full Screen",
+  "titleCancel": "Exit Full Screen",
+  "forceSeparateButton": false,
+}
+            ).addTo(map_82ee0a977f64e56c9fd121f69d433543);
+        
+</script>
+</html>

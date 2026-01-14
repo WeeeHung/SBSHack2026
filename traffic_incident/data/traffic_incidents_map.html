@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_0a9725848cab0b875aa92f353487b2a1 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+</head>
+<body>
+    
+    
+    <div style="position: fixed; 
+                bottom: 50px; right: 50px; width: 200px; height: auto; 
+                background-color: white; border:2px solid grey; z-index:9999; 
+                font-size:14px; padding: 10px">
+    <h4 style="margin-top: 0;">Incident Types</h4>
+    
+            <p style="margin: 5px 0;">
+                <i class="fa fa-circle" style="color: red"></i> 
+                Accident: 3
+            </p>
+            
+            <p style="margin: 5px 0;">
+                <i class="fa fa-circle" style="color: yellow"></i> 
+                Heavy Traffic: 19
+            </p>
+            
+            <p style="margin: 5px 0;">
+                <i class="fa fa-circle" style="color: blue"></i> 
+                Vehicle breakdown: 2
+            </p>
+            </div>
+    
+            <div class="folium-map" id="map_0a9725848cab0b875aa92f353487b2a1" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_0a9725848cab0b875aa92f353487b2a1 = L.map(
+                "map_0a9725848cab0b875aa92f353487b2a1",
+                {
+                    center: [1.3399131934619535, 103.83683309106004],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 11,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_22f03ffe532ae24d1539f3a4fb611205 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_22f03ffe532ae24d1539f3a4fb611205.addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var marker_da815cf708f255a5283097619852c4c2 = L.marker(
+                [1.346080681123213, 103.96737560880172],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_c682905b7e3346beb78f68c1ee51b025 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5c3273e326da7d0f946bd0e0c15ca98c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_3897a7aaabc921b2740b732d0b354ee5 = $(`<div id="html_3897a7aaabc921b2740b732d0b354ee5" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)18:24 Heavy Traffic on PIE (towards Tuas) at TPE Exit.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.346081, 103.967376             </p>         </div>         </div>`)[0];
+                popup_5c3273e326da7d0f946bd0e0c15ca98c.setContent(html_3897a7aaabc921b2740b732d0b354ee5);
+            
+        
+
+        marker_da815cf708f255a5283097619852c4c2.bindPopup(popup_5c3273e326da7d0f946bd0e0c15ca98c)
+        ;
+
+        
+    
+    
+            marker_da815cf708f255a5283097619852c4c2.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)18:24 Heavy Traffic on PIE (towards Tuas) at...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_da815cf708f255a5283097619852c4c2.setIcon(icon_c682905b7e3346beb78f68c1ee51b025);
+            
+    
+            var marker_4c10f5954d847c84b8d6c8ee1583b58b = L.marker(
+                [1.3309806295110562, 103.81935760111683],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_533b9f001bf66bcef02913db7c01fb91 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e0b41dcc80f251be2e255420b8c243a1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_f68190fc20bf9ea15722ecd3bcc36e5c = $(`<div id="html_f68190fc20bf9ea15722ecd3bcc36e5c" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: blue;">Vehicle breakdown</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)18:24 Vehicle Breakdown on PIE (towards Changi) after Lornie Rd.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.330981, 103.819358             </p>         </div>         </div>`)[0];
+                popup_e0b41dcc80f251be2e255420b8c243a1.setContent(html_f68190fc20bf9ea15722ecd3bcc36e5c);
+            
+        
+
+        marker_4c10f5954d847c84b8d6c8ee1583b58b.bindPopup(popup_e0b41dcc80f251be2e255420b8c243a1)
+        ;
+
+        
+    
+    
+            marker_4c10f5954d847c84b8d6c8ee1583b58b.bindTooltip(
+                `<div>
+                     Vehicle breakdown: (14/1)18:24 Vehicle Breakdown on PIE (towards Chan...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4c10f5954d847c84b8d6c8ee1583b58b.setIcon(icon_533b9f001bf66bcef02913db7c01fb91);
+            
+    
+            var marker_010bd91800faf4774daed1552bde655c = L.marker(
+                [1.3513237910588027, 103.85744241928376],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_8ef526b8117b5a27d6ef5ed26e9b5c55 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6e3bb6708d20701256dd2349e6595f37 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_c38e9640c89a97fa480b40e3c8f301b8 = $(`<div id="html_c38e9640c89a97fa480b40e3c8f301b8" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: red;">Accident</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)18:23 Accident on CTE (towards SLE) after Braddell Rd with congestion till Braddell Rd. Avoid lane 1.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.351324, 103.857442             </p>         </div>         </div>`)[0];
+                popup_6e3bb6708d20701256dd2349e6595f37.setContent(html_c38e9640c89a97fa480b40e3c8f301b8);
+            
+        
+
+        marker_010bd91800faf4774daed1552bde655c.bindPopup(popup_6e3bb6708d20701256dd2349e6595f37)
+        ;
+
+        
+    
+    
+            marker_010bd91800faf4774daed1552bde655c.bindTooltip(
+                `<div>
+                     Accident: (14/1)18:23 Accident on CTE (towards SLE) after Br...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_010bd91800faf4774daed1552bde655c.setIcon(icon_8ef526b8117b5a27d6ef5ed26e9b5c55);
+            
+    
+            var marker_637c15791b76abe1d6978c09c07819bf = L.marker(
+                [1.3357436031313585, 103.97899058207598],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_0bd7a107ff511ee226f7ac5f82cfe336 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_47622376f6f0fd959654e1a01dafae06 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_b1e97ff9053ae6ebe75f7d206663a42e = $(`<div id="html_b1e97ff9053ae6ebe75f7d206663a42e" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)18:21 Heavy Traffic on ECP (towards Changi) at PIE Exit.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.335744, 103.978991             </p>         </div>         </div>`)[0];
+                popup_47622376f6f0fd959654e1a01dafae06.setContent(html_b1e97ff9053ae6ebe75f7d206663a42e);
+            
+        
+
+        marker_637c15791b76abe1d6978c09c07819bf.bindPopup(popup_47622376f6f0fd959654e1a01dafae06)
+        ;
+
+        
+    
+    
+            marker_637c15791b76abe1d6978c09c07819bf.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)18:21 Heavy Traffic on ECP (towards Changi) ...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_637c15791b76abe1d6978c09c07819bf.setIcon(icon_0bd7a107ff511ee226f7ac5f82cfe336);
+            
+    
+            var marker_f1a7afc2c8a1ae9858a92701e8335694 = L.marker(
+                [1.3475679126915607, 103.96632485104597],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_06580c9f25441a8b23cd866c64f2986f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_741814f88dcccc259b38b96a7d6f069a = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_c3e9571fc0117e12944cc571a55a031e = $(`<div id="html_c3e9571fc0117e12944cc571a55a031e" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)18:18 Heavy Traffic on PIE (towards Tuas) at TPE Exit.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.347568, 103.966325             </p>         </div>         </div>`)[0];
+                popup_741814f88dcccc259b38b96a7d6f069a.setContent(html_c3e9571fc0117e12944cc571a55a031e);
+            
+        
+
+        marker_f1a7afc2c8a1ae9858a92701e8335694.bindPopup(popup_741814f88dcccc259b38b96a7d6f069a)
+        ;
+
+        
+    
+    
+            marker_f1a7afc2c8a1ae9858a92701e8335694.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)18:18 Heavy Traffic on PIE (towards Tuas) at...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f1a7afc2c8a1ae9858a92701e8335694.setIcon(icon_06580c9f25441a8b23cd866c64f2986f);
+            
+    
+            var marker_7e1cc5f9d926749a7d3c4c585e40cb31 = L.marker(
+                [1.4186793819017753, 103.77103023099507],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_9c7f49f500cba5b69870a1ef8738f081 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4ad307fd52d7a06618c04130c0e7024e = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_3018c088c75ce50dbc88fe4058f828d9 = $(`<div id="html_3018c088c75ce50dbc88fe4058f828d9" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)18:17 Heavy Traffic on BKE (towards W'lands) at SLE Exit.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.418679, 103.771030             </p>         </div>         </div>`)[0];
+                popup_4ad307fd52d7a06618c04130c0e7024e.setContent(html_3018c088c75ce50dbc88fe4058f828d9);
+            
+        
+
+        marker_7e1cc5f9d926749a7d3c4c585e40cb31.bindPopup(popup_4ad307fd52d7a06618c04130c0e7024e)
+        ;
+
+        
+    
+    
+            marker_7e1cc5f9d926749a7d3c4c585e40cb31.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)18:17 Heavy Traffic on BKE (towards W'lands)...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7e1cc5f9d926749a7d3c4c585e40cb31.setIcon(icon_9c7f49f500cba5b69870a1ef8738f081);
+            
+    
+            var marker_7c8b800ddd8a7df30f6bc41fcd1fe6a7 = L.marker(
+                [1.3132126603882546, 103.84530139916252],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_253dda36c26a0e813fb224d329ae1b4d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c95d762c1758f232b8c268a4fb8eaf4c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_b23592640ae3cee60da0e0b8a6437f80 = $(`<div id="html_b23592640ae3cee60da0e0b8a6437f80" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)18:14 Heavy Traffic on Central Expressway (towards AYE) at Bukit Timah Rd Exit.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.313213, 103.845301             </p>         </div>         </div>`)[0];
+                popup_c95d762c1758f232b8c268a4fb8eaf4c.setContent(html_b23592640ae3cee60da0e0b8a6437f80);
+            
+        
+
+        marker_7c8b800ddd8a7df30f6bc41fcd1fe6a7.bindPopup(popup_c95d762c1758f232b8c268a4fb8eaf4c)
+        ;
+
+        
+    
+    
+            marker_7c8b800ddd8a7df30f6bc41fcd1fe6a7.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)18:14 Heavy Traffic on Central Expressway (t...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7c8b800ddd8a7df30f6bc41fcd1fe6a7.setIcon(icon_253dda36c26a0e813fb224d329ae1b4d);
+            
+    
+            var marker_6d834e7dbc1deecb4c4e4f5fc4e4c9c7 = L.marker(
+                [1.4368348044706656, 103.7684677685431],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_aeb715eb766ed2a2125282d52c81a507 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1de0b395001dbc98781037ea7c59ded3 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_ee582fc4fe5f0bf894c938a5245e212b = $(`<div id="html_ee582fc4fe5f0bf894c938a5245e212b" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)18:05 Heavy Traffic on BKE (towards W'lands) at Woodlands Checkpoint Exit.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.436835, 103.768468             </p>         </div>         </div>`)[0];
+                popup_1de0b395001dbc98781037ea7c59ded3.setContent(html_ee582fc4fe5f0bf894c938a5245e212b);
+            
+        
+
+        marker_6d834e7dbc1deecb4c4e4f5fc4e4c9c7.bindPopup(popup_1de0b395001dbc98781037ea7c59ded3)
+        ;
+
+        
+    
+    
+            marker_6d834e7dbc1deecb4c4e4f5fc4e4c9c7.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)18:05 Heavy Traffic on BKE (towards W'lands)...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_6d834e7dbc1deecb4c4e4f5fc4e4c9c7.setIcon(icon_aeb715eb766ed2a2125282d52c81a507);
+            
+    
+            var marker_371cbd5a961efa6e28f6042e9bdb01d5 = L.marker(
+                [1.4223277636023341, 103.77222803450503],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_9ed17a4d66e9813998bfbcf9346a2b80 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b20bf602e5d370ecb3c556066d1d8be9 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_dea49b55382c4e1e9b7a8443d88e0c54 = $(`<div id="html_dea49b55382c4e1e9b7a8443d88e0c54" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)18:02 Heavy Traffic on SLE (towards CTE) before Mandai Ave.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.422328, 103.772228             </p>         </div>         </div>`)[0];
+                popup_b20bf602e5d370ecb3c556066d1d8be9.setContent(html_dea49b55382c4e1e9b7a8443d88e0c54);
+            
+        
+
+        marker_371cbd5a961efa6e28f6042e9bdb01d5.bindPopup(popup_b20bf602e5d370ecb3c556066d1d8be9)
+        ;
+
+        
+    
+    
+            marker_371cbd5a961efa6e28f6042e9bdb01d5.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)18:02 Heavy Traffic on SLE (towards CTE) bef...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_371cbd5a961efa6e28f6042e9bdb01d5.setIcon(icon_9ed17a4d66e9813998bfbcf9346a2b80);
+            
+    
+            var marker_a64112728c947329c5e9d4eb4eceddda = L.marker(
+                [1.3053823447333641, 103.85027200364851],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_64be83f128b06e9ee3f236664d1a4158 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c8923d492cf92c8ebf4e0542a7536841 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_7b0d2f45ddfa7a9eac920d509e8b7dd5 = $(`<div id="html_7b0d2f45ddfa7a9eac920d509e8b7dd5" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)18:01 Heavy Traffic on Bukit Timah Road (towards W'lands) before Balmoral Road.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.305382, 103.850272             </p>         </div>         </div>`)[0];
+                popup_c8923d492cf92c8ebf4e0542a7536841.setContent(html_7b0d2f45ddfa7a9eac920d509e8b7dd5);
+            
+        
+
+        marker_a64112728c947329c5e9d4eb4eceddda.bindPopup(popup_c8923d492cf92c8ebf4e0542a7536841)
+        ;
+
+        
+    
+    
+            marker_a64112728c947329c5e9d4eb4eceddda.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)18:01 Heavy Traffic on Bukit Timah Road (tow...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a64112728c947329c5e9d4eb4eceddda.setIcon(icon_64be83f128b06e9ee3f236664d1a4158);
+            
+    
+            var marker_40282157a0f4998e6abc83c87797f1fb = L.marker(
+                [1.2657335426489256, 103.82117980426992],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_20c3a91aa77f6a476e179c763854d731 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_03408f659927084b16740bf8c32c3825 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_0c4bd347364a122a51ad78f2fcf1a6a6 = $(`<div id="html_0c4bd347364a122a51ad78f2fcf1a6a6" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: blue;">Vehicle breakdown</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)17:57 Vehicle Breakdown on West Coast Highway (City) at W Coast Hwy Flyover. Avoid lane 3.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.265734, 103.821180             </p>         </div>         </div>`)[0];
+                popup_03408f659927084b16740bf8c32c3825.setContent(html_0c4bd347364a122a51ad78f2fcf1a6a6);
+            
+        
+
+        marker_40282157a0f4998e6abc83c87797f1fb.bindPopup(popup_03408f659927084b16740bf8c32c3825)
+        ;
+
+        
+    
+    
+            marker_40282157a0f4998e6abc83c87797f1fb.bindTooltip(
+                `<div>
+                     Vehicle breakdown: (14/1)17:57 Vehicle Breakdown on West Coast Highwa...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_40282157a0f4998e6abc83c87797f1fb.setIcon(icon_20c3a91aa77f6a476e179c763854d731);
+            
+    
+            var marker_b0f729064a0321b31959592e277afed4 = L.marker(
+                [1.394313933975413, 103.83423109412173],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_b8bac984a88ca4c7b3c86a1e10bfd027 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_050133ab1549d1c330ff4c62c6acead0 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_aa67e0247bc81613e61cbb6cc940ee80 = $(`<div id="html_aa67e0247bc81613e61cbb6cc940ee80" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: red;">Accident</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)18:00 Accident on SLE (towards BKE) after Lentor Ave. Avoid lane 4.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.394314, 103.834231             </p>         </div>         </div>`)[0];
+                popup_050133ab1549d1c330ff4c62c6acead0.setContent(html_aa67e0247bc81613e61cbb6cc940ee80);
+            
+        
+
+        marker_b0f729064a0321b31959592e277afed4.bindPopup(popup_050133ab1549d1c330ff4c62c6acead0)
+        ;
+
+        
+    
+    
+            marker_b0f729064a0321b31959592e277afed4.bindTooltip(
+                `<div>
+                     Accident: (14/1)18:00 Accident on SLE (towards BKE) after Le...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b0f729064a0321b31959592e277afed4.setIcon(icon_b8bac984a88ca4c7b3c86a1e10bfd027);
+            
+    
+            var marker_03f9b97a054221577c4309bd893b339c = L.marker(
+                [1.3906657129522577, 103.77296420314566],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_a9dc13db66bb29bc4f4e34978d30bdcb = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f806b5cb2d586fe8d30d6abb0f23ef9c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_e70ef83b5b9ecf95ee8dfda24bb3b286 = $(`<div id="html_e70ef83b5b9ecf95ee8dfda24bb3b286" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)17:57 Heavy Traffic on KJE (towards BKE) at BKE(Woodlands) Exit.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.390666, 103.772964             </p>         </div>         </div>`)[0];
+                popup_f806b5cb2d586fe8d30d6abb0f23ef9c.setContent(html_e70ef83b5b9ecf95ee8dfda24bb3b286);
+            
+        
+
+        marker_03f9b97a054221577c4309bd893b339c.bindPopup(popup_f806b5cb2d586fe8d30d6abb0f23ef9c)
+        ;
+
+        
+    
+    
+            marker_03f9b97a054221577c4309bd893b339c.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)17:57 Heavy Traffic on KJE (towards BKE) at ...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_03f9b97a054221577c4309bd893b339c.setIcon(icon_a9dc13db66bb29bc4f4e34978d30bdcb);
+            
+    
+            var marker_6bf427d18214e42fe3108335dee55ca6 = L.marker(
+                [1.3249893903556567, 103.97209475302354],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_da3f6967a1704ed69d424f53d8a0daa6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1bd947b6f164402e8a5a22775749d695 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_00974aeee4afcc2c8493327193317d43 = $(`<div id="html_00974aeee4afcc2c8493327193317d43" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)17:56 Heavy Traffic on ECP (towards City) between Bedok South Ave 1 and Changi Coast Rd.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.324989, 103.972095             </p>         </div>         </div>`)[0];
+                popup_1bd947b6f164402e8a5a22775749d695.setContent(html_00974aeee4afcc2c8493327193317d43);
+            
+        
+
+        marker_6bf427d18214e42fe3108335dee55ca6.bindPopup(popup_1bd947b6f164402e8a5a22775749d695)
+        ;
+
+        
+    
+    
+            marker_6bf427d18214e42fe3108335dee55ca6.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)17:56 Heavy Traffic on ECP (towards City) be...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_6bf427d18214e42fe3108335dee55ca6.setIcon(icon_da3f6967a1704ed69d424f53d8a0daa6);
+            
+    
+            var marker_24244d25160c681c201ee9c22b3d6908 = L.marker(
+                [1.3305944272070434, 103.86051897833318],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_58cb69a258d659e99efa95c479312249 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a49fd1736bddc013bca43947d234ee81 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_eb095f1f3e792e2b42316b9bde00fa64 = $(`<div id="html_eb095f1f3e792e2b42316b9bde00fa64" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)17:50 Heavy Traffic on PIE (towards Changi) at Upper Serangoon Rd Exit.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.330594, 103.860519             </p>         </div>         </div>`)[0];
+                popup_a49fd1736bddc013bca43947d234ee81.setContent(html_eb095f1f3e792e2b42316b9bde00fa64);
+            
+        
+
+        marker_24244d25160c681c201ee9c22b3d6908.bindPopup(popup_a49fd1736bddc013bca43947d234ee81)
+        ;
+
+        
+    
+    
+            marker_24244d25160c681c201ee9c22b3d6908.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)17:50 Heavy Traffic on PIE (towards Changi) ...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_24244d25160c681c201ee9c22b3d6908.setIcon(icon_58cb69a258d659e99efa95c479312249);
+            
+    
+            var marker_bcda13ce08d30eb2bb4689875b5e8433 = L.marker(
+                [1.318469990245733, 103.8507422758949],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_83b367bf04f68b4b522adc18b10fd8a2 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7ee53c379312949da64967674b35d368 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_ab1d0064c13bf124a2d76adeff406bdd = $(`<div id="html_ab1d0064c13bf124a2d76adeff406bdd" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)17:44 Heavy Traffic on CTE (towards SLE) at Moulmein Rd Exit.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.318470, 103.850742             </p>         </div>         </div>`)[0];
+                popup_7ee53c379312949da64967674b35d368.setContent(html_ab1d0064c13bf124a2d76adeff406bdd);
+            
+        
+
+        marker_bcda13ce08d30eb2bb4689875b5e8433.bindPopup(popup_7ee53c379312949da64967674b35d368)
+        ;
+
+        
+    
+    
+            marker_bcda13ce08d30eb2bb4689875b5e8433.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)17:44 Heavy Traffic on CTE (towards SLE) at ...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_bcda13ce08d30eb2bb4689875b5e8433.setIcon(icon_83b367bf04f68b4b522adc18b10fd8a2);
+            
+    
+            var marker_eb683da50daa2ed6f7edad96d4f96b02 = L.marker(
+                [1.3412082903881777, 103.64415787317165],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_e8944e252833a2fd74d91d528b8c8e24 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e2691de0aa43df4c51353c789bf9e4d9 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_2290a70345c27cabd6ec107985afd878 = $(`<div id="html_2290a70345c27cabd6ec107985afd878" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: red;">Accident</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)17:38 Accident on AYE (towards Tuas) after Tuas West Rd.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.341208, 103.644158             </p>         </div>         </div>`)[0];
+                popup_e2691de0aa43df4c51353c789bf9e4d9.setContent(html_2290a70345c27cabd6ec107985afd878);
+            
+        
+
+        marker_eb683da50daa2ed6f7edad96d4f96b02.bindPopup(popup_e2691de0aa43df4c51353c789bf9e4d9)
+        ;
+
+        
+    
+    
+            marker_eb683da50daa2ed6f7edad96d4f96b02.bindTooltip(
+                `<div>
+                     Accident: (14/1)17:38 Accident on AYE (towards Tuas) after T...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_eb683da50daa2ed6f7edad96d4f96b02.setIcon(icon_e8944e252833a2fd74d91d528b8c8e24);
+            
+    
+            var marker_93681bdfbfe8f890b12f8db87d6f2db1 = L.marker(
+                [1.3325332818770999, 103.76882963794753],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_753a30a518358b13757cb8c0c79795d2 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9451837f79e1d0739d45d1ba34e4876f = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d8e2b5d8adb7bba2df08e86d29cfcb69 = $(`<div id="html_d8e2b5d8adb7bba2df08e86d29cfcb69" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)17:26 Heavy Traffic on PIE (towards Changi) between BKE and Bukit Batok East Ave 3.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.332533, 103.768830             </p>         </div>         </div>`)[0];
+                popup_9451837f79e1d0739d45d1ba34e4876f.setContent(html_d8e2b5d8adb7bba2df08e86d29cfcb69);
+            
+        
+
+        marker_93681bdfbfe8f890b12f8db87d6f2db1.bindPopup(popup_9451837f79e1d0739d45d1ba34e4876f)
+        ;
+
+        
+    
+    
+            marker_93681bdfbfe8f890b12f8db87d6f2db1.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)17:26 Heavy Traffic on PIE (towards Changi) ...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_93681bdfbfe8f890b12f8db87d6f2db1.setIcon(icon_753a30a518358b13757cb8c0c79795d2);
+            
+    
+            var marker_753116d77d4523303f773cefa6225ac4 = L.marker(
+                [1.3246497959737074, 103.89958248361984],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_89e98568d9bbc745762eb8df5a6f0eee = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3fecdd6802d7053c52e6353d6f3a45f3 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_ce84e98bf000970e7fe99951f8132564 = $(`<div id="html_ce84e98bf000970e7fe99951f8132564" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)17:25 Heavy Traffic on PIE (towards Tuas) between BKE and Jalan Eunos.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.324650, 103.899582             </p>         </div>         </div>`)[0];
+                popup_3fecdd6802d7053c52e6353d6f3a45f3.setContent(html_ce84e98bf000970e7fe99951f8132564);
+            
+        
+
+        marker_753116d77d4523303f773cefa6225ac4.bindPopup(popup_3fecdd6802d7053c52e6353d6f3a45f3)
+        ;
+
+        
+    
+    
+            marker_753116d77d4523303f773cefa6225ac4.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)17:25 Heavy Traffic on PIE (towards Tuas) be...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_753116d77d4523303f773cefa6225ac4.setIcon(icon_89e98568d9bbc745762eb8df5a6f0eee);
+            
+    
+            var marker_cb1f40b68fd3035ac8a94b8789ba2230 = L.marker(
+                [1.3238441394366696, 103.87284348282697],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_41aca32f3e4226e976c398ee10efc85e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3c68a351cd6ac4fc50682169340ad4c1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_6c61db5b0033fd13d569c3732416cd9f = $(`<div id="html_6c61db5b0033fd13d569c3732416cd9f" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)17:09 Heavy Traffic on PIE (towards Changi) at KPE(ECP) Exit.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.323844, 103.872843             </p>         </div>         </div>`)[0];
+                popup_3c68a351cd6ac4fc50682169340ad4c1.setContent(html_6c61db5b0033fd13d569c3732416cd9f);
+            
+        
+
+        marker_cb1f40b68fd3035ac8a94b8789ba2230.bindPopup(popup_3c68a351cd6ac4fc50682169340ad4c1)
+        ;
+
+        
+    
+    
+            marker_cb1f40b68fd3035ac8a94b8789ba2230.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)17:09 Heavy Traffic on PIE (towards Changi) ...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_cb1f40b68fd3035ac8a94b8789ba2230.setIcon(icon_41aca32f3e4226e976c398ee10efc85e);
+            
+    
+            var marker_eaaf97a97022d0cb6e0866717daa72ee = L.marker(
+                [1.3266643917722916, 103.73284904156944],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_a2d3a5cba042f68e0f163d9ac88e8eb4 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_cf4fdfb2b15bd6a1c3fc1ef378594535 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_62907976d2200beff58cc53218e13422 = $(`<div id="html_62907976d2200beff58cc53218e13422" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)16:58 Heavy Traffic on AYE (towards MCE) between Clementi Ave 2 and Yuan Ching.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.326664, 103.732849             </p>         </div>         </div>`)[0];
+                popup_cf4fdfb2b15bd6a1c3fc1ef378594535.setContent(html_62907976d2200beff58cc53218e13422);
+            
+        
+
+        marker_eaaf97a97022d0cb6e0866717daa72ee.bindPopup(popup_cf4fdfb2b15bd6a1c3fc1ef378594535)
+        ;
+
+        
+    
+    
+            marker_eaaf97a97022d0cb6e0866717daa72ee.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)16:58 Heavy Traffic on AYE (towards MCE) bet...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_eaaf97a97022d0cb6e0866717daa72ee.setIcon(icon_a2d3a5cba042f68e0f163d9ac88e8eb4);
+            
+    
+            var marker_3ca3db3fb13e10172d69c392589a8f8c = L.marker(
+                [1.292493519114894, 103.78803611762689],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_92b77ce8d8db5ca3e08a1f984a07b138 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a955139e1e9d3f12b4584e6a3b1bc14b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_fbe7af85965ab144a182467155351ab4 = $(`<div id="html_fbe7af85965ab144a182467155351ab4" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)16:55 Heavy Traffic on AYE (towards MCE) between Lower Delta Rd and Buona Vista.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.292494, 103.788036             </p>         </div>         </div>`)[0];
+                popup_a955139e1e9d3f12b4584e6a3b1bc14b.setContent(html_fbe7af85965ab144a182467155351ab4);
+            
+        
+
+        marker_3ca3db3fb13e10172d69c392589a8f8c.bindPopup(popup_a955139e1e9d3f12b4584e6a3b1bc14b)
+        ;
+
+        
+    
+    
+            marker_3ca3db3fb13e10172d69c392589a8f8c.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)16:55 Heavy Traffic on AYE (towards MCE) bet...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3ca3db3fb13e10172d69c392589a8f8c.setIcon(icon_92b77ce8d8db5ca3e08a1f984a07b138);
+            
+    
+            var marker_cc49a9f9c35792855f00b231f2277c79 = L.marker(
+                [1.307744848051847, 103.84116183541808],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_397b144d3fd96b01f9e42b065e4cd6e8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c856ac4426417f9899b897721222e256 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_571aadc82237e3cd0667e1a487edd07a = $(`<div id="html_571aadc82237e3cd0667e1a487edd07a" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)16:54 Heavy Traffic on CTE (towards SLE) between Moulmein Rd and Merchant Rd.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.307745, 103.841162             </p>         </div>         </div>`)[0];
+                popup_c856ac4426417f9899b897721222e256.setContent(html_571aadc82237e3cd0667e1a487edd07a);
+            
+        
+
+        marker_cc49a9f9c35792855f00b231f2277c79.bindPopup(popup_c856ac4426417f9899b897721222e256)
+        ;
+
+        
+    
+    
+            marker_cc49a9f9c35792855f00b231f2277c79.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)16:54 Heavy Traffic on CTE (towards SLE) bet...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_cc49a9f9c35792855f00b231f2277c79.setIcon(icon_397b144d3fd96b01f9e42b065e4cd6e8);
+            
+    
+            var marker_c465f20a1fb1b220198969dd98839c87 = L.marker(
+                [1.2758778064747802, 103.82801210529328],
+                {
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+    
+            var icon_99ad5ce094e25a7560dc1dc75c9676f8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "yellow",
+  "iconColor": "white",
+  "icon": "exclamation-triangle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_621b914e98825b311c2b95b536d11e08 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_e2c4caf5fb56402eae5e8f784ff6dbca = $(`<div id="html_e2c4caf5fb56402eae5e8f784ff6dbca" style="width: 100.0%; height: 100.0%;">         <div style="width: 250px;">             <h4 style="margin: 5px 0; color: yellow;">Heavy Traffic</h4>             <p style="margin: 5px 0;"><strong>Message:</strong></p>             <p style="margin: 5px 0; font-size: 12px;">(14/1)16:50 Heavy Traffic on AYE (towards Tuas) between Normanton and Telok Blangah Rd.</p>             <p style="margin: 5px 0; font-size: 10px; color: #666;">                 Location: 1.275878, 103.828012             </p>         </div>         </div>`)[0];
+                popup_621b914e98825b311c2b95b536d11e08.setContent(html_e2c4caf5fb56402eae5e8f784ff6dbca);
+            
+        
+
+        marker_c465f20a1fb1b220198969dd98839c87.bindPopup(popup_621b914e98825b311c2b95b536d11e08)
+        ;
+
+        
+    
+    
+            marker_c465f20a1fb1b220198969dd98839c87.bindTooltip(
+                `<div>
+                     Heavy Traffic: (14/1)16:50 Heavy Traffic on AYE (towards Tuas) be...
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_c465f20a1fb1b220198969dd98839c87.setIcon(icon_99ad5ce094e25a7560dc1dc75c9676f8);
+            
+    
+            L.control.fullscreen(
+                {
+  "position": "topleft",
+  "title": "Full Screen",
+  "titleCancel": "Exit Full Screen",
+  "forceSeparateButton": false,
+}
+            ).addTo(map_0a9725848cab0b875aa92f353487b2a1);
+        
+</script>
+</html>

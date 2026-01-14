@@ -29,11 +29,11 @@ def get_traffic_speed_bands():
         dict: API response containing traffic speed band information
     """
     # Get API credentials from environment variables
-    account_key = os.getenv("LTA_ACCOUNT_KEY")
+    account_key = os.getenv("LTA_DATAMALL")
     
     if not account_key:
         raise ValueError(
-            "LTA_ACCOUNT_KEY not found in environment variables. "
+            "LTA_DATAMALL not found in environment variables. "
             "Please set it in your .env file or environment."
         )
     
