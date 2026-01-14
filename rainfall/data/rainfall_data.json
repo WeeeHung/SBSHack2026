@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-01-14T18:37:59.415814",
+  "timestamp": "2026-01-14T22:11:08.936832",
   "items_count": 1,
-  "total_readings": 59,
+  "total_readings": 60,
   "data": {
     "metadata": {
       "stations": [
@@ -84,6 +84,15 @@
           "location": {
             "latitude": 1.3136,
             "longitude": 104.00317
+          }
+        },
+        {
+          "id": "S201",
+          "device_id": "S201",
+          "name": "Clementi Park",
+          "location": {
+            "latitude": 1.32311,
+            "longitude": 103.76714
           }
         },
         {
@@ -542,7 +551,7 @@
     },
     "items": [
       {
-        "timestamp": "2026-01-14T18:30:00+08:00",
+        "timestamp": "2026-01-14T22:05:00+08:00",
         "readings": [
           {
             "station_id": "S77",
@@ -578,7 +587,11 @@
           },
           {
             "station_id": "S208",
-            "value": 0.8
+            "value": 0
+          },
+          {
+            "station_id": "S201",
+            "value": 0
           },
           {
             "station_id": "S50",
@@ -586,7 +599,7 @@
           },
           {
             "station_id": "S220",
-            "value": 0.6
+            "value": 0
           },
           {
             "station_id": "S213",
@@ -630,7 +643,7 @@
           },
           {
             "station_id": "S211",
-            "value": 0.2
+            "value": 0
           },
           {
             "station_id": "S66",
@@ -650,7 +663,7 @@
           },
           {
             "station_id": "S40",
-            "value": 0.6
+            "value": 0
           },
           {
             "station_id": "S223",
@@ -674,7 +687,7 @@
           },
           {
             "station_id": "S35",
-            "value": 0.4
+            "value": 0
           },
           {
             "station_id": "S203",
@@ -746,7 +759,7 @@
           },
           {
             "station_id": "S24",
-            "value": 0.6
+            "value": 0
           },
           {
             "station_id": "S69",
@@ -762,7 +775,7 @@
           },
           {
             "station_id": "S104",
-            "value": 1.8
+            "value": 0
           },
           {
             "station_id": "S210",
@@ -770,7 +783,7 @@
           },
           {
             "station_id": "S227",
-            "value": 4.6
+            "value": 0
           },
           {
             "station_id": "S219",
