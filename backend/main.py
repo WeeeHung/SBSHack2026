@@ -107,6 +107,41 @@ def get_realtime_stats(
                 next_link = ordered_links[next_order]
                 next_links.append(next_link)
         print(f"[Info] Next {len(next_links)} links determined for rain/incident checks")
+
+        # 4b. Determine which links will be fed into the model history
+        # Target link: first next link if available, otherwise current link
+        if next_links:
+            target_link = next_links[0]
+        else:
+            target_link = current_link
+        target_link_id = str(target_link.get("LinkID", ""))
+
+        model_link_ids = set()
+
+        # Inbound / outbound neighbours of target
+        for lid in target_link.get("inbound_link_ids", []) or []:
+            if lid:
+                model_link_ids.add(str(lid))
+        for lid in target_link.get("outbound_link_ids", []) or []:
+            if lid:
+                model_link_ids.add(str(lid))
+
+        # Current link
+        current_link_id = str(current_link.get("LinkID", ""))
+        if current_link_id:
+            model_link_ids.add(current_link_id)
+
+        # Target link itself
+        if target_link_id:
+            model_link_ids.add(target_link_id)
+
+        # Next links along the route
+        for link in next_links:
+            link_id = str(link.get("LinkID", ""))
+            if link_id:
+                model_link_ids.add(link_id)
+
+        print(f"[Info] Model will use {len(model_link_ids)} link IDs for history.")
         
         # 5. Fetch real-time data
         print("[Stage 6.1] Fetching rainfall data...")
@@ -131,12 +166,24 @@ def get_realtime_stats(
         print("[Stage 6.4] Fetching speed bands for needed links (optimized)...")
         # Fetch only the speed bands we need (optimized - stops early once all found)
         speed_bands = fetch_speed_bands_for_links(link_ids_for_speed)
-        print(f"[Info] Fetched {len(speed_bands)} speed band records.")
+        print(f"[Info] Fetched {len(speed_bands)} speed band records total.")
+
+        # 6.4b. Restrict speed_bands in the response to only those links
+        # that are actually used in the model history.
+        if model_link_ids:
+            original_count = len(speed_bands)
+            speed_bands = {
+                link_id: data
+                for link_id, data in speed_bands.items()
+                if link_id in model_link_ids
+            }
+            print(f"[Info] Filtered speed bands for response from {original_count} to {len(speed_bands)} records (model history links only).")
         
         # 6. Predict speed
         print("[Stage 7] Predicting speed for next link...")
         predicted_speed = predict_speed(
-            current_link, next_links, speed_bands, has_rain, has_incident
+            current_link, next_links, speed_bands, has_rain, has_incident,
+            rainfall_data=rainfall_data, links_for_analysis=links_for_analysis
         )
         print(f"[Info] Predicted speed: {predicted_speed}")
         
