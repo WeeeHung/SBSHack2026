@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictive Coasting - Driver Interface</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Predictive Coasting System</h1>
+        </header>
+
+        <!-- Main Display Area -->
+        <div class="main-display" id="mainDisplay">
+            <div class="action-indicator" id="actionIndicator">
+                <div class="action-icon" id="actionIcon">⏸</div>
+                <div class="action-text" id="actionText">Initializing...</div>
+            </div>
+            
+            <div class="speed-info">
+                <div class="speed-item">
+                    <span class="speed-label">Current Speed:</span>
+                    <span class="speed-value" id="currentSpeed">--</span>
+                    <span class="speed-unit">km/h</span>
+                </div>
+                <div class="speed-item">
+                    <span class="speed-label">Predicted Next:</span>
+                    <span class="speed-value" id="predictedSpeed">--</span>
+                    <span class="speed-unit">km/h</span>
+                </div>
+            </div>
+
+            <div class="reasoning" id="reasoning">
+                Waiting for GPS data...
+            </div>
+
+            <div class="status-indicators">
+                <div class="status-item" id="rainIndicator">
+                    <span class="status-icon">🌧</span>
+                    <span class="status-text">Rain</span>
+                </div>
+                <div class="status-item" id="incidentIndicator">
+                    <span class="status-icon">⚠️</span>
+                    <span class="status-text">Incident</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="input-group">
+                <label for="busNo">Bus Number:</label>
+                <input type="number" id="busNo" value="147" min="1" max="999">
+            </div>
+            
+            <div class="input-group">
+                <label for="direction">Direction:</label>
+                <select id="direction">
+                    <option value="1">Direction 1</option>
+                    <option value="2">Direction 2</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="latitude">Latitude:</label>
+                <input type="number" id="latitude" step="0.000001" placeholder="1.3521">
+            </div>
+
+            <div class="input-group">
+                <label for="longitude">Longitude:</label>
+                <input type="number" id="longitude" step="0.000001" placeholder="103.8198">
+            </div>
+
+            <div class="button-group">
+                <button id="getLocationBtn" class="btn btn-secondary">Use GPS</button>
+                <button id="startBtn" class="btn btn-primary">Start</button>
+                <button id="stopBtn" class="btn btn-danger" disabled>Stop</button>
+            </div>
+
+            <div class="settings">
+                <label>
+                    <input type="checkbox" id="voiceEnabled" checked>
+                    Voice Guidance
+                </label>
+                <label>
+                    <input type="number" id="updateInterval" value="5" min="1" max="60">
+                    Update Interval (seconds)
+                </label>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar" id="statusBar">
+            <span id="statusText">Ready</span>
+            <span id="lastUpdate">--</span>
+        </div>
+    </div>
+
+    <script src="static/app.js"></script>
+</body>
+</html>

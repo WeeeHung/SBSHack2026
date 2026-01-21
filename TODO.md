@@ -1,3 +1,5 @@
+## Coasting Recommendation Logic
+
 if the current + next link is fast:
 	- maintain speed
 
@@ -16,7 +18,30 @@ predict next link using past data & current conditions & AI
 
 traffic speedband, weather, trafficincidents, inbound, outbound link data
 
-1. data collection: traffic speedband, weather, trafficincidents (in progress)
-2. training model
-3. interface to output suggestion to driver
-4. write tests to showcase 
+## Progress Status
+
+1. ✅ data collection: traffic speedband, weather, trafficincidents - COMPLETED
+2. ✅ training model - COMPLETED
+3. ✅ interface to output suggestion to driver - COMPLETED
+4. ✅ write tests to showcase - COMPLETED
+
+## Completed Components
+
+- ✅ Data collection and integration (LTA Speed Bands, Bus Routes, Incidents, Rainfall)
+- ✅ Route mapping and link identification
+- ✅ ML model training (XGBoost) and prediction service
+- ✅ Backend API with `/realtime_stats` and `/coasting_recommendation` endpoints
+- ✅ Recommendation service implementing coasting logic
+- ✅ Frontend web interface with color-coded display
+- ✅ Voice guidance using Web Speech API
+- ✅ GPS location support
+- ✅ Unit tests for recommendation service
+- ✅ Demo script for showcasing scenarios
+
+## Next Steps (Future Enhancements)
+
+- [ ] Real-time GPS tracking integration
+- [ ] Historical performance analytics
+- [ ] Fuel savings estimation
+- [ ] Mobile app version
+- [ ] Integration with bus fleet management systems 

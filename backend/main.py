@@ -12,9 +12,20 @@ from backend.services.rainfall_service import fetch_rainfall_data, check_rain_in
 from backend.services.incident_service import fetch_incidents, check_incidents_in_links
 from backend.services.speed_service import fetch_speed_bands_for_links
 from backend.services.predictor_service import predict_speed
+from backend.services.recommendation_service import generate_recommendation
 from backend.config import NUM_FUTURE_LINKS
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Bus Route Real-time Stats API", version="1.0.0")
+
+# Add CORS middleware to allow frontend to access the API
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, specify actual origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class RealtimeStatsResponse(BaseModel):
@@ -24,6 +35,18 @@ class RealtimeStatsResponse(BaseModel):
     has_rain: bool
     has_incident: bool
     predicted_speed: float
+
+
+class CoastingRecommendationResponse(BaseModel):
+    """Response model for coasting_recommendation endpoint."""
+    action: str
+    current_speed: float
+    predicted_speed: float
+    reasoning: str
+    urgency: str
+    color_cue: str
+    has_rain: bool
+    has_incident: bool
 
 
 @app.get("/")
@@ -202,6 +225,112 @@ def get_realtime_stats(
         raise
     except Exception as e:
         print(f"[Internal Error] {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
+
+@app.get("/coasting_recommendation", response_model=CoastingRecommendationResponse)
+def get_coasting_recommendation(
+    bus_no: int = Query(..., description="Bus service number"),
+    direction: int = Query(..., description="Direction (1 or 2)"),
+    lat: float = Query(..., description="Current latitude"),
+    lon: float = Query(..., description="Current longitude")
+):
+    """
+    Get coasting recommendation for a bus route at a given location.
+    
+    Returns:
+        - action: One of "maintain_speed", "coast", "speed_up", "crawl"
+        - current_speed: Current link speed (km/h)
+        - predicted_speed: Predicted next link speed (km/h)
+        - reasoning: Text explanation
+        - urgency: "low", "medium", or "high"
+        - color_cue: Color for visual display ("green", "yellow", "orange", "red")
+        - has_rain: Boolean indicating if there's rain
+        - has_incident: Boolean indicating if there's an incident
+    """
+    try:
+        print(f"[Coasting Recommendation] Request received: bus_no={bus_no}, direction={direction}, lat={lat}, lon={lon}")
+        
+        # Reuse the realtime_stats logic to get all necessary data
+        # 1. Get route links
+        route_data = get_route_links(bus_no, direction)
+        if route_data is None:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Route not found for bus {bus_no} direction {direction}"
+            )
+        
+        ordered_links = route_data.get('ordered_links', [])
+        if not ordered_links:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No links found for bus {bus_no} direction {direction}"
+            )
+        
+        # 2. Find current link from GPS coordinates
+        current_link = get_current_link(lat, lon, ordered_links)
+        if current_link is None:
+            raise HTTPException(
+                status_code=404,
+                detail="Could not find current link for given coordinates"
+            )
+        
+        # 3. Get links for analysis
+        links_for_analysis = get_links_for_analysis(
+            current_link, route_data, num_future_links=NUM_FUTURE_LINKS
+        )
+        
+        # 4. Get next few links
+        current_order = current_link.get('order', -1)
+        next_links = []
+        for i in range(1, NUM_FUTURE_LINKS + 1):
+            next_order = current_order + i
+            if next_order < len(ordered_links):
+                next_link = ordered_links[next_order]
+                next_links.append(next_link)
+        
+        # 5. Fetch real-time data
+        rainfall_data = fetch_rainfall_data()
+        has_rain = check_rain_in_links(next_links, rainfall_data)
+        
+        incidents_data = fetch_incidents()
+        has_incident = check_incidents_in_links(next_links, incidents_data)
+        
+        # 6. Get link IDs for speed band fetching
+        link_ids_for_speed = []
+        for link in links_for_analysis:
+            link_id = str(link.get('LinkID', ''))
+            if link_id:
+                link_ids_for_speed.append(link_id)
+        
+        # 7. Fetch speed bands
+        speed_bands = fetch_speed_bands_for_links(link_ids_for_speed)
+        
+        # 8. Predict speed
+        predicted_speed = predict_speed(
+            current_link, next_links, speed_bands, has_rain, has_incident,
+            rainfall_data=rainfall_data, links_for_analysis=links_for_analysis
+        )
+        
+        # 9. Generate recommendation
+        recommendation = generate_recommendation(
+            current_link=current_link,
+            predicted_speed=predicted_speed,
+            speed_bands=speed_bands,
+            has_rain=has_rain,
+            has_incident=has_incident
+        )
+        
+        print(f"[Coasting Recommendation] Action: {recommendation['action']}, Urgency: {recommendation['urgency']}")
+        
+        return CoastingRecommendationResponse(**recommendation)
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"[Coasting Recommendation Error] {str(e)}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 

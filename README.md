@@ -1,6 +1,23 @@
-# LTA DataMall API - Traffic Speed Band Test
+# Predictive Coasting System for Buses
 
-This project tests the LTA DataMall Traffic Speed Band API.
+A predictive coasting system that advises bus drivers when to "Coast" or "Maintain Speed" based on predicted traffic conditions ahead, reducing unnecessary braking and fuel waste.
+
+## Overview
+
+This system combines:
+- Real-time traffic speed data (LTA DataMall)
+- Bus route mapping and GPS tracking
+- Weather data (NEA Rainfall API)
+- Traffic incident data
+- Machine learning predictions (XGBoost model)
+- Driver-friendly interface with voice guidance
+
+## Features
+
+- **Real-time Traffic Prediction**: Uses ML model to predict traffic speeds ahead
+- **Coasting Recommendations**: Provides actionable advice (Maintain Speed, Coast, Speed Up, Crawl)
+- **Driver Interface**: Web-based interface with color-coded visual cues and voice guidance
+- **Multi-factor Analysis**: Considers current speed, predicted speed, rainfall, and incidents
 
 ## Setup
 
@@ -18,10 +35,60 @@ This project tests the LTA DataMall Traffic Speed Band API.
 
    Replace `your_account_key_here` with your actual AccountKey from LTA DataMall.
 
-3. **Run the test script:**
+3. **Start the backend server:**
+
    ```bash
-   python test_traffic_speed_band.py
+   python backend/main.py
    ```
+
+   The API will be available at `http://localhost:8000`
+
+4. **Open the frontend interface:**
+
+   - Open `frontend/index.html` in a web browser
+   - Enter bus number, direction, and GPS coordinates
+   - Click "Start" to begin receiving recommendations
+
+## Quick Start
+
+### Backend API
+
+Start the FastAPI server:
+```bash
+python backend/main.py
+```
+
+The API provides two main endpoints:
+- `/realtime_stats` - Get real-time traffic statistics
+- `/coasting_recommendation` - Get coasting recommendation for driver
+
+### Frontend Interface
+
+1. Open `frontend/index.html` in a web browser
+2. Enter:
+   - Bus number (e.g., 147)
+   - Direction (1 or 2)
+   - GPS coordinates (or click "Use GPS" if available)
+3. Click "Start" to begin polling for recommendations
+4. The interface will display:
+   - Large color-coded action indicator
+   - Current and predicted speeds
+   - Reasoning for the recommendation
+   - Voice guidance (if enabled)
+
+### Running Tests
+
+```bash
+pytest tests/test_recommendation_service.py -v
+```
+
+### Running Demo
+
+```bash
+python demo/demo_coasting.py
+```
+
+Make sure the backend server is running before executing the demo.
 
 ## Scripts
 
@@ -68,6 +135,70 @@ The `.env` file should contain:
 - **API Endpoint**: `https://datamall2.mytransport.sg/ltaodataservice/v4/TrafficSpeedBands`
 - **Update Frequency**: 5 minutes
 - **Documentation**: [LTA DataMall API User Guide](https://datamall.lta.gov.sg/content/dam/datamall/datasets/LTA_DataMall_API_User_Guide.pdf)
+
+## Project Structure
+
+```
+SBSHack2026/
+├── backend/              # FastAPI backend
+│   ├── main.py          # API endpoints
+│   └── services/        # Service modules
+│       ├── route_service.py
+│       ├── link_service.py
+│       ├── speed_service.py
+│       ├── rainfall_service.py
+│       ├── incident_service.py
+│       ├── predictor_service.py
+│       └── recommendation_service.py
+├── frontend/             # Web interface
+│   ├── index.html
+│   └── static/
+│       ├── style.css
+│       └── app.js
+├── training_data/       # ML model training
+│   ├── train_speedband_model.py
+│   └── models/
+│       └── speedband_model.joblib
+├── tests/               # Unit tests
+│   └── test_recommendation_service.py
+└── demo/                # Demo scripts
+    └── demo_coasting.py
+```
+
+## API Endpoints
+
+### GET `/coasting_recommendation`
+
+Get coasting recommendation for a bus at a given location.
+
+**Parameters:**
+- `bus_no` (int): Bus service number
+- `direction` (int): Direction (1 or 2)
+- `lat` (float): Current latitude
+- `lon` (float): Current longitude
+
+**Response:**
+```json
+{
+  "action": "coast",
+  "current_speed": 65.0,
+  "predicted_speed": 25.0,
+  "reasoning": "Current link is fast (65 km/h) but next link is slow (25 km/h). Start coasting to avoid braking.",
+  "urgency": "medium",
+  "color_cue": "yellow",
+  "has_rain": false,
+  "has_incident": false
+}
+```
+
+## Recommendation Logic
+
+The system implements the following rules:
+
+1. **Maintain Speed**: Current + next link are fast
+2. **Speed Up**: Current is fast, next is slowing (if can pass before slowdown)
+3. **Coast**: Current is fast, next is slow (earlier if raining)
+4. **Crawl**: Both links are slow
 
 ## Response Attributes
 
