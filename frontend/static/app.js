@@ -14,6 +14,7 @@ let currentLinkLayer = null;
 let nextLinksLayer = null;
 let inboundLinksLayer = null;
 let outboundLinksLayer = null;
+let trailLayer = null;
 
 // Layer visibility state
 let showRoute = true;
@@ -23,6 +24,14 @@ let autoFollow = true;
 
 // Current data
 let currentMapData = null;
+
+// Simulation variables
+let simulationManager = null;
+let isDemoMode = false;
+let simulationRouteData = null;
+let lastSimulationApiCall = 0;
+const SIMULATION_API_INTERVAL = 3000; // Call API every 3 seconds
+let isWaitingForVoice = false;
 
 // DOM Elements
 const elements = {
@@ -62,7 +71,19 @@ const elements = {
     toggleRouteBtn: document.getElementById('toggleRouteBtn'),
     toggleInboundBtn: document.getElementById('toggleInboundBtn'),
     toggleOutboundBtn: document.getElementById('toggleOutboundBtn'),
-    autoFollowBtn: document.getElementById('autoFollowBtn')
+    autoFollowBtn: document.getElementById('autoFollowBtn'),
+    // Demo mode controls
+    demoModeToggle: document.getElementById('demoModeToggle'),
+    simulationControls: document.getElementById('simulationControls'),
+    manualControls: document.getElementById('manualControls'),
+    demoScenario: document.getElementById('demoScenario'),
+    simStartBtn: document.getElementById('simStartBtn'),
+    simPauseBtn: document.getElementById('simPauseBtn'),
+    simResetBtn: document.getElementById('simResetBtn'),
+    simSpeed: document.getElementById('simSpeed'),
+    simProgressText: document.getElementById('simProgressText'),
+    simProgressPercent: document.getElementById('simProgressPercent'),
+    simProgressBar: document.getElementById('simProgressBar')
 };
 
 // Initialize Speech Synthesis
@@ -87,6 +108,40 @@ function speak(text) {
     utterance.rate = 0.9;
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
+
+    // Pause simulation during voiceover in demo mode
+    if (isDemoMode && simulationManager && simulationManager.isRunning && !simulationManager.isPaused) {
+        // Get current position before pausing to ensure marker stays in place
+        const currentPosition = simulationManager.getCurrentPosition();
+        
+        isWaitingForVoice = true;
+        simulationManager.pause();
+        
+        // Ensure bus marker stays at current position while paused
+        if (currentPosition) {
+            updateBusMarker(currentPosition.lat, currentPosition.lon);
+        }
+        
+        console.log('Simulation paused for voiceover at:', currentPosition);
+    }
+
+    // Resume when voiceover completes
+    utterance.onend = () => {
+        if (isDemoMode && simulationManager && isWaitingForVoice) {
+            isWaitingForVoice = false;
+            simulationManager.resume();
+            console.log('Simulation resumed after voiceover');
+        }
+    };
+
+    // Resume on error as well
+    utterance.onerror = () => {
+        if (isDemoMode && simulationManager && isWaitingForVoice) {
+            isWaitingForVoice = false;
+            simulationManager.resume();
+            console.log('Simulation resumed after voiceover error');
+        }
+    };
 
     const voices = speechSynthesis.getVoices();
     const preferredVoice = voices.find(voice => 
@@ -118,6 +173,7 @@ function initMap() {
     nextLinksLayer = L.layerGroup().addTo(map);
     inboundLinksLayer = L.layerGroup().addTo(map);
     outboundLinksLayer = L.layerGroup().addTo(map);
+    trailLayer = L.layerGroup().addTo(map);
 
     // Add click handler to map for coordinate selection
     map.on('click', function(e) {
@@ -300,9 +356,19 @@ function updateBusMarker(lat, lon) {
         busMarker.bindPopup('Current Bus Location');
     }
 
-    // Auto-follow bus if enabled
+    // Auto-follow bus if enabled (smooth panning in demo mode)
     if (autoFollow) {
-        map.setView([lat, lon], map.getZoom());
+        if (isDemoMode) {
+            // Use panTo for smooth following in demo mode
+            map.panTo([lat, lon], {
+                animate: true,
+                duration: 0.5,
+                noMoveStart: true
+            });
+        } else {
+            // Instant view update in manual mode
+            map.setView([lat, lon], map.getZoom());
+        }
     }
 }
 
@@ -646,11 +712,13 @@ function updateUI(recommendation) {
         updateMapLayers(mapData);
     }
 
-    // Voice announcement (only if action changed)
-    if (action !== lastAction && elements.voiceEnabled.checked) {
-        const voiceText = `${actionInfo.text}. ${recommendation.reasoning}`;
-        speak(voiceText);
-        lastAction = action;
+    // Voice announcement (only if action changed or in demo mode)
+    if (elements.voiceEnabled.checked) {
+        if (action !== lastAction || isDemoMode) {
+            const voiceText = `${actionInfo.text}. ${recommendation.reasoning}`;
+            speak(voiceText);
+            lastAction = action;
+        }
     }
 
     // Update status
@@ -691,6 +759,9 @@ function stopPolling() {
     if (speechSynthesis) {
         speechSynthesis.cancel();
     }
+
+    // Reset voice waiting flag
+    isWaitingForVoice = false;
 
     elements.startBtn.disabled = false;
     elements.stopBtn.disabled = true;
@@ -737,6 +808,348 @@ async function loadRoutePreview() {
     }
 }
 
+// ============================================================================
+// SIMULATION FUNCTIONS
+// ============================================================================
+
+/**
+ * Initialize the simulation manager
+ */
+function initializeSimulation() {
+    if (!simulationManager) {
+        simulationManager = new SimulationManager();
+        
+        // Set up callbacks
+        simulationManager.onPositionUpdate = handleSimulationPositionUpdate;
+        simulationManager.onLinkChange = handleSimulationLinkChange;
+        simulationManager.onComplete = handleSimulationComplete;
+        
+        console.log('Simulation manager initialized');
+    }
+}
+
+/**
+ * Toggle demo mode on/off
+ */
+function toggleDemoMode() {
+    isDemoMode = elements.demoModeToggle.checked;
+    
+    if (isDemoMode) {
+        // Entering demo mode
+        console.log('Entering demo mode');
+        elements.simulationControls.style.display = 'flex';
+        elements.manualControls.style.display = 'none';
+        elements.statusText.textContent = 'Demo Mode - Select scenario and start';
+        
+        // Stop any existing polling
+        stopPolling();
+        
+        // Initialize simulation if not already done
+        initializeSimulation();
+        
+        // Load default scenario
+        loadDemoScenario();
+        
+    } else {
+        // Exiting demo mode
+        console.log('Exiting demo mode');
+        elements.simulationControls.style.display = 'none';
+        elements.manualControls.style.display = 'flex';
+        elements.statusText.textContent = 'Manual Mode - Ready';
+        
+        // Stop simulation
+        if (simulationManager) {
+            simulationManager.stop();
+        }
+        
+        // Clear simulation visuals
+        clearSimulationVisuals();
+    }
+}
+
+/**
+ * Load and start a demo scenario
+ */
+async function loadDemoScenario() {
+    const scenario = elements.demoScenario.value;
+    const [busNo, direction] = scenario.split('-').map(Number);
+    
+    elements.statusText.textContent = `Loading Bus ${busNo} Direction ${direction}...`;
+    
+    try {
+        // Fetch route geometry
+        const url = `${API_BASE_URL}/route_geometry?bus_no=${busNo}&direction=${direction}`;
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        simulationRouteData = data;
+        
+        // Initialize simulation with ordered links
+        if (simulationManager.initialize(data.ordered_links)) {
+            elements.statusText.textContent = `Route loaded: ${data.total_links} links. Click Start to begin.`;
+            
+            // Update header
+            elements.headerBusInfo.textContent = `Bus ${busNo} | Direction ${direction}`;
+            
+            // Display route on map
+            displayRoutePreview(data);
+            
+            // Zoom to starting position and enable auto-follow
+            if (data.ordered_links && data.ordered_links.length > 0) {
+                const firstLink = data.ordered_links[0];
+                const startLat = parseFloat(firstLink.StartLat);
+                const startLon = parseFloat(firstLink.StartLon);
+                
+                // Zoom to start position
+                map.setView([startLat, startLon], 15);
+                
+                // Ensure auto-follow is enabled for simulation
+                autoFollow = true;
+                elements.autoFollowBtn.classList.add('active');
+            }
+            
+            // Enable start button
+            elements.simStartBtn.disabled = false;
+            elements.simResetBtn.disabled = false;
+            
+            // Update progress display
+            updateSimulationProgress();
+        }
+    } catch (error) {
+        console.error('Error loading demo scenario:', error);
+        elements.statusText.textContent = `Error loading route: ${error.message}`;
+    }
+}
+
+/**
+ * Start the simulation
+ */
+function startSimulation() {
+    if (!simulationManager || !simulationRouteData) {
+        console.error('Cannot start simulation: not initialized');
+        return;
+    }
+    
+    // Reset API call timer to trigger immediate call
+    lastSimulationApiCall = 0;
+    
+    // Ensure auto-follow is enabled
+    autoFollow = true;
+    elements.autoFollowBtn.classList.add('active');
+    
+    // Get starting position and zoom to it
+    const position = simulationManager.getCurrentPosition();
+    if (position) {
+        map.setView([position.lat, position.lon], 16, {
+            animate: true,
+            duration: 1
+        });
+    }
+    
+    simulationManager.start();
+    
+    elements.simStartBtn.disabled = true;
+    elements.simPauseBtn.disabled = false;
+    elements.simPauseBtn.innerHTML = '<span class="btn-icon">⏸</span> Pause';
+    elements.statusText.textContent = 'Simulation running...';
+}
+
+/**
+ * Pause/resume the simulation
+ */
+function toggleSimulationPause() {
+    if (!simulationManager) return;
+    
+    const state = simulationManager.getState();
+    
+    if (state.isPaused) {
+        simulationManager.resume();
+        elements.simPauseBtn.innerHTML = '<span class="btn-icon">⏸</span> Pause';
+        elements.statusText.textContent = 'Simulation running...';
+    } else {
+        simulationManager.pause();
+        elements.simPauseBtn.innerHTML = '<span class="btn-icon">▶</span> Resume';
+        elements.statusText.textContent = 'Simulation paused';
+    }
+}
+
+/**
+ * Reset the simulation
+ */
+function resetSimulation() {
+    if (!simulationManager) return;
+    
+    simulationManager.reset();
+    
+    elements.simStartBtn.disabled = false;
+    elements.simPauseBtn.disabled = true;
+    elements.simPauseBtn.innerHTML = '<span class="btn-icon">⏸</span> Pause';
+    elements.statusText.textContent = 'Simulation reset. Click Start to begin.';
+    
+    // Clear trail
+    if (trailLayer) {
+        trailLayer.clearLayers();
+    }
+    
+    // Reset API call timer
+    lastSimulationApiCall = 0;
+    
+    // Reset voice action state
+    lastAction = null;
+    isWaitingForVoice = false;
+    
+    // Cancel any ongoing speech
+    if (speechSynthesis) {
+        speechSynthesis.cancel();
+    }
+    
+    // Zoom back to start of route
+    if (simulationRouteData && simulationRouteData.ordered_links && simulationRouteData.ordered_links.length > 0) {
+        const firstLink = simulationRouteData.ordered_links[0];
+        const startLat = parseFloat(firstLink.StartLat);
+        const startLon = parseFloat(firstLink.StartLon);
+        map.setView([startLat, startLon], 15);
+    }
+    
+    // Update progress
+    updateSimulationProgress();
+}
+
+/**
+ * Change simulation speed
+ */
+function changeSimulationSpeed() {
+    if (!simulationManager) return;
+    
+    const speed = parseFloat(elements.simSpeed.value);
+    simulationManager.setSpeed(speed);
+    
+    console.log(`Simulation speed changed to ${speed}x`);
+}
+
+/**
+ * Handle position updates from simulation
+ */
+function handleSimulationPositionUpdate(position) {
+    // Update bus marker position smoothly
+    updateBusMarker(position.lat, position.lon);
+    
+    // Update progress display
+    updateSimulationProgress();
+    
+    // Fetch recommendation at this position (throttled)
+    const now = performance.now();
+    if (now - lastSimulationApiCall >= SIMULATION_API_INTERVAL) {
+        lastSimulationApiCall = now;
+        fetchSimulationRecommendation(position.lat, position.lon);
+    }
+}
+
+/**
+ * Handle link changes in simulation
+ */
+function handleSimulationLinkChange(linkIndex, link) {
+    console.log(`Simulation moved to link ${linkIndex}: ${link.RoadName}`);
+    
+    // Draw trail for the previous link
+    if (linkIndex > 0) {
+        drawTrailSegment(simulationManager.orderedLinks[linkIndex - 1]);
+    }
+}
+
+/**
+ * Handle simulation completion
+ */
+function handleSimulationComplete() {
+    elements.statusText.textContent = 'Simulation complete!';
+    elements.simStartBtn.disabled = true;
+    elements.simPauseBtn.disabled = true;
+    
+    console.log('Simulation finished');
+    
+    // Optionally, speak completion message
+    if (elements.voiceEnabled.checked) {
+        speak('Simulation complete. Route finished.');
+    }
+}
+
+/**
+ * Fetch recommendation for current simulation position
+ */
+async function fetchSimulationRecommendation(lat, lon) {
+    const scenario = elements.demoScenario.value;
+    const [busNo, direction] = scenario.split('-').map(Number);
+    
+    try {
+        const url = `${API_BASE_URL}/coasting_recommendation?bus_no=${busNo}&direction=${direction}&lat=${lat}&lon=${lon}`;
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        updateUI(data);
+    } catch (error) {
+        console.error('Error fetching simulation recommendation:', error);
+    }
+}
+
+/**
+ * Update simulation progress display
+ */
+function updateSimulationProgress() {
+    if (!simulationManager) return;
+    
+    const state = simulationManager.getState();
+    const currentLink = state.currentLinkIndex + 1;
+    const totalLinks = state.totalLinks;
+    const progress = (currentLink / totalLinks) * 100;
+    
+    elements.simProgressText.textContent = `Link ${currentLink} / ${totalLinks}`;
+    elements.simProgressPercent.textContent = `${Math.round(progress)}%`;
+    elements.simProgressBar.style.width = `${progress}%`;
+}
+
+/**
+ * Draw trail segment for a visited link
+ */
+function drawTrailSegment(link) {
+    if (!trailLayer) return;
+    
+    const polyline = L.polyline([
+        [link.StartLat, link.StartLon],
+        [link.EndLat, link.EndLon]
+    ], {
+        color: '#4CAF50',
+        weight: 4,
+        opacity: 0.5,
+        dashArray: '5, 10'
+    });
+    
+    polyline.addTo(trailLayer);
+}
+
+/**
+ * Clear all simulation visuals
+ */
+function clearSimulationVisuals() {
+    if (trailLayer) {
+        trailLayer.clearLayers();
+    }
+    if (routePreviewLayer) {
+        routePreviewLayer.clearLayers();
+    }
+    if (busMarker) {
+        map.removeLayer(busMarker);
+        busMarker = null;
+    }
+}
+
 // Event Listeners
 elements.loadRouteBtn.addEventListener('click', loadRoutePreview);
 elements.getLocationBtn.addEventListener('click', getGPSLocation);
@@ -768,6 +1181,18 @@ elements.autoFollowBtn.addEventListener('click', () => toggleLayer('autofollow')
 elements.busNo.addEventListener('change', loadRoutePreview);
 elements.direction.addEventListener('change', loadRoutePreview);
 
+// Demo mode toggle
+elements.demoModeToggle.addEventListener('change', toggleDemoMode);
+
+// Demo scenario change
+elements.demoScenario.addEventListener('change', loadDemoScenario);
+
+// Simulation control buttons
+elements.simStartBtn.addEventListener('click', startSimulation);
+elements.simPauseBtn.addEventListener('click', toggleSimulationPause);
+elements.simResetBtn.addEventListener('click', resetSimulation);
+elements.simSpeed.addEventListener('change', changeSimulationSpeed);
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     initSpeechSynthesis();
@@ -793,5 +1218,19 @@ document.addEventListener('DOMContentLoaded', () => {
         loadRoutePreview();
     }, 500);
 
-    console.log('Predictive Coasting Interface with Map initialized');
+    // Initialize simulation manager
+    initializeSimulation();
+    
+    // Load saved simulation speed preference
+    const savedSpeed = localStorage.getItem('simSpeed');
+    if (savedSpeed) {
+        elements.simSpeed.value = savedSpeed;
+    }
+    
+    // Save speed preference when changed
+    elements.simSpeed.addEventListener('change', () => {
+        localStorage.setItem('simSpeed', elements.simSpeed.value);
+    });
+
+    console.log('Predictive Coasting Interface with Map and Simulation initialized');
 });

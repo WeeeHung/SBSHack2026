@@ -18,6 +18,7 @@ This system combines:
 - **Coasting Recommendations**: Provides actionable advice (Maintain Speed, Coast, Speed Up, Crawl)
 - **Driver Interface**: Web-based interface with color-coded visual cues and voice guidance
 - **Multi-factor Analysis**: Considers current speed, predicted speed, rainfall, and incidents
+- **🆕 Interactive Demo Mode**: Simulate bus movement along route with real-time recommendations
 
 ## Setup
 
@@ -64,6 +65,7 @@ The API provides two main endpoints:
 
 ### Frontend Interface
 
+#### Manual Mode (Live GPS)
 1. Open `frontend/index.html` in a web browser
 2. Enter:
    - Bus number (e.g., 147)
@@ -76,6 +78,30 @@ The API provides two main endpoints:
    - Reasoning for the recommendation
    - Voice guidance (if enabled)
 
+#### 🆕 Demo Mode (Simulation)
+Perfect for hackathon demos and testing!
+
+1. Open `frontend/index.html` in a web browser
+2. **Toggle "Demo Mode" ON** at the bottom of the screen
+3. Select a demo scenario (e.g., "Bus 147 Direction 1")
+4. Click **"Start"** to begin the simulation
+5. Watch as the bus automatically moves along the route with:
+   - Smooth animated movement on map
+   - Real-time coasting recommendations
+   - Visual trail showing path traveled
+   - Adjustable speed (0.5x to 10x)
+   - Progress tracking (current link / total links)
+
+**Demo Mode Features:**
+- ✅ No GPS required - fully automated movement
+- ✅ Multiple bus routes available (147, 190, 960)
+- ✅ Speed control for quick or detailed demos
+- ✅ Pause/Resume/Reset controls
+- ✅ Visual trail showing route coverage
+- ✅ Perfect for presentations and testing
+
+**Quick Demo:** See [DEMO_QUICKSTART.md](DEMO_QUICKSTART.md) for a 30-second setup guide!
+
 ### Running Tests
 
 ```bash
@@ -84,6 +110,15 @@ pytest tests/test_recommendation_service.py -v
 
 ### Running Demo
 
+**Option 1: Interactive Frontend Simulation (Recommended)**
+1. Start backend: `python backend/main.py`
+2. Open `frontend/index.html` in browser
+3. Enable "Demo Mode" toggle
+4. Click "Start" to watch automated bus simulation
+
+See [DEMO_QUICKSTART.md](DEMO_QUICKSTART.md) for detailed instructions.
+
+**Option 2: Command-line Demo**
 ```bash
 python demo/demo_coasting.py
 ```

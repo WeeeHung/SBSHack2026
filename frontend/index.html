@@ -36,12 +36,22 @@
             </div>
 
             <!-- Info Panel (Right) -->
-            <div class="info-panel">
+            <div class="info-panel driver-view-container">
+                <h3 class="driver-view-title">Driver View</h3>
+
                 <!-- Action Card -->
                 <div class="info-card action-card">
                     <div class="action-indicator" id="actionIndicator">
                         <div class="action-icon" id="actionIcon">⏸</div>
                         <div class="action-text" id="actionText">Initializing...</div>
+                    </div>
+                </div>
+
+                <!-- Reasoning Card -->
+                <div class="info-card reasoning-card">
+                    <h3>Reasoning</h3>
+                    <div class="reasoning" id="reasoning">
+                        Waiting for GPS data...
                     </div>
                 </div>
 
@@ -127,20 +137,75 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Reasoning Card -->
-                <div class="info-card reasoning-card">
-                    <h3>Reasoning</h3>
-                    <div class="reasoning" id="reasoning">
-                        Waiting for GPS data...
-                    </div>
-                </div>
             </div>
         </div>
 
         <!-- Control Panel (Bottom) -->
         <div class="control-panel">
-            <div class="control-row">
+            <!-- Demo Mode Toggle -->
+            <div class="control-row demo-mode-row">
+                <div class="demo-mode-toggle">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="demoModeToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <label for="demoModeToggle" class="toggle-label">
+                        <strong>Demo Mode</strong>
+                        <small>Simulate bus movement along route</small>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Simulation Controls (shown only in demo mode) -->
+            <div id="simulationControls" class="control-row simulation-controls" style="display: none;">
+                <div class="input-group">
+                    <label for="demoScenario">Demo Scenario:</label>
+                    <select id="demoScenario">
+                        <option value="147-1">Bus 147 Direction 1</option>
+                        <option value="147-2">Bus 147 Direction 2</option>
+                        <option value="190-1">Bus 190 Direction 1</option>
+                        <option value="190-2">Bus 190 Direction 2</option>
+                        <option value="960-1">Bus 960 Direction 1</option>
+                        <option value="960-2">Bus 960 Direction 2</option>
+                    </select>
+                </div>
+
+                <div class="simulation-controls-group">
+                    <button id="simStartBtn" class="btn btn-primary">
+                        <span class="btn-icon">▶</span> Start
+                    </button>
+                    <button id="simPauseBtn" class="btn btn-secondary" disabled>
+                        <span class="btn-icon">⏸</span> Pause
+                    </button>
+                    <button id="simResetBtn" class="btn btn-secondary">
+                        <span class="btn-icon">🔄</span> Reset
+                    </button>
+                </div>
+
+                <div class="input-group">
+                    <label for="simSpeed">Speed:</label>
+                    <select id="simSpeed">
+                        <option value="0.5">0.5x</option>
+                        <option value="1" selected>1x</option>
+                        <option value="2">2x</option>
+                        <option value="5">5x</option>
+                        <option value="10">10x</option>
+                    </select>
+                </div>
+
+                <div class="simulation-progress">
+                    <div class="progress-info">
+                        <span id="simProgressText">Link 0 / 0</span>
+                        <span id="simProgressPercent">0%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div id="simProgressBar" class="progress-bar-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manual Controls (shown only in manual mode) -->
+            <div id="manualControls" class="control-row">
                 <div class="input-group">
                     <label for="busNo">Bus Number:</label>
                     <input type="number" id="busNo" value="147" min="1" max="999">
@@ -179,7 +244,7 @@
                     <input type="checkbox" id="voiceEnabled" checked>
                     Voice Guidance
                 </label>
-                <label class="setting-item">
+                <label class="setting-item" id="updateIntervalSetting">
                     <span>Update Interval:</span>
                     <input type="number" id="updateInterval" value="5" min="1" max="60">
                     <span>seconds</span>
@@ -199,6 +264,10 @@
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
     
+    <!-- Simulation Engine -->
+    <script src="static/simulation.js"></script>
+    
+    <!-- Main App -->
     <script src="static/app.js"></script>
 </body>
 </html>
