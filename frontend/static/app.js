@@ -86,7 +86,11 @@ const elements = {
     simProgressPercent: document.getElementById('simProgressPercent'),
     simProgressBar: document.getElementById('simProgressBar'),
     // Driver view expand/collapse
-    driverViewToggleBtn: document.getElementById('driverViewToggleBtn')
+    driverViewToggleBtn: document.getElementById('driverViewToggleBtn'),
+    // Driver view primary display
+    advisedSpeed: document.getElementById('advisedSpeed'),
+    currentSpeedInline: document.getElementById('currentSpeedInline'),
+    predictedSpeedInline: document.getElementById('predictedSpeedInline')
 };
 
 // Driver view state
@@ -709,6 +713,18 @@ function updateUI(recommendation) {
     // Update speeds
     elements.currentSpeed.textContent = recommendation.current_speed.toFixed(0);
     elements.predictedSpeed.textContent = recommendation.predicted_speed.toFixed(0);
+
+    // Driver view primary (big) speed display
+    if (elements.advisedSpeed) {
+        // Use predicted speed as the advised target speed for the upcoming link
+        elements.advisedSpeed.textContent = recommendation.predicted_speed.toFixed(0);
+    }
+    if (elements.currentSpeedInline) {
+        elements.currentSpeedInline.textContent = recommendation.current_speed.toFixed(0);
+    }
+    if (elements.predictedSpeedInline) {
+        elements.predictedSpeedInline.textContent = recommendation.predicted_speed.toFixed(0);
+    }
 
     // Update reasoning
     elements.reasoning.textContent = recommendation.reasoning;

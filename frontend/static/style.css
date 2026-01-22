@@ -258,7 +258,7 @@ h4 {
 
 .map-control-btn:hover {
     background: var(--color-bg-secondary);
-    border-color: var(--color-primary);
+    /* border-color: var(--color-primary); */
     transform: translateY(-1px);
     box-shadow: var(--shadow-md);
 }
@@ -266,7 +266,7 @@ h4 {
 .map-control-btn.active {
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
     color: white;
-    border-color: var(--color-primary);
+    /* border-color: var(--color-primary); */
     box-shadow: var(--shadow-md);
     font-weight: var(--font-weight-semibold);
 }
@@ -298,6 +298,18 @@ h4 {
     flex-direction: column;
     gap: var(--spacing-lg);
     box-shadow: var(--shadow-lg);
+}
+
+.driver-view-primary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.driver-view-secondary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
 }
 
 .driver-view-title {
@@ -399,8 +411,24 @@ body.driver-mode .driver-view-container {
     padding: var(--spacing-2xl);
     background: var(--color-bg-primary);
     z-index: var(--z-modal);
-    overflow-y: auto;
+    overflow: hidden;
     -webkit-overflow-scrolling: touch;
+}
+
+body.driver-mode .driver-view-title {
+    margin-bottom: var(--spacing-lg);
+}
+
+body.driver-mode .driver-view-primary {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+body.driver-mode .driver-view-secondary {
+    display: none !important;
 }
 
 body.driver-mode .driver-view-fab {
@@ -471,6 +499,87 @@ body.driver-mode .driver-view-fab {
     box-shadow: var(--shadow-xl);
     position: relative;
     overflow: hidden;
+}
+
+.action-speed {
+    margin-top: var(--spacing-md);
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--spacing-sm);
+    position: relative;
+    z-index: 1;
+}
+
+.action-speed-value {
+    font-weight: var(--font-weight-bold);
+    font-size: 44px;
+    letter-spacing: -0.02em;
+}
+
+.action-speed-unit {
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-md);
+    opacity: 0.85;
+}
+
+.action-speed-sub {
+    margin-top: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    color: rgba(0, 0, 0, 0.65);
+    position: relative;
+    z-index: 1;
+}
+
+/* Fullscreen driver mode: make action + alerts dominant */
+body.driver-mode .action-card {
+    padding: 0;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+body.driver-mode .action-indicator {
+    height: 100%;
+    min-height: 0;
+    padding: clamp(24px, 5vh, 56px);
+    border-radius: var(--radius-2xl);
+}
+
+body.driver-mode .action-icon {
+    font-size: clamp(64px, 10vh, 140px);
+    margin-bottom: clamp(8px, 2vh, 24px);
+}
+
+body.driver-mode .action-text {
+    font-size: clamp(28px, 6vh, 96px);
+    letter-spacing: 0.12em;
+    text-align: center;
+}
+
+body.driver-mode .action-speed-value {
+    font-size: clamp(44px, 7.5vh, 120px);
+}
+
+body.driver-mode .action-speed-unit {
+    font-size: clamp(16px, 2.2vh, 28px);
+}
+
+body.driver-mode .action-speed-sub {
+    font-size: clamp(12px, 1.8vh, 20px);
+    opacity: 0.85;
+}
+
+body.driver-mode .environmental-card {
+    padding: clamp(12px, 2vh, 20px);
+}
+
+body.driver-mode .status-item {
+    opacity: 0.85;
+    padding: clamp(10px, 2vh, 18px) clamp(14px, 2.5vh, 26px);
+    font-size: clamp(14px, 2.2vh, 22px);
+}
+
+body.driver-mode .status-icon {
+    font-size: clamp(18px, 3vh, 32px);
 }
 
 .action-indicator::before {

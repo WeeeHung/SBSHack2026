@@ -40,101 +40,113 @@
             <div class="info-panel driver-view-container">
                 <h3 class="driver-view-title">Driver View</h3>
 
-                <!-- Action Card -->
-                <div class="info-card action-card">
-                    <div class="action-indicator" id="actionIndicator">
-                        <div class="action-icon" id="actionIcon">⏸</div>
-                        <div class="action-text" id="actionText">Initializing...</div>
-                    </div>
-                </div>
-
-                <!-- Environmental Card -->
-                <div class="info-card environmental-card">
-                    <div class="status-indicators">
-                        <div class="status-item" id="rainIndicator">
-                            <span class="status-icon">🌧</span>
-                            <span class="status-text">Rain Ahead</span>
-                        </div>
-                        <div class="status-item" id="incidentIndicator">
-                            <span class="status-icon">⚠️</span>
-                            <span class="status-text">Incident Ahead</span>
+                <div class="driver-view-primary">
+                    <!-- Action Card -->
+                    <div class="info-card action-card">
+                        <div class="action-indicator" id="actionIndicator">
+                            <div class="action-icon" id="actionIcon">⏸</div>
+                            <div class="action-text" id="actionText">Initializing...</div>
+                            <div class="action-speed" aria-label="Advised speed">
+                                <span class="action-speed-value" id="advisedSpeed">--</span>
+                                <span class="action-speed-unit">km/h</span>
+                            </div>
+                            <div class="action-speed-sub" aria-hidden="true">
+                                Current <span id="currentSpeedInline">--</span> km/h • Next <span
+                                    id="predictedSpeedInline">--</span> km/h
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Reasoning Card -->
-                <div class="info-card reasoning-card">
-                    <h3>Reasoning</h3>
-                    <div class="reasoning" id="reasoning">
-                        Waiting for GPS data...
-                    </div>
-                </div>
-
-                <!-- Current Link Card -->
-                <div class="info-card">
-                    <h3>Current Link</h3>
-                    <div class="link-details" id="currentLinkDetails">
-                        <div class="detail-row">
-                            <span class="detail-label">Road:</span>
-                            <span class="detail-value" id="currentRoadName">--</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Link ID:</span>
-                            <span class="detail-value" id="currentLinkId">--</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Speed:</span>
-                            <span class="detail-value">
-                                <span id="currentSpeed">--</span> km/h
-                            </span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">SpeedBand:</span>
-                            <span class="detail-value">
-                                <span class="speedband-badge" id="currentSpeedBand">--</span>
-                            </span>
+                    <!-- Environmental Card -->
+                    <div class="info-card environmental-card">
+                        <div class="status-indicators">
+                            <div class="status-item" id="rainIndicator">
+                                <span class="status-icon">🌧</span>
+                                <span class="status-text">Rain Ahead</span>
+                            </div>
+                            <div class="status-item" id="incidentIndicator">
+                                <span class="status-icon">⚠️</span>
+                                <span class="status-text">Incident Ahead</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Next Link Card -->
-                <div class="info-card">
-                    <h3>Predicted Next Link</h3>
-                    <div class="link-details" id="nextLinkDetails">
-                        <div class="detail-row">
-                            <span class="detail-label">Road:</span>
-                            <span class="detail-value" id="nextRoadName">--</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Link ID:</span>
-                            <span class="detail-value" id="nextLinkId">--</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Predicted Speed:</span>
-                            <span class="detail-value">
-                                <span id="predictedSpeed">--</span> km/h
-                            </span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">SpeedBand:</span>
-                            <span class="detail-value">
-                                <span class="speedband-badge" id="nextSpeedBand">--</span>
-                            </span>
+                <div class="driver-view-secondary">
+                    <!-- Reasoning Card -->
+                    <div class="info-card reasoning-card">
+                        <h3>Reasoning</h3>
+                        <div class="reasoning" id="reasoning">
+                            Waiting for GPS data...
                         </div>
                     </div>
-                </div>
 
-                <!-- Connected Links Card -->
-                <div class="info-card">
-                    <h3>Connected Links</h3>
-                    <div class="connected-links">
-                        <div class="connected-section">
-                            <h4>Inbound (<span id="inboundCount">0</span>)</h4>
-                            <div id="inboundLinksList" class="links-list">--</div>
+                    <!-- Current Link Card -->
+                    <div class="info-card">
+                        <h3>Current Link</h3>
+                        <div class="link-details" id="currentLinkDetails">
+                            <div class="detail-row">
+                                <span class="detail-label">Road:</span>
+                                <span class="detail-value" id="currentRoadName">--</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Link ID:</span>
+                                <span class="detail-value" id="currentLinkId">--</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Speed:</span>
+                                <span class="detail-value">
+                                    <span id="currentSpeed">--</span> km/h
+                                </span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">SpeedBand:</span>
+                                <span class="detail-value">
+                                    <span class="speedband-badge" id="currentSpeedBand">--</span>
+                                </span>
+                            </div>
                         </div>
-                        <div class="connected-section">
-                            <h4>Outbound (<span id="outboundCount">0</span>)</h4>
-                            <div id="outboundLinksList" class="links-list">--</div>
+                    </div>
+
+                    <!-- Next Link Card -->
+                    <div class="info-card">
+                        <h3>Predicted Next Link</h3>
+                        <div class="link-details" id="nextLinkDetails">
+                            <div class="detail-row">
+                                <span class="detail-label">Road:</span>
+                                <span class="detail-value" id="nextRoadName">--</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Link ID:</span>
+                                <span class="detail-value" id="nextLinkId">--</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Predicted Speed:</span>
+                                <span class="detail-value">
+                                    <span id="predictedSpeed">--</span> km/h
+                                </span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">SpeedBand:</span>
+                                <span class="detail-value">
+                                    <span class="speedband-badge" id="nextSpeedBand">--</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Connected Links Card -->
+                    <div class="info-card">
+                        <h3>Connected Links</h3>
+                        <div class="connected-links">
+                            <div class="connected-section">
+                                <h4>Inbound (<span id="inboundCount">0</span>)</h4>
+                                <div id="inboundLinksList" class="links-list">--</div>
+                            </div>
+                            <div class="connected-section">
+                                <h4>Outbound (<span id="outboundCount">0</span>)</h4>
+                                <div id="outboundLinksList" class="links-list">--</div>
+                            </div>
                         </div>
                     </div>
                 </div>
