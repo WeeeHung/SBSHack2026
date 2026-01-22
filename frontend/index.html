@@ -17,7 +17,7 @@
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <h1>Predictive Coasting System (Control Center View)</h1>
+            <h1>Predictive Coasting System (Command Center View)</h1>
             <div class="header-info">
                 <span id="headerBusInfo">Bus -- | Direction -</span>
             </div>
@@ -45,6 +45,20 @@
                     <div class="action-indicator" id="actionIndicator">
                         <div class="action-icon" id="actionIcon">⏸</div>
                         <div class="action-text" id="actionText">Initializing...</div>
+                    </div>
+                </div>
+
+                <!-- Environmental Card -->
+                <div class="info-card environmental-card">
+                    <div class="status-indicators">
+                        <div class="status-item" id="rainIndicator">
+                            <span class="status-icon">🌧</span>
+                            <span class="status-text">Rain Ahead</span>
+                        </div>
+                        <div class="status-item" id="incidentIndicator">
+                            <span class="status-icon">⚠️</span>
+                            <span class="status-text">Incident Ahead</span>
+                        </div>
                     </div>
                 </div>
 
@@ -125,19 +139,7 @@
                     </div>
                 </div>
 
-                <!-- Environmental Card -->
-                <div class="info-card environmental-card">
-                    <div class="status-indicators">
-                        <div class="status-item" id="rainIndicator">
-                            <span class="status-icon">🌧</span>
-                            <span class="status-text">Rain</span>
-                        </div>
-                        <div class="status-item" id="incidentIndicator">
-                            <span class="status-icon">⚠️</span>
-                            <span class="status-text">Incident</span>
-                        </div>
-                    </div>
-                </div>
+
 
                 <!-- Driver View Expand/Collapse Toggle -->
                 <div class="driver-view-fab" aria-hidden="false">
@@ -163,7 +165,61 @@
                         <small>Simulate bus movement along route</small>
                     </label>
                 </div>
+
+                <div class="demo-mode-toggle">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="voiceEnabled" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <label for="voiceEnabled" class="toggle-label">
+                        <strong>Voice Guidance</strong>
+                        <small>Spoken recommendations</small>
+                    </label>
+                </div>
+
+                <div class="update-interval-inline" id="updateIntervalSetting">
+                    <div class="update-interval-label">
+                        <strong>Update Interval</strong>
+                        <small>seconds</small>
+                    </div>
+                    <input type="number" id="updateInterval" value="5" min="1" max="60">
+                </div>
             </div>
+            <!-- Manual Controls (shown only in manual mode) -->
+            <div id="manualControls" class="control-row">
+                <div class="input-group">
+                    <label for="busNo">Bus Number:</label>
+                    <input type="number" id="busNo" value="147" min="1" max="999">
+                </div>
+
+                <div class="input-group">
+                    <label for="direction">Direction:</label>
+                    <select id="direction">
+                        <option value="1">Direction 1</option>
+                        <option value="2">Direction 2</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="latitude">Latitude:</label>
+                    <input type="number" id="latitude" step="0.000001" placeholder="1.3521">
+                    <small class="help-text">Click on map to select</small>
+                </div>
+
+                <div class="input-group">
+                    <label for="longitude">Longitude:</label>
+                    <input type="number" id="longitude" step="0.000001" placeholder="103.8198">
+                    <small class="help-text">Click on map to select</small>
+                </div>
+
+                <div class="button-group">
+                    <button id="loadRouteBtn" class="btn btn-secondary">Load Route</button>
+                    <button id="getLocationBtn" class="btn btn-secondary">Use GPS</button>
+                    <button id="startBtn" class="btn btn-primary">Start</button>
+                    <button id="stopBtn" class="btn btn-danger" disabled>Stop</button>
+                </div>
+            </div>
+
 
             <!-- Simulation Controls (shown only in demo mode) -->
             <div id="simulationControls" class="control-row simulation-controls" style="display: none;">
@@ -211,53 +267,6 @@
                         <div id="simProgressBar" class="progress-bar-fill"></div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Manual Controls (shown only in manual mode) -->
-            <div id="manualControls" class="control-row">
-                <div class="input-group">
-                    <label for="busNo">Bus Number:</label>
-                    <input type="number" id="busNo" value="147" min="1" max="999">
-                </div>
-
-                <div class="input-group">
-                    <label for="direction">Direction:</label>
-                    <select id="direction">
-                        <option value="1">Direction 1</option>
-                        <option value="2">Direction 2</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label for="latitude">Latitude:</label>
-                    <input type="number" id="latitude" step="0.000001" placeholder="1.3521">
-                    <small class="help-text">Click on map to select</small>
-                </div>
-
-                <div class="input-group">
-                    <label for="longitude">Longitude:</label>
-                    <input type="number" id="longitude" step="0.000001" placeholder="103.8198">
-                    <small class="help-text">Click on map to select</small>
-                </div>
-
-                <div class="button-group">
-                    <button id="loadRouteBtn" class="btn btn-secondary">Load Route</button>
-                    <button id="getLocationBtn" class="btn btn-secondary">Use GPS</button>
-                    <button id="startBtn" class="btn btn-primary">Start</button>
-                    <button id="stopBtn" class="btn btn-danger" disabled>Stop</button>
-                </div>
-            </div>
-
-            <div class="control-row settings-row">
-                <label class="setting-item">
-                    <input type="checkbox" id="voiceEnabled" checked>
-                    Voice Guidance
-                </label>
-                <label class="setting-item" id="updateIntervalSetting">
-                    <span>Update Interval:</span>
-                    <input type="number" id="updateInterval" value="5" min="1" max="60">
-                    <span>seconds</span>
-                </label>
             </div>
         </div>
 

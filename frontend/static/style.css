@@ -4,12 +4,14 @@
 :root {
     /* Colors - Primary */
     /* SBS Transit Theme */
-    --color-primary: #5E2A79; /* Transit Purple */
+    --color-primary: #5E2A79;
+    /* Transit Purple */
     --color-primary-dark: #4B2062;
     --color-primary-light: #743593;
-    --color-secondary: #E35225; /* SBS Orange */
+    --color-secondary: #E35225;
+    /* SBS Orange */
     --color-accent: #E35225;
-    
+
     /* Colors - Neutral */
     --color-bg-primary: #ffffff;
     --color-bg-secondary: #f8f9fa;
@@ -20,7 +22,7 @@
     --color-text-tertiary: #718096;
     --color-border: #e2e8f0;
     --color-border-light: #f1f5f9;
-    
+
     /* Colors - Status */
     --color-success: #48bb78;
     --color-success-light: #9ae6b4;
@@ -30,7 +32,7 @@
     --color-danger-light: #fc8181;
     --color-info: #4299e1;
     --color-info-light: #90cdf4;
-    
+
     /* Spacing Scale */
     --spacing-xs: 4px;
     --spacing-sm: 8px;
@@ -39,7 +41,7 @@
     --spacing-xl: 24px;
     --spacing-2xl: 32px;
     --spacing-3xl: 48px;
-    
+
     /* Typography */
     --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     --font-size-xs: 11px;
@@ -51,16 +53,16 @@
     --font-size-2xl: 24px;
     --font-size-3xl: 28px;
     --font-size-4xl: 32px;
-    
+
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
-    
+
     --line-height-tight: 1.2;
     --line-height-normal: 1.5;
     --line-height-relaxed: 1.6;
-    
+
     /* Border Radius */
     --radius-sm: 4px;
     --radius-md: 6px;
@@ -68,19 +70,19 @@
     --radius-xl: 12px;
     --radius-2xl: 16px;
     --radius-full: 9999px;
-    
+
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-    
+
     /* Transitions */
     --transition-fast: 150ms ease;
     --transition-base: 200ms ease;
     --transition-slow: 300ms ease;
-    
+
     /* Z-index */
     --z-base: 1;
     --z-dropdown: 100;
@@ -124,7 +126,12 @@ body {
 /* ============================================================================
    TYPOGRAPHY
    ============================================================================ */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-tight);
     color: var(--color-text-primary);
@@ -316,7 +323,8 @@ h4 {
     bottom: var(--spacing-lg);
     display: flex;
     justify-content: flex-end;
-    pointer-events: none; /* allow scroll; button re-enables */
+    pointer-events: none;
+    /* allow scroll; button re-enables */
 }
 
 .driver-view-toggle-btn {
@@ -376,7 +384,8 @@ body.driver-mode .main-content {
 
 body.driver-mode .info-panel {
     flex: 1 1 auto;
-    overflow: hidden; /* content scrolls inside the driver container */
+    overflow: hidden;
+    /* content scrolls inside the driver container */
     border: none;
     background: transparent;
 }
@@ -580,14 +589,39 @@ body.driver-mode .driver-view-fab {
     letter-spacing: 0.05em;
 }
 
-.speedband-1 { background-color: #dc2626; }
-.speedband-2 { background-color: #ea580c; }
-.speedband-3 { background-color: #f97316; }
-.speedband-4 { background-color: #fbbf24; color: var(--color-text-primary); }
-.speedband-5 { background-color: #84cc16; color: var(--color-text-primary); }
-.speedband-6 { background-color: #22c55e; }
-.speedband-7 { background-color: #16a34a; }
-.speedband-8 { background-color: #15803d; }
+.speedband-1 {
+    background-color: #dc2626;
+}
+
+.speedband-2 {
+    background-color: #ea580c;
+}
+
+.speedband-3 {
+    background-color: #f97316;
+}
+
+.speedband-4 {
+    background-color: #fbbf24;
+    color: var(--color-text-primary);
+}
+
+.speedband-5 {
+    background-color: #84cc16;
+    color: var(--color-text-primary);
+}
+
+.speedband-6 {
+    background-color: #22c55e;
+}
+
+.speedband-7 {
+    background-color: #16a34a;
+}
+
+.speedband-8 {
+    background-color: #15803d;
+}
 
 /* ============================================================================
    CONNECTED LINKS
@@ -730,6 +764,77 @@ body.driver-mode .driver-view-fab {
     padding-top: var(--spacing-md);
     border-top: 1px solid var(--color-border);
     align-items: center;
+}
+
+.demo-mode-row {
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--spacing-3xl);
+}
+
+.update-interval-inline {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--radius-full);
+    border: 2px solid var(--color-border);
+    background: var(--color-bg-secondary);
+    box-shadow: var(--shadow-sm);
+    min-height: 44px;
+}
+
+.update-interval-label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1.15;
+}
+
+.update-interval-label strong {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+}
+
+.update-interval-label small {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+.update-interval-inline input[type="number"] {
+    width: 72px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-family);
+    background: var(--color-bg-primary);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-base);
+}
+
+.update-interval-inline input[type="number"]:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(94, 42, 121, 0.12);
+}
+
+/* Manual controls: reserve space for helper text so fields stay aligned */
+#manualControls .input-group,
+#manualControls .button-group {
+    padding-bottom: 18px;
+}
+
+#manualControls .input-group {
+    position: relative;
+}
+
+#manualControls .help-text {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin-top: 0;
 }
 
 /* ============================================================================
@@ -964,15 +1069,15 @@ body.driver-mode .driver-view-fab {
     box-shadow: var(--shadow-md);
 }
 
-.toggle-switch input:checked + .toggle-slider {
+.toggle-switch input:checked+.toggle-slider {
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
 }
 
-.toggle-switch input:focus + .toggle-slider {
+.toggle-switch input:focus+.toggle-slider {
     box-shadow: 0 0 0 3px rgba(94, 42, 121, 0.22);
 }
 
-.toggle-switch input:checked + .toggle-slider:before {
+.toggle-switch input:checked+.toggle-slider:before {
     transform: translateX(28px);
 }
 
@@ -1068,8 +1173,13 @@ body.driver-mode .driver-view-fab {
 }
 
 @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
 }
 
 /* ============================================================================
@@ -1116,8 +1226,15 @@ body.driver-mode .driver-view-fab {
 }
 
 @keyframes busPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
 }
 
 .click-marker {
@@ -1133,13 +1250,27 @@ body.driver-mode .driver-view-fab {
 }
 
 @keyframes markerPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
 }
 
 @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.03); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.03);
+    }
 }
 
 .action-indicator.updating {
@@ -1147,10 +1278,13 @@ body.driver-mode .driver-view-fab {
 }
 
 @keyframes linkPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         stroke-width: 8;
         stroke-opacity: 1;
     }
+
     50% {
         stroke-width: 10;
         stroke-opacity: 0.7;
@@ -1178,10 +1312,13 @@ body.driver-mode .driver-view-fab {
 }
 
 @keyframes badgePulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
         box-shadow: var(--shadow-lg);
     }
+
     50% {
         transform: scale(1.05);
         box-shadow: 0 6px 20px rgba(94, 42, 121, 0.5);
@@ -1237,25 +1374,25 @@ body.driver-mode .driver-view-fab {
     .map-container {
         flex: 0 0 60%;
     }
-    
+
     .info-panel {
         flex: 0 0 40%;
     }
-    
+
     .simulation-controls {
         flex-wrap: wrap;
     }
-    
+
     .simulation-progress {
         width: 100%;
         order: 10;
         margin-top: var(--spacing-md);
     }
-    
+
     .header {
         padding: var(--spacing-md) var(--spacing-xl);
     }
-    
+
     .control-panel {
         padding: var(--spacing-lg) var(--spacing-xl);
     }
@@ -1265,54 +1402,54 @@ body.driver-mode .driver-view-fab {
     .main-content {
         flex-direction: column;
     }
-    
+
     .map-container {
         flex: 0 0 50%;
         min-height: 400px;
     }
-    
+
     .info-panel {
         flex: 0 0 50%;
     }
-    
+
     .action-text {
         font-size: var(--font-size-xl);
     }
-    
+
     .action-icon {
         font-size: 48px;
     }
-    
+
     .control-row {
         flex-wrap: wrap;
     }
-    
+
     .button-group {
         flex-wrap: wrap;
         width: 100%;
     }
-    
+
     .btn {
         flex: 1;
         min-width: 100px;
     }
-    
+
     .demo-mode-toggle {
         flex-direction: column;
         align-items: flex-start;
         gap: var(--spacing-md);
     }
-    
+
     .simulation-controls-group {
         flex-wrap: wrap;
         width: 100%;
     }
-    
+
     .simulation-controls-group .btn {
         flex: 1;
         min-width: 100px;
     }
-    
+
     .driver-view-container {
         margin: var(--spacing-lg);
         padding: var(--spacing-lg);
@@ -1323,65 +1460,65 @@ body.driver-mode .driver-view-fab {
     .header h1 {
         font-size: var(--font-size-lg);
     }
-    
+
     .header-info {
         font-size: var(--font-size-sm);
     }
-    
+
     .map-container {
         min-height: 300px;
     }
-    
+
     .info-card {
         padding: var(--spacing-md);
     }
-    
+
     .action-indicator {
         min-height: 140px;
         padding: var(--spacing-xl);
     }
-    
+
     .action-text {
         font-size: var(--font-size-lg);
     }
-    
+
     .action-icon {
         font-size: 40px;
     }
-    
+
     .toggle-label strong {
         font-size: var(--font-size-base);
     }
-    
+
     .toggle-label small {
         font-size: var(--font-size-xs);
     }
-    
+
     .simulation-controls {
         padding: var(--spacing-md);
     }
-    
+
     .progress-info {
         font-size: var(--font-size-xs);
     }
-    
+
     .control-panel {
         padding: var(--spacing-md) var(--spacing-lg);
     }
-    
+
     .status-bar {
         padding: var(--spacing-sm) var(--spacing-lg);
         flex-direction: column;
         gap: var(--spacing-xs);
         align-items: flex-start;
     }
-    
+
     .map-controls {
         top: var(--spacing-sm);
         right: var(--spacing-sm);
         padding: var(--spacing-xs);
     }
-    
+
     .map-control-btn {
         padding: var(--spacing-xs) var(--spacing-sm);
         font-size: var(--font-size-xs);
@@ -1396,7 +1533,7 @@ body.driver-mode .driver-view-fab {
         gap: var(--spacing-sm);
         align-items: flex-start;
     }
-    
+
     .driver-view-container {
         margin: var(--spacing-md);
         padding: var(--spacing-md);
@@ -1411,20 +1548,20 @@ body.driver-mode .driver-view-fab {
         right: var(--spacing-lg);
         bottom: var(--spacing-lg);
     }
-    
+
     .action-indicator {
         min-height: 120px;
         padding: var(--spacing-lg);
     }
-    
+
     .input-group {
         min-width: 100%;
     }
-    
+
     .button-group {
         width: 100%;
     }
-    
+
     .btn {
         width: 100%;
     }
