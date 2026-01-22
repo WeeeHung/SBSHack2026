@@ -43,30 +43,33 @@
                 <div class="driver-view-primary">
                     <!-- Action Card -->
                     <div class="info-card action-card">
-                        <div class="action-indicator" id="actionIndicator">
-                            <div class="action-icon" id="actionIcon">⏸</div>
-                            <div class="action-text" id="actionText">Initializing...</div>
-                            <div class="action-speed" aria-label="Advised speed">
-                                <span class="action-speed-value" id="advisedSpeed">--</span>
-                                <span class="action-speed-unit">km/h</span>
+                        <div class="action-indicator" id="actionIndicator" data-action="">
+                            <div class="driver-alerts-overlay" aria-hidden="false">
+                                <div class="driver-alert-pill" id="rainIndicator">
+                                    <span class="driver-alert-icon" aria-hidden="true">🌧</span>
+                                    <span class="driver-alert-text">Rain Ahead</span>
+                                </div>
+                                <div class="driver-alert-pill" id="incidentIndicator">
+                                    <span class="driver-alert-icon" aria-hidden="true">⚠️</span>
+                                    <span class="driver-alert-text">Incident Ahead</span>
+                                </div>
                             </div>
-                            <div class="action-speed-sub" aria-hidden="true">
-                                Current <span id="currentSpeedInline">--</span> km/h • Next <span
-                                    id="predictedSpeedInline">--</span> km/h
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Environmental Card -->
-                    <div class="info-card environmental-card">
-                        <div class="status-indicators">
-                            <div class="status-item" id="rainIndicator">
-                                <span class="status-icon">🌧</span>
-                                <span class="status-text">Rain Ahead</span>
+                            <div class="driver-speed">
+                                <div class="driver-speed-label">Ideal speed</div>
+                                <div class="driver-speed-value" id="advisedSpeed">--</div>
+                                <div class="driver-speed-unit">km/h</div>
                             </div>
-                            <div class="status-item" id="incidentIndicator">
-                                <span class="status-icon">⚠️</span>
-                                <span class="status-text">Incident Ahead</span>
+
+                            <div class="driver-action" id="actionText">Initializing...</div>
+                            <div class="driver-current">
+                                Current speed: <span id="currentSpeedInline">--</span> km/h
+                            </div>
+
+                            <!-- Legacy: kept for JS compatibility (hidden in CSS) -->
+                            <div class="action-icon" id="actionIcon" aria-hidden="true">⏸</div>
+                            <div class="action-speed-sub" aria-hidden="true">
+                                Next <span id="predictedSpeedInline">--</span> km/h
                             </div>
                         </div>
                     </div>

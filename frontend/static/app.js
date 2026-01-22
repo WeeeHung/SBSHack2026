@@ -690,9 +690,13 @@ function updateUI(recommendation) {
 
     // Update action indicator
     const action = recommendation.action;
-    const colorCue = recommendation.color_cue;
-    
-    elements.actionIndicator.className = `action-indicator ${colorCue} updating`;
+
+    // Style action tile by action type (matches driver view reference design)
+    if (elements.actionIndicator) {
+        elements.actionIndicator.dataset.action = action || '';
+    }
+
+    elements.actionIndicator.className = `action-indicator updating`;
     
     setTimeout(() => {
         elements.actionIndicator.classList.remove('updating');
@@ -716,8 +720,11 @@ function updateUI(recommendation) {
 
     // Driver view primary (big) speed display
     if (elements.advisedSpeed) {
-        // Use predicted speed as the advised target speed for the upcoming link
-        elements.advisedSpeed.textContent = recommendation.predicted_speed.toFixed(0);
+        // Maintain uses current as target; other actions use predicted (upcoming) speed.
+        const targetSpeed = action === 'maintain_speed'
+            ? recommendation.current_speed
+            : recommendation.predicted_speed;
+        elements.advisedSpeed.textContent = Number.isFinite(targetSpeed) ? targetSpeed.toFixed(0) : '--';
     }
     if (elements.currentSpeedInline) {
         elements.currentSpeedInline.textContent = recommendation.current_speed.toFixed(0);

@@ -493,42 +493,177 @@ body.driver-mode .driver-view-fab {
     justify-content: center;
     align-items: center;
     padding: var(--spacing-2xl);
+    padding-bottom: calc(var(--spacing-2xl) + 84px); /* reserve space for bottom alert pills */
     border-radius: var(--radius-2xl);
     transition: all var(--transition-slow);
-    min-height: 180px;
+    min-height: 300px; /* taller in minimized view so pills don't overlap content */
     box-shadow: var(--shadow-xl);
     position: relative;
     overflow: hidden;
+    text-align: center;
+    /* Safe default (before first API update) */
+    background: linear-gradient(135deg, #111827 0%, #1f2937 55%, #374151 100%);
+    border: 2px solid rgba(255, 255, 255, 0.14);
 }
 
-.action-speed {
-    margin-top: var(--spacing-md);
+/* Driver tile design (reference-style) */
+.driver-alerts-overlay {
+    position: absolute;
+    left: 50%;
+    bottom: clamp(14px, 2.2vh, 22px);
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.driver-alert-pill {
     display: inline-flex;
-    align-items: baseline;
+    align-items: center;
     gap: var(--spacing-sm);
-    position: relative;
-    z-index: 1;
+    padding: clamp(8px, 1.6vh, 12px) clamp(12px, 2.2vh, 16px);
+    border-radius: var(--radius-full);
+    background: rgba(0, 0, 0, 0.22);
+    color: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    opacity: 0.9; /* always visible */
+    transform: translateY(0);
+    transition: background var(--transition-base), color var(--transition-base), border-color var(--transition-base), filter var(--transition-base);
+    white-space: nowrap;
+    filter: grayscale(1) saturate(0.4);
 }
 
-.action-speed-value {
-    font-weight: var(--font-weight-bold);
-    font-size: 44px;
-    letter-spacing: -0.02em;
+.driver-alert-pill.active {
+    color: rgba(255, 255, 255, 0.92);
+    border-color: rgba(255, 255, 255, 0.26);
+    filter: none;
 }
 
-.action-speed-unit {
+.driver-alert-pill#rainIndicator.active {
+    background: rgba(59, 130, 246, 0.28);
+}
+
+.driver-alert-pill#incidentIndicator.active {
+    background: rgba(245, 158, 11, 0.28);
+}
+
+.driver-alert-icon {
+    font-size: clamp(16px, 2.4vh, 24px);
+    line-height: 1;
+}
+
+.driver-alert-text {
+    font-size: clamp(12px, 1.8vh, 18px);
     font-weight: var(--font-weight-semibold);
-    font-size: var(--font-size-md);
-    opacity: 0.85;
+    letter-spacing: 0.02em;
 }
 
-.action-speed-sub {
-    margin-top: var(--spacing-sm);
-    font-size: var(--font-size-sm);
-    color: rgba(0, 0, 0, 0.65);
+.driver-speed {
     position: relative;
     z-index: 1;
+    text-align: center;
+    margin-top: clamp(10px, 2.5vh, 24px);
 }
+
+.driver-speed-label {
+    font-size: clamp(12px, 2.2vh, 20px);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.82);
+    margin-bottom: clamp(6px, 1.6vh, 14px);
+}
+
+.driver-speed-value {
+    font-weight: var(--font-weight-bold);
+    font-size: clamp(56px, 12vh, 140px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: rgba(255, 255, 255, 0.96);
+    text-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+.driver-speed-unit {
+    margin-top: clamp(2px, 0.8vh, 8px);
+    font-size: clamp(14px, 2.6vh, 28px);
+    font-weight: var(--font-weight-medium);
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.04em;
+}
+
+.driver-action {
+    position: relative;
+    z-index: 1;
+    margin-top: clamp(10px, 3vh, 26px);
+    font-size: clamp(22px, 6vh, 70px);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 12px 26px rgba(0, 0, 0, 0.16);
+}
+
+.driver-current {
+    position: relative;
+    z-index: 1;
+    margin-top: clamp(6px, 1.8vh, 14px);
+    font-size: clamp(12px, 2.2vh, 22px);
+    font-weight: var(--font-weight-medium);
+    color: rgba(255, 255, 255, 0.88);
+}
+
+/* Hide legacy pieces in the new driver tile */
+.action-icon,
+.action-speed-sub {
+    display: none;
+}
+
+/* Action themes (close to reference colors) */
+.action-indicator[data-action="maintain_speed"] {
+    background: radial-gradient(120% 120% at 30% 20%, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.06) 28%, rgba(0, 0, 0, 0) 60%),
+        linear-gradient(135deg, #1aa866 0%, #0c7b4b 55%, #0a5e39 100%);
+    border: 2px solid rgba(255, 255, 255, 0.28);
+}
+
+.action-indicator[data-action="speed_up"] {
+    background: radial-gradient(120% 120% at 30% 20%, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.06) 28%, rgba(0, 0, 0, 0) 60%),
+        linear-gradient(135deg, #ff7a2f 0%, #f05a28 55%, #d9480f 100%);
+    border: 2px solid rgba(255, 255, 255, 0.28);
+}
+
+.action-indicator[data-action="coast"] {
+    background: radial-gradient(120% 120% at 30% 20%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.05) 28%, rgba(0, 0, 0, 0) 60%),
+        linear-gradient(135deg, #5E2A79 0%, #4b2062 55%, #371748 100%);
+    border: 2px solid rgba(255, 255, 255, 0.22);
+}
+
+.action-indicator[data-action="crawl"] {
+    background: radial-gradient(120% 120% at 30% 20%, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 28%, rgba(0, 0, 0, 0) 60%),
+        linear-gradient(135deg, #b0122a 0%, #8f0f23 55%, #6f0b1b 100%);
+    border: 2px solid rgba(255, 255, 255, 0.24);
+}
+
+.action-indicator[data-action=""] {
+    background: linear-gradient(135deg, #e5e7eb 0%, #cbd5e1 100%);
+    border: 2px solid rgba(0, 0, 0, 0.06);
+}
+
+.action-indicator[data-action=""] .driver-speed-label {
+    color: rgba(0, 0, 0, 0.55);
+    text-shadow: none;
+}
+
+.action-indicator[data-action=""] .driver-speed-value,
+.action-indicator[data-action=""] .driver-speed-unit,
+.action-indicator[data-action=""] .driver-action,
+.action-indicator[data-action=""] .driver-current {
+    color: rgba(0, 0, 0, 0.72);
+    text-shadow: none;
+}
+
 
 /* Fullscreen driver mode: make action + alerts dominant */
 body.driver-mode .action-card {
@@ -542,44 +677,6 @@ body.driver-mode .action-indicator {
     min-height: 0;
     padding: clamp(24px, 5vh, 56px);
     border-radius: var(--radius-2xl);
-}
-
-body.driver-mode .action-icon {
-    font-size: clamp(64px, 10vh, 140px);
-    margin-bottom: clamp(8px, 2vh, 24px);
-}
-
-body.driver-mode .action-text {
-    font-size: clamp(28px, 6vh, 96px);
-    letter-spacing: 0.12em;
-    text-align: center;
-}
-
-body.driver-mode .action-speed-value {
-    font-size: clamp(44px, 7.5vh, 120px);
-}
-
-body.driver-mode .action-speed-unit {
-    font-size: clamp(16px, 2.2vh, 28px);
-}
-
-body.driver-mode .action-speed-sub {
-    font-size: clamp(12px, 1.8vh, 20px);
-    opacity: 0.85;
-}
-
-body.driver-mode .environmental-card {
-    padding: clamp(12px, 2vh, 20px);
-}
-
-body.driver-mode .status-item {
-    opacity: 0.85;
-    padding: clamp(10px, 2vh, 18px) clamp(14px, 2.5vh, 26px);
-    font-size: clamp(14px, 2.2vh, 22px);
-}
-
-body.driver-mode .status-icon {
-    font-size: clamp(18px, 3vh, 32px);
 }
 
 .action-indicator::before {
