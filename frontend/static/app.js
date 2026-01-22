@@ -30,7 +30,16 @@ let simulationManager = null;
 let isDemoMode = false;
 let simulationRouteData = null;
 let lastSimulationApiCall = 0;
-const SIMULATION_API_INTERVAL = 3000; // Call API every 3 seconds (fallback)
+// Backend call intervals
+// - Manual mode uses setInterval polling
+// - Demo mode uses link-change triggers + a periodic fallback
+let simulationApiIntervalMs = 3000; // fallback; overridden by UI
+
+function getBackendCallIntervalMs() {
+    const seconds = parseInt(elements.updateIntervalInput?.value, 10);
+    const safeSeconds = Number.isFinite(seconds) ? Math.min(60, Math.max(1, seconds)) : 5;
+    return safeSeconds * 1000;
+}
 let isWaitingForVoice = false;
 let lastLinkIndexForRecommendation = -1; // Track last link that triggered recommendation
 
@@ -151,15 +160,15 @@ function speak(text) {
     if (isDemoMode && simulationManager && simulationManager.isRunning && !simulationManager.isPaused) {
         // Get current position before pausing to ensure marker stays in place
         const currentPosition = simulationManager.getCurrentPosition();
-        
+
         isWaitingForVoice = true;
         simulationManager.pause();
-        
+
         // Ensure bus marker stays at current position while paused
         if (currentPosition) {
             updateBusMarker(currentPosition.lat, currentPosition.lon);
         }
-        
+
         console.log('Simulation paused for voiceover at:', currentPosition);
     }
 
@@ -182,10 +191,10 @@ function speak(text) {
     };
 
     const voices = speechSynthesis.getVoices();
-    const preferredVoice = voices.find(voice => 
+    const preferredVoice = voices.find(voice =>
         voice.lang.includes('en') && voice.name.includes('Female')
     ) || voices.find(voice => voice.lang.includes('en'));
-    
+
     if (preferredVoice) {
         utterance.voice = preferredVoice;
     }
@@ -214,19 +223,19 @@ function initMap() {
     trailLayer = L.layerGroup().addTo(map);
 
     // Add click handler to map for coordinate selection
-    map.on('click', function(e) {
+    map.on('click', function (e) {
         const lat = e.latlng.lat.toFixed(6);
         const lon = e.latlng.lng.toFixed(6);
-        
+
         // Update input fields
         elements.latitude.value = lat;
         elements.longitude.value = lon;
-        
+
         // Remove old click marker if exists
         if (clickMarker) {
             map.removeLayer(clickMarker);
         }
-        
+
         // Add new click marker
         clickMarker = L.marker([e.latlng.lat, e.latlng.lng], {
             icon: L.divIcon({
@@ -236,13 +245,13 @@ function initMap() {
                 iconAnchor: [15, 30]
             })
         }).addTo(map);
-        
+
         clickMarker.bindPopup(`
             <b>Selected Location</b><br>
             Lat: ${lat}<br>
             Lon: ${lon}
         `).openPopup();
-        
+
         console.log(`Map clicked: ${lat}, ${lon}`);
     });
 
@@ -269,7 +278,7 @@ function createLinkPopup(link) {
     const speedband = link.SpeedBand || 'N/A';
     const minSpeed = link.MinimumSpeed || 'N/A';
     const maxSpeed = link.MaximumSpeed || 'N/A';
-    
+
     return `
         <div style="font-family: Arial, sans-serif;">
             <b>Link ${link.LinkID}</b><br>
@@ -291,7 +300,7 @@ function drawLink(link, layer, options = {}) {
     } = options;
 
     const linkColor = color || getSpeedbandColor(link.SpeedBand);
-    
+
     const polyline = L.polyline([
         [link.StartLat, link.StartLon],
         [link.EndLat, link.EndLon]
@@ -309,7 +318,7 @@ function drawLink(link, layer, options = {}) {
 // Draw entire route
 function drawRoute(routeGeometry) {
     routeLayer.clearLayers();
-    
+
     if (!showRoute) return;
 
     routeGeometry.forEach(link => {
@@ -324,7 +333,7 @@ function drawRoute(routeGeometry) {
 // Draw current link
 function drawCurrentLink(currentLink) {
     currentLinkLayer.clearLayers();
-    
+
     if (!currentLink) return;
 
     drawLink(currentLink, currentLinkLayer, {
@@ -336,7 +345,7 @@ function drawCurrentLink(currentLink) {
 // Draw next links
 function drawNextLinks(nextLinks) {
     nextLinksLayer.clearLayers();
-    
+
     if (!nextLinks || nextLinks.length === 0) return;
 
     nextLinks.forEach((link, index) => {
@@ -351,7 +360,7 @@ function drawNextLinks(nextLinks) {
 // Draw inbound links
 function drawInboundLinks(inboundLinks) {
     inboundLinksLayer.clearLayers();
-    
+
     if (!showInbound || !inboundLinks || inboundLinks.length === 0) return;
 
     inboundLinks.forEach(link => {
@@ -366,7 +375,7 @@ function drawInboundLinks(inboundLinks) {
 // Draw outbound links
 function drawOutboundLinks(outboundLinks) {
     outboundLinksLayer.clearLayers();
-    
+
     if (!showOutbound || !outboundLinks || outboundLinks.length === 0) return;
 
     outboundLinks.forEach(link => {
@@ -534,7 +543,7 @@ function updateInfoCards(recommendation) {
         const currentLink = recommendation.current_link;
         elements.currentRoadName.textContent = currentLink.RoadName || '--';
         elements.currentLinkId.textContent = currentLink.LinkID || '--';
-        
+
         const currentSpeedBand = currentLink.SpeedBand || 0;
         elements.currentSpeedBand.textContent = currentSpeedBand;
         elements.currentSpeedBand.className = `speedband-badge speedband-${currentSpeedBand}`;
@@ -545,7 +554,7 @@ function updateInfoCards(recommendation) {
         const nextLink = recommendation.next_link;
         elements.nextRoadName.textContent = nextLink.RoadName || '--';
         elements.nextLinkId.textContent = nextLink.LinkID || '--';
-        
+
         const nextSpeedBand = nextLink.SpeedBand || 0;
         elements.nextSpeedBand.textContent = nextSpeedBand;
         elements.nextSpeedBand.className = `speedband-badge speedband-${nextSpeedBand}`;
@@ -554,7 +563,7 @@ function updateInfoCards(recommendation) {
     // Update inbound links
     if (recommendation.inbound_links) {
         elements.inboundCount.textContent = recommendation.inbound_links.length;
-        
+
         if (recommendation.inbound_links.length > 0) {
             elements.inboundLinksList.innerHTML = recommendation.inbound_links.map(link => {
                 const speedBand = link.SpeedBand || 0;
@@ -573,7 +582,7 @@ function updateInfoCards(recommendation) {
     // Update outbound links
     if (recommendation.outbound_links) {
         elements.outboundCount.textContent = recommendation.outbound_links.length;
-        
+
         if (recommendation.outbound_links.length > 0) {
             elements.outboundLinksList.innerHTML = recommendation.outbound_links.map(link => {
                 const speedBand = link.SpeedBand || 0;
@@ -636,13 +645,13 @@ async function fetchRecommendation() {
     try {
         const url = `${API_BASE_URL}/coasting_recommendation?bus_no=${busNo}&direction=${direction}&lat=${lat}&lon=${lon}`;
         elements.statusText.textContent = 'Fetching recommendation...';
-        
+
         const response = await fetch(url);
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
         return data;
     } catch (error) {
@@ -665,13 +674,13 @@ async function fetchRouteGeometry() {
     try {
         const url = `${API_BASE_URL}/route_geometry?bus_no=${busNo}&direction=${direction}`;
         elements.statusText.textContent = 'Loading route...';
-        
+
         const response = await fetch(url);
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
         elements.statusText.textContent = 'Route loaded';
         return data;
@@ -697,7 +706,7 @@ function updateUI(recommendation) {
     }
 
     elements.actionIndicator.className = `action-indicator updating`;
-    
+
     setTimeout(() => {
         elements.actionIndicator.classList.remove('updating');
     }, 500);
@@ -756,7 +765,7 @@ function updateUI(recommendation) {
     if (recommendation.current_link) {
         const lat = parseFloat(elements.latitude.value);
         const lon = parseFloat(elements.longitude.value);
-        
+
         const mapData = {
             route_geometry: [], // We'll need to fetch full route separately
             current_link: recommendation.current_link,
@@ -765,7 +774,7 @@ function updateUI(recommendation) {
             outbound_links: recommendation.outbound_links || [],
             bus_location: { lat, lon }
         };
-        
+
         updateMapLayers(mapData);
     }
 
@@ -790,8 +799,8 @@ function updateUI(recommendation) {
 
 // Start polling
 function startPolling() {
-    const intervalSeconds = parseInt(elements.updateIntervalInput.value) || 5;
-    
+    const intervalMs = getBackendCallIntervalMs();
+
     // Fetch immediately
     fetchRecommendation().then(updateUI);
 
@@ -799,7 +808,7 @@ function startPolling() {
     updateInterval = setInterval(async () => {
         const recommendation = await fetchRecommendation();
         updateUI(recommendation);
-    }, intervalSeconds * 1000);
+    }, intervalMs);
 
     elements.startBtn.disabled = true;
     elements.stopBtn.disabled = false;
@@ -828,7 +837,7 @@ function stopPolling() {
 
 // Toggle layer visibility
 function toggleLayer(layerType) {
-    switch(layerType) {
+    switch (layerType) {
         case 'route':
             showRoute = !showRoute;
             elements.toggleRouteBtn.classList.toggle('active');
@@ -875,12 +884,12 @@ async function loadRoutePreview() {
 function initializeSimulation() {
     if (!simulationManager) {
         simulationManager = new SimulationManager();
-        
+
         // Set up callbacks
         simulationManager.onPositionUpdate = handleSimulationPositionUpdate;
         simulationManager.onLinkChange = handleSimulationLinkChange;
         simulationManager.onComplete = handleSimulationComplete;
-        
+
         console.log('Simulation manager initialized');
     }
 }
@@ -890,35 +899,35 @@ function initializeSimulation() {
  */
 function toggleDemoMode() {
     isDemoMode = elements.demoModeToggle.checked;
-    
+
     if (isDemoMode) {
         // Entering demo mode
         console.log('Entering demo mode');
         elements.simulationControls.style.display = 'flex';
         elements.manualControls.style.display = 'none';
         elements.statusText.textContent = 'Demo Mode - Select scenario and start';
-        
+
         // Stop any existing polling
         stopPolling();
-        
+
         // Initialize simulation if not already done
         initializeSimulation();
-        
+
         // Load default scenario
         loadDemoScenario();
-        
+
     } else {
         // Exiting demo mode
         console.log('Exiting demo mode');
         elements.simulationControls.style.display = 'none';
         elements.manualControls.style.display = 'flex';
         elements.statusText.textContent = 'Manual Mode - Ready';
-        
+
         // Stop simulation
         if (simulationManager) {
             simulationManager.stop();
         }
-        
+
         // Clear simulation visuals
         clearSimulationVisuals();
     }
@@ -930,47 +939,47 @@ function toggleDemoMode() {
 async function loadDemoScenario() {
     const scenario = elements.demoScenario.value;
     const [busNo, direction] = scenario.split('-').map(Number);
-    
+
     elements.statusText.textContent = `Loading Bus ${busNo} Direction ${direction}...`;
-    
+
     try {
         // Fetch both route geometry (for links) and OSRM route geometry (for continuous path)
         const [linksResponse, osrmResponse] = await Promise.all([
             fetch(`${API_BASE_URL}/route_geometry?bus_no=${busNo}&direction=${direction}`),
             fetch(`${API_BASE_URL}/osrm_route_geometry?bus_no=${busNo}&direction=${direction}`)
         ]);
-        
+
         if (!linksResponse.ok) {
             throw new Error(`HTTP error! status: ${linksResponse.status}`);
         }
-        
+
         if (!osrmResponse.ok) {
             console.warn('OSRM route geometry not available, falling back to links only');
         }
-        
+
         const linksData = await linksResponse.json();
         const osrmData = osrmResponse.ok ? await osrmResponse.json() : null;
-        
+
         simulationRouteData = linksData;
-        
+
         // Initialize simulation with ordered links and OSRM route path
         if (simulationManager.initialize(linksData.ordered_links, osrmData ? osrmData.route_path : null)) {
-            const statusMsg = osrmData 
+            const statusMsg = osrmData
                 ? `Route loaded: ${linksData.total_links} links, ${osrmData.total_points} OSRM points. Click Start to begin.`
                 : `Route loaded: ${linksData.total_links} links. Click Start to begin.`;
             elements.statusText.textContent = statusMsg;
-            
+
             // Update header
             elements.headerBusInfo.textContent = `Bus ${busNo} | Direction ${direction}`;
-            
+
             // Display route on map
             displayRoutePreview(linksData);
-            
+
             // If OSRM data is available, also draw the continuous route
             if (osrmData && osrmData.route_path && osrmData.route_path.length > 0) {
                 drawOSRMRoute(osrmData.route_path);
             }
-            
+
             // Zoom to starting position and enable auto-follow
             if (osrmData && osrmData.route_path && osrmData.route_path.length > 0) {
                 // Use OSRM route start point
@@ -983,15 +992,15 @@ async function loadDemoScenario() {
                 const startLon = parseFloat(firstLink.StartLon);
                 map.setView([startLat, startLon], 15);
             }
-            
+
             // Ensure auto-follow is enabled for simulation
             autoFollow = true;
             elements.autoFollowBtn.classList.add('active');
-            
+
             // Enable start button
             elements.simStartBtn.disabled = false;
             elements.simResetBtn.disabled = false;
-            
+
             // Update progress display
             updateSimulationProgress();
         }
@@ -1006,10 +1015,10 @@ async function loadDemoScenario() {
  */
 function drawOSRMRoute(routePath) {
     if (!routePath || routePath.length < 2) return;
-    
+
     // Convert [[lat, lon], ...] to Leaflet format
     const latlngs = routePath.map(point => [point[0], point[1]]);
-    
+
     // Draw continuous route line
     const osrmRouteLine = L.polyline(latlngs, {
         color: '#0066FF',
@@ -1017,7 +1026,7 @@ function drawOSRMRoute(routePath) {
         opacity: 0.6,
         dashArray: '10, 5'
     });
-    
+
     osrmRouteLine.addTo(routePreviewLayer);
     console.log(`Drew OSRM route with ${routePath.length} points`);
 }
@@ -1030,14 +1039,14 @@ function startSimulation() {
         console.error('Cannot start simulation: not initialized');
         return;
     }
-    
+
     // Reset API call timer to trigger immediate call
     lastSimulationApiCall = 0;
-    
+
     // Ensure auto-follow is enabled
     autoFollow = true;
     elements.autoFollowBtn.classList.add('active');
-    
+
     // Get starting position and zoom to it
     const position = simulationManager.getCurrentPosition();
     if (position) {
@@ -1046,9 +1055,9 @@ function startSimulation() {
             duration: 1
         });
     }
-    
+
     simulationManager.start();
-    
+
     elements.simStartBtn.disabled = true;
     elements.simPauseBtn.disabled = false;
     elements.simPauseBtn.innerHTML = '<span class="btn-icon">⏸</span> Pause';
@@ -1060,9 +1069,9 @@ function startSimulation() {
  */
 function toggleSimulationPause() {
     if (!simulationManager) return;
-    
+
     const state = simulationManager.getState();
-    
+
     if (state.isPaused) {
         simulationManager.resume();
         elements.simPauseBtn.innerHTML = '<span class="btn-icon">⏸</span> Pause';
@@ -1079,32 +1088,32 @@ function toggleSimulationPause() {
  */
 function resetSimulation() {
     if (!simulationManager) return;
-    
+
     simulationManager.reset();
-    
+
     elements.simStartBtn.disabled = false;
     elements.simPauseBtn.disabled = true;
     elements.simPauseBtn.innerHTML = '<span class="btn-icon">⏸</span> Pause';
     elements.statusText.textContent = 'Simulation reset. Click Start to begin.';
-    
+
     // Clear trail
     if (trailLayer) {
         trailLayer.clearLayers();
     }
-    
+
     // Reset API call timer and link tracking
     lastSimulationApiCall = 0;
     lastLinkIndexForRecommendation = -1;
-    
+
     // Reset voice action state
     lastAction = null;
     isWaitingForVoice = false;
-    
+
     // Cancel any ongoing speech
     if (speechSynthesis) {
         speechSynthesis.cancel();
     }
-    
+
     // Zoom back to start of route
     if (simulationRouteData && simulationRouteData.ordered_links && simulationRouteData.ordered_links.length > 0) {
         const firstLink = simulationRouteData.ordered_links[0];
@@ -1112,7 +1121,7 @@ function resetSimulation() {
         const startLon = parseFloat(firstLink.StartLon);
         map.setView([startLat, startLon], 15);
     }
-    
+
     // Update progress
     updateSimulationProgress();
 }
@@ -1122,10 +1131,10 @@ function resetSimulation() {
  */
 function changeSimulationSpeed() {
     if (!simulationManager) return;
-    
+
     const speed = parseFloat(elements.simSpeed.value);
     simulationManager.setSpeed(speed);
-    
+
     console.log(`Simulation speed changed to ${speed}x`);
 }
 
@@ -1135,10 +1144,10 @@ function changeSimulationSpeed() {
 function handleSimulationPositionUpdate(position) {
     // Update bus marker position smoothly
     updateBusMarker(position.lat, position.lon);
-    
+
     // Update progress display
     updateSimulationProgress();
-    
+
     // Check if we've entered a new link (priority trigger)
     const currentLinkIndex = position.linkIndex !== undefined ? position.linkIndex : -1;
     if (currentLinkIndex >= 0 && currentLinkIndex !== lastLinkIndexForRecommendation) {
@@ -1149,10 +1158,10 @@ function handleSimulationPositionUpdate(position) {
         console.log(`Triggered recommendation for new link: ${currentLinkIndex}`);
         return;
     }
-    
-    // Fallback: periodic recommendation check (every 3 seconds)
+
+    // Fallback: periodic recommendation check (interval controlled by UI)
     const now = performance.now();
-    if (now - lastSimulationApiCall >= SIMULATION_API_INTERVAL) {
+    if (now - lastSimulationApiCall >= simulationApiIntervalMs) {
         lastSimulationApiCall = now;
         fetchSimulationRecommendation(position.lat, position.lon);
     }
@@ -1163,7 +1172,7 @@ function handleSimulationPositionUpdate(position) {
  */
 function handleSimulationLinkChange(linkIndex, link) {
     console.log(`Simulation moved to link ${linkIndex}: ${link.RoadName || link.LinkID}`);
-    
+
     // Draw trail for the previous link
     if (linkIndex > 0 && simulationManager.orderedLinks) {
         const prevLink = simulationManager.orderedLinks[linkIndex - 1];
@@ -1171,7 +1180,7 @@ function handleSimulationLinkChange(linkIndex, link) {
             drawTrailSegment(prevLink);
         }
     }
-    
+
     // Trigger recommendation when entering a new link
     // Get current position to fetch recommendation
     const position = simulationManager.getCurrentPosition();
@@ -1190,9 +1199,9 @@ function handleSimulationComplete() {
     elements.statusText.textContent = 'Simulation complete!';
     elements.simStartBtn.disabled = true;
     elements.simPauseBtn.disabled = true;
-    
+
     console.log('Simulation finished');
-    
+
     // Optionally, speak completion message
     if (elements.voiceEnabled.checked) {
         speak('Simulation complete. Route finished.');
@@ -1205,15 +1214,15 @@ function handleSimulationComplete() {
 async function fetchSimulationRecommendation(lat, lon) {
     const scenario = elements.demoScenario.value;
     const [busNo, direction] = scenario.split('-').map(Number);
-    
+
     try {
         const url = `${API_BASE_URL}/coasting_recommendation?bus_no=${busNo}&direction=${direction}&lat=${lat}&lon=${lon}`;
         const response = await fetch(url);
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
         updateUI(data);
     } catch (error) {
@@ -1226,12 +1235,12 @@ async function fetchSimulationRecommendation(lat, lon) {
  */
 function updateSimulationProgress() {
     if (!simulationManager) return;
-    
+
     const state = simulationManager.getState();
     const currentLink = state.currentLinkIndex + 1;
     const totalLinks = state.totalLinks;
     const progress = (currentLink / totalLinks) * 100;
-    
+
     elements.simProgressText.textContent = `Link ${currentLink} / ${totalLinks}`;
     elements.simProgressPercent.textContent = `${Math.round(progress)}%`;
     elements.simProgressBar.style.width = `${progress}%`;
@@ -1242,7 +1251,7 @@ function updateSimulationProgress() {
  */
 function drawTrailSegment(link) {
     if (!trailLayer) return;
-    
+
     const polyline = L.polyline([
         [link.StartLat, link.StartLon],
         [link.EndLat, link.EndLon]
@@ -1252,7 +1261,7 @@ function drawTrailSegment(link) {
         opacity: 0.5,
         dashArray: '5, 10'
     });
-    
+
     polyline.addTo(trailLayer);
 }
 
@@ -1287,6 +1296,9 @@ elements.startBtn.addEventListener('click', () => {
 elements.stopBtn.addEventListener('click', stopPolling);
 
 elements.updateIntervalInput.addEventListener('change', () => {
+    // Keep demo-mode periodic backend calls aligned with the UI interval too
+    simulationApiIntervalMs = getBackendCallIntervalMs();
+
     if (updateInterval) {
         stopPolling();
         startPolling();
@@ -1320,6 +1332,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initSpeechSynthesis();
     initMap();
 
+    // Initialize backend call interval from UI
+    simulationApiIntervalMs = getBackendCallIntervalMs();
+
     // Driver view expand/collapse
     if (elements.driverViewToggleBtn) {
         elements.driverViewToggleBtn.addEventListener('click', toggleDriverMode);
@@ -1329,7 +1344,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setDriverMode(false);
         }
     });
-    
+
     // Load voices when available
     if (speechSynthesis) {
         speechSynthesis.onvoiceschanged = () => {
@@ -1352,13 +1367,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize simulation manager
     initializeSimulation();
-    
+
     // Load saved simulation speed preference
     const savedSpeed = localStorage.getItem('simSpeed');
     if (savedSpeed) {
         elements.simSpeed.value = savedSpeed;
     }
-    
+
     // Save speed preference when changed
     elements.simSpeed.addEventListener('change', () => {
         localStorage.setItem('simSpeed', elements.simSpeed.value);

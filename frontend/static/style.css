@@ -493,10 +493,12 @@ body.driver-mode .driver-view-fab {
     justify-content: center;
     align-items: center;
     padding: var(--spacing-2xl);
-    padding-bottom: calc(var(--spacing-2xl) + 84px); /* reserve space for bottom alert pills */
+    padding-bottom: calc(var(--spacing-2xl) + 84px);
+    /* reserve space for bottom alert pills */
     border-radius: var(--radius-2xl);
     transition: all var(--transition-slow);
-    min-height: 300px; /* taller in minimized view so pills don't overlap content */
+    min-height: 300px;
+    /* taller in minimized view so pills don't overlap content */
     box-shadow: var(--shadow-xl);
     position: relative;
     overflow: hidden;
@@ -529,7 +531,8 @@ body.driver-mode .driver-view-fab {
     color: rgba(255, 255, 255, 0.75);
     border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-    opacity: 0.9; /* always visible */
+    opacity: 0.9;
+    /* always visible */
     transform: translateY(0);
     transition: background var(--transition-base), color var(--transition-base), border-color var(--transition-base), filter var(--transition-base);
     white-space: nowrap;
