@@ -6,8 +6,10 @@
 class SimulationManager {
     constructor() {
         this.orderedLinks = [];
+        this.osrmRoutePath = null; // Continuous OSRM route path [[lat, lon], ...]
         this.currentLinkIndex = 0;
         this.progressInLink = 0.0; // 0.0 to 1.0
+        this.progressInRoute = 0.0; // 0.0 to 1.0 for OSRM route
         this.isRunning = false;
         this.isPaused = false;
         this.speedMultiplier = 1.0;
@@ -20,20 +22,30 @@ class SimulationManager {
         this.onLinkChange = null; // Callback when moving to new link
         this.onComplete = null; // Callback when simulation completes
         this.visitedLinks = []; // Track visited links for trail
+        this.lastDetectedLinkIndex = -1; // Track last detected link for triggering recommendations
+        this.linkDetectionThreshold = 0.0005; // ~50 meters in degrees
     }
 
     /**
      * Initialize simulation with route data
+     * @param {Array} orderedLinks - Ordered links for link detection
+     * @param {Array} osrmRoutePath - Continuous OSRM route path [[lat, lon], ...] (optional)
      */
-    initialize(orderedLinks) {
+    initialize(orderedLinks, osrmRoutePath = null) {
         if (!orderedLinks || orderedLinks.length === 0) {
             console.error('Cannot initialize simulation: no links provided');
             return false;
         }
         
         this.orderedLinks = orderedLinks;
+        this.osrmRoutePath = osrmRoutePath;
         this.reset();
-        console.log(`Simulation initialized with ${orderedLinks.length} links`);
+        
+        if (osrmRoutePath && osrmRoutePath.length > 0) {
+            console.log(`Simulation initialized with ${orderedLinks.length} links and ${osrmRoutePath.length} OSRM route points`);
+        } else {
+            console.log(`Simulation initialized with ${orderedLinks.length} links (no OSRM route, using link-based movement)`);
+        }
         return true;
     }
 
@@ -118,8 +130,10 @@ class SimulationManager {
         this.stop();
         this.currentLinkIndex = 0;
         this.progressInLink = 0.0;
+        this.progressInRoute = 0.0;
         this.visitedLinks = [];
         this.lastApiCallTime = 0;
+        this.lastDetectedLinkIndex = -1;
         console.log('Simulation reset');
     }
 
@@ -171,8 +185,65 @@ class SimulationManager {
 
     /**
      * Get current interpolated position
+     * Uses OSRM route path if available, otherwise falls back to link-based interpolation
      */
     getCurrentPosition() {
+        // If OSRM route path is available, use it for smooth continuous movement
+        if (this.osrmRoutePath && this.osrmRoutePath.length > 0) {
+            return this._getPositionFromOSRMRoute();
+        }
+        
+        // Fallback to link-based interpolation
+        return this._getPositionFromLinks();
+    }
+    
+    /**
+     * Get position from continuous OSRM route path
+     * @private
+     */
+    _getPositionFromOSRMRoute() {
+        if (!this.osrmRoutePath || this.osrmRoutePath.length === 0) {
+            return null;
+        }
+        
+        // Clamp progress to [0, 1]
+        const progress = Math.max(0, Math.min(1, this.progressInRoute));
+        
+        // Calculate index in route path
+        const totalPoints = this.osrmRoutePath.length;
+        const exactIndex = progress * (totalPoints - 1);
+        const index = Math.floor(exactIndex);
+        const fraction = exactIndex - index;
+        
+        // Get current and next point
+        const currentPoint = this.osrmRoutePath[index];
+        const nextPoint = index < totalPoints - 1 
+            ? this.osrmRoutePath[index + 1] 
+            : currentPoint;
+        
+        // Interpolate between points
+        const lat = currentPoint[0] + (nextPoint[0] - currentPoint[0]) * fraction;
+        const lon = currentPoint[1] + (nextPoint[1] - currentPoint[1]) * fraction;
+        
+        // Detect which link we're currently on/near
+        const detectedLink = this._detectCurrentLink(lat, lon);
+        
+        return {
+            lat: lat,
+            lon: lon,
+            linkIndex: detectedLink ? detectedLink.index : this.currentLinkIndex,
+            progress: this.progressInRoute,
+            link: detectedLink ? detectedLink.link : null,
+            interpolating: false,
+            detectedLink: detectedLink
+        };
+    }
+    
+    /**
+     * Get position from discrete links (fallback method)
+     * @private
+     */
+    _getPositionFromLinks() {
         if (!this.orderedLinks || this.orderedLinks.length === 0) {
             return null;
         }
@@ -242,19 +313,94 @@ class SimulationManager {
         const dLon = lon2 - lon1;
         return Math.sqrt(dLat * dLat + dLon * dLon);
     }
+    
+    /**
+     * Calculate Haversine distance between two points in meters
+     * @private
+     */
+    _haversineDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371000; // Earth radius in meters
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+    
+    /**
+     * Detect which link the bus is currently on/near based on position
+     * @param {number} lat - Current latitude
+     * @param {number} lon - Current longitude
+     * @returns {Object|null} - Detected link info or null
+     * @private
+     */
+    _detectCurrentLink(lat, lon) {
+        if (!this.orderedLinks || this.orderedLinks.length === 0) {
+            return null;
+        }
+        
+        let closestLink = null;
+        let closestDistance = Infinity;
+        let closestIndex = -1;
+        
+        // Check distance to each link's midpoint
+        for (let i = 0; i < this.orderedLinks.length; i++) {
+            const link = this.orderedLinks[i];
+            const startLat = parseFloat(link.StartLat);
+            const startLon = parseFloat(link.StartLon);
+            const endLat = parseFloat(link.EndLat);
+            const endLon = parseFloat(link.EndLon);
+            
+            // Calculate midpoint
+            const midLat = (startLat + endLat) / 2;
+            const midLon = (startLon + endLon) / 2;
+            
+            // Calculate distance to midpoint
+            const distance = this._haversineDistance(lat, lon, midLat, midLon);
+            
+            // Also check distance to start and end points
+            const distToStart = this._haversineDistance(lat, lon, startLat, startLon);
+            const distToEnd = this._haversineDistance(lat, lon, endLat, endLon);
+            const minDistance = Math.min(distance, distToStart, distToEnd);
+            
+            if (minDistance < closestDistance) {
+                closestDistance = minDistance;
+                closestLink = link;
+                closestIndex = i;
+            }
+        }
+        
+        // Return link if within threshold (50 meters)
+        if (closestLink && closestDistance <= 50) {
+            return {
+                link: closestLink,
+                index: closestIndex,
+                distance: closestDistance
+            };
+        }
+        
+        return null;
+    }
 
     /**
      * Get simulation state
      */
     getState() {
+        const progress = this.osrmRoutePath && this.osrmRoutePath.length > 0
+            ? this.progressInRoute
+            : this.currentLinkIndex / Math.max(1, this.orderedLinks.length - 1);
+            
         return {
             isRunning: this.isRunning,
             isPaused: this.isPaused,
             currentLinkIndex: this.currentLinkIndex,
             totalLinks: this.orderedLinks.length,
-            progress: this.currentLinkIndex / Math.max(1, this.orderedLinks.length - 1),
+            progress: progress,
             speedMultiplier: this.speedMultiplier,
-            visitedLinks: this.visitedLinks
+            visitedLinks: this.visitedLinks,
+            usingOSRMRoute: this.osrmRoutePath && this.osrmRoutePath.length > 0
         };
     }
 
@@ -275,25 +421,56 @@ class SimulationManager {
         const traversalTime = this.baseTraversalTime / this.speedMultiplier;
         const progressIncrement = deltaTime / traversalTime;
 
-        // Update progress
-        this.progressInLink += progressIncrement;
+        // Update progress based on whether we're using OSRM route or links
+        if (this.osrmRoutePath && this.osrmRoutePath.length > 0) {
+            // Use OSRM route: progress along continuous path
+            // Calculate total route time based on number of points (rough estimate)
+            const routePoints = this.osrmRoutePath.length;
+            const totalRouteTime = (routePoints / 10) * this.baseTraversalTime; // ~10 points per link
+            const routeProgressIncrement = (deltaTime / (totalRouteTime / this.speedMultiplier));
+            
+            this.progressInRoute += routeProgressIncrement;
+            
+            // Check if route is complete
+            if (this.progressInRoute >= 1.0) {
+                this.progressInRoute = 1.0;
+                this._handleRouteComplete();
+                return;
+            }
+        } else {
+            // Fallback to link-based progress
+            this.progressInLink += progressIncrement;
 
-        // Check if we've completed the current link
-        if (this.progressInLink >= 1.0) {
-            this._advanceToNextLink();
+            // Check if we've completed the current link
+            if (this.progressInLink >= 1.0) {
+                this._advanceToNextLink();
+            }
         }
 
-        // Notify position update
+        // Notify position update (this will also check for link changes)
         this._notifyPositionUpdate();
 
-        // Check if we should make an API call
+        // Check if we should make an API call (fallback periodic check)
         if (currentTime - this.lastApiCallTime >= this.apiCallInterval) {
             this.lastApiCallTime = currentTime;
-            // Position update notification will trigger API call
+            // Position update notification will trigger API call if needed
         }
 
         // Continue animation
         this.animationFrameId = requestAnimationFrame(() => this._animate());
+    }
+    
+    /**
+     * Handle route completion
+     * @private
+     */
+    _handleRouteComplete() {
+        console.log('Simulation complete!');
+        this.stop();
+        
+        if (this.onComplete) {
+            this.onComplete();
+        }
     }
 
     /**
@@ -349,12 +526,35 @@ class SimulationManager {
 
     /**
      * Notify listeners of position update
+     * Also checks for link changes when using OSRM route
      * @private
      */
     _notifyPositionUpdate() {
         if (this.onPositionUpdate) {
             const position = this.getCurrentPosition();
             if (position) {
+                // If using OSRM route and we detected a link, check if it's a new link
+                if (this.osrmRoutePath && position.detectedLink) {
+                    const detectedIndex = position.detectedLink.index;
+                    
+                    // If we detected a new link, trigger link change callback
+                    if (detectedIndex !== this.lastDetectedLinkIndex && detectedIndex >= 0) {
+                        this.lastDetectedLinkIndex = detectedIndex;
+                        this.currentLinkIndex = detectedIndex;
+                        
+                        // Add to visited links if not already there
+                        if (!this.visitedLinks.includes(detectedIndex)) {
+                            this.visitedLinks.push(detectedIndex);
+                        }
+                        
+                        // Notify link change
+                        if (this.onLinkChange) {
+                            const link = position.detectedLink.link;
+                            this.onLinkChange(detectedIndex, link);
+                        }
+                    }
+                }
+                
                 this.onPositionUpdate(position);
             }
         }

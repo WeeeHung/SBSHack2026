@@ -497,12 +497,13 @@ body {
 .bus-icon {
     font-size: 30px;
     text-align: center;
-    animation: busFloat 2s ease-in-out infinite;
+    animation: busPulse 2s ease-in-out infinite;
+    transform-origin: center center;
 }
 
-@keyframes busFloat {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-5px); }
+@keyframes busPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
 }
 
 /* Click Marker Custom Icon */

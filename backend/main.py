@@ -2,6 +2,10 @@
 FastAPI application for real-time bus route statistics.
 """
 import json
+import os
+import pandas as pd
+import polyline
+from pathlib import Path
 from fastapi import FastAPI, HTTPException, Query
 from typing import Optional
 from pydantic import BaseModel
@@ -115,6 +119,93 @@ def get_route_geometry(
         raise
     except Exception as e:
         print(f"[Route Geometry Error] {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
+
+@app.get("/osrm_route_geometry")
+def get_osrm_route_geometry(
+    bus_no: int = Query(..., description="Bus service number"),
+    direction: int = Query(..., description="Direction (1 or 2)")
+):
+    """
+    Get continuous OSRM route geometry for smooth bus simulation.
+    Returns decoded polyline coordinates as a continuous path.
+    """
+    try:
+        print(f"[OSRM Route Geometry] Request received: bus_no={bus_no}, direction={direction}")
+        
+        # Path to OSRM route geometry CSV
+        csv_path = Path(__file__).parent.parent / "bus_route" / "output" / "bus_route_geometry_osrm.csv"
+        
+        if not csv_path.exists():
+            raise HTTPException(
+                status_code=404,
+                detail="OSRM route geometry file not found. Please run retrieve_example_bus_path_osrm.py first."
+            )
+        
+        # Read CSV
+        df = pd.read_csv(csv_path)
+        
+        # Filter by service number and direction
+        route_df = df[(df['ServiceNo'] == bus_no) & (df['Direction'] == direction)]
+        
+        if route_df.empty:
+            raise HTTPException(
+                status_code=404,
+                detail=f"OSRM route not found for bus {bus_no} direction {direction}"
+            )
+        
+        # Sort by sequence order
+        sorted_df = route_df.sort_values('SequenceOrder')
+        
+        # Decode all geometries and combine into continuous path
+        all_coordinates = []
+        for idx, row in sorted_df.iterrows():
+            geometry_str = row['Geometry']
+            if pd.notna(geometry_str) and geometry_str:
+                try:
+                    # polyline.decode returns [(lat, lon), ...]
+                    decoded = polyline.decode(geometry_str)
+                    # Convert to [[lat, lon], ...] format
+                    coords = [[lat, lon] for lat, lon in decoded]
+                    if coords:
+                        all_coordinates.extend(coords)
+                except Exception as e:
+                    print(f"Error decoding polyline segment: {e}")
+                    continue
+        
+        if not all_coordinates:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No valid geometry found for bus {bus_no} direction {direction}"
+            )
+        
+        # Remove duplicate consecutive points (simple deduplication)
+        deduplicated = [all_coordinates[0]]
+        for i in range(1, len(all_coordinates)):
+            prev = deduplicated[-1]
+            curr = all_coordinates[i]
+            # Only add if distance is significant (> 0.00001 degrees ≈ 1 meter)
+            lat_diff = abs(curr[0] - prev[0])
+            lon_diff = abs(curr[1] - prev[1])
+            if lat_diff > 0.00001 or lon_diff > 0.00001:
+                deduplicated.append(curr)
+        
+        print(f"[OSRM Route Geometry] Returning {len(deduplicated)} coordinate points")
+        
+        return {
+            "bus_no": bus_no,
+            "direction": direction,
+            "route_path": deduplicated,
+            "total_points": len(deduplicated)
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"[OSRM Route Geometry Error] {str(e)}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 

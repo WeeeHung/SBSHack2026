@@ -30,8 +30,9 @@ let simulationManager = null;
 let isDemoMode = false;
 let simulationRouteData = null;
 let lastSimulationApiCall = 0;
-const SIMULATION_API_INTERVAL = 3000; // Call API every 3 seconds
+const SIMULATION_API_INTERVAL = 3000; // Call API every 3 seconds (fallback)
 let isWaitingForVoice = false;
+let lastLinkIndexForRecommendation = -1; // Track last link that triggered recommendation
 
 // DOM Elements
 const elements = {
@@ -877,40 +878,59 @@ async function loadDemoScenario() {
     elements.statusText.textContent = `Loading Bus ${busNo} Direction ${direction}...`;
     
     try {
-        // Fetch route geometry
-        const url = `${API_BASE_URL}/route_geometry?bus_no=${busNo}&direction=${direction}`;
-        const response = await fetch(url);
+        // Fetch both route geometry (for links) and OSRM route geometry (for continuous path)
+        const [linksResponse, osrmResponse] = await Promise.all([
+            fetch(`${API_BASE_URL}/route_geometry?bus_no=${busNo}&direction=${direction}`),
+            fetch(`${API_BASE_URL}/osrm_route_geometry?bus_no=${busNo}&direction=${direction}`)
+        ]);
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        if (!linksResponse.ok) {
+            throw new Error(`HTTP error! status: ${linksResponse.status}`);
         }
         
-        const data = await response.json();
-        simulationRouteData = data;
+        if (!osrmResponse.ok) {
+            console.warn('OSRM route geometry not available, falling back to links only');
+        }
         
-        // Initialize simulation with ordered links
-        if (simulationManager.initialize(data.ordered_links)) {
-            elements.statusText.textContent = `Route loaded: ${data.total_links} links. Click Start to begin.`;
+        const linksData = await linksResponse.json();
+        const osrmData = osrmResponse.ok ? await osrmResponse.json() : null;
+        
+        simulationRouteData = linksData;
+        
+        // Initialize simulation with ordered links and OSRM route path
+        if (simulationManager.initialize(linksData.ordered_links, osrmData ? osrmData.route_path : null)) {
+            const statusMsg = osrmData 
+                ? `Route loaded: ${linksData.total_links} links, ${osrmData.total_points} OSRM points. Click Start to begin.`
+                : `Route loaded: ${linksData.total_links} links. Click Start to begin.`;
+            elements.statusText.textContent = statusMsg;
             
             // Update header
             elements.headerBusInfo.textContent = `Bus ${busNo} | Direction ${direction}`;
             
             // Display route on map
-            displayRoutePreview(data);
+            displayRoutePreview(linksData);
+            
+            // If OSRM data is available, also draw the continuous route
+            if (osrmData && osrmData.route_path && osrmData.route_path.length > 0) {
+                drawOSRMRoute(osrmData.route_path);
+            }
             
             // Zoom to starting position and enable auto-follow
-            if (data.ordered_links && data.ordered_links.length > 0) {
-                const firstLink = data.ordered_links[0];
+            if (osrmData && osrmData.route_path && osrmData.route_path.length > 0) {
+                // Use OSRM route start point
+                const startPoint = osrmData.route_path[0];
+                map.setView([startPoint[0], startPoint[1]], 15);
+            } else if (linksData.ordered_links && linksData.ordered_links.length > 0) {
+                // Fallback to first link
+                const firstLink = linksData.ordered_links[0];
                 const startLat = parseFloat(firstLink.StartLat);
                 const startLon = parseFloat(firstLink.StartLon);
-                
-                // Zoom to start position
                 map.setView([startLat, startLon], 15);
-                
-                // Ensure auto-follow is enabled for simulation
-                autoFollow = true;
-                elements.autoFollowBtn.classList.add('active');
             }
+            
+            // Ensure auto-follow is enabled for simulation
+            autoFollow = true;
+            elements.autoFollowBtn.classList.add('active');
             
             // Enable start button
             elements.simStartBtn.disabled = false;
@@ -923,6 +943,27 @@ async function loadDemoScenario() {
         console.error('Error loading demo scenario:', error);
         elements.statusText.textContent = `Error loading route: ${error.message}`;
     }
+}
+
+/**
+ * Draw OSRM continuous route on the map
+ */
+function drawOSRMRoute(routePath) {
+    if (!routePath || routePath.length < 2) return;
+    
+    // Convert [[lat, lon], ...] to Leaflet format
+    const latlngs = routePath.map(point => [point[0], point[1]]);
+    
+    // Draw continuous route line
+    const osrmRouteLine = L.polyline(latlngs, {
+        color: '#0066FF',
+        weight: 3,
+        opacity: 0.6,
+        dashArray: '10, 5'
+    });
+    
+    osrmRouteLine.addTo(routePreviewLayer);
+    console.log(`Drew OSRM route with ${routePath.length} points`);
 }
 
 /**
@@ -995,8 +1036,9 @@ function resetSimulation() {
         trailLayer.clearLayers();
     }
     
-    // Reset API call timer
+    // Reset API call timer and link tracking
     lastSimulationApiCall = 0;
+    lastLinkIndexForRecommendation = -1;
     
     // Reset voice action state
     lastAction = null;
@@ -1041,7 +1083,18 @@ function handleSimulationPositionUpdate(position) {
     // Update progress display
     updateSimulationProgress();
     
-    // Fetch recommendation at this position (throttled)
+    // Check if we've entered a new link (priority trigger)
+    const currentLinkIndex = position.linkIndex !== undefined ? position.linkIndex : -1;
+    if (currentLinkIndex >= 0 && currentLinkIndex !== lastLinkIndexForRecommendation) {
+        // New link detected - trigger recommendation immediately
+        lastLinkIndexForRecommendation = currentLinkIndex;
+        lastSimulationApiCall = performance.now();
+        fetchSimulationRecommendation(position.lat, position.lon);
+        console.log(`Triggered recommendation for new link: ${currentLinkIndex}`);
+        return;
+    }
+    
+    // Fallback: periodic recommendation check (every 3 seconds)
     const now = performance.now();
     if (now - lastSimulationApiCall >= SIMULATION_API_INTERVAL) {
         lastSimulationApiCall = now;
@@ -1053,11 +1106,24 @@ function handleSimulationPositionUpdate(position) {
  * Handle link changes in simulation
  */
 function handleSimulationLinkChange(linkIndex, link) {
-    console.log(`Simulation moved to link ${linkIndex}: ${link.RoadName}`);
+    console.log(`Simulation moved to link ${linkIndex}: ${link.RoadName || link.LinkID}`);
     
     // Draw trail for the previous link
-    if (linkIndex > 0) {
-        drawTrailSegment(simulationManager.orderedLinks[linkIndex - 1]);
+    if (linkIndex > 0 && simulationManager.orderedLinks) {
+        const prevLink = simulationManager.orderedLinks[linkIndex - 1];
+        if (prevLink) {
+            drawTrailSegment(prevLink);
+        }
+    }
+    
+    // Trigger recommendation when entering a new link
+    // Get current position to fetch recommendation
+    const position = simulationManager.getCurrentPosition();
+    if (position) {
+        lastLinkIndexForRecommendation = linkIndex;
+        lastSimulationApiCall = performance.now();
+        fetchSimulationRecommendation(position.lat, position.lon);
+        console.log(`Triggered recommendation on link change: ${linkIndex}`);
     }
 }
 
