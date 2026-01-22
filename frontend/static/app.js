@@ -84,8 +84,41 @@ const elements = {
     simSpeed: document.getElementById('simSpeed'),
     simProgressText: document.getElementById('simProgressText'),
     simProgressPercent: document.getElementById('simProgressPercent'),
-    simProgressBar: document.getElementById('simProgressBar')
+    simProgressBar: document.getElementById('simProgressBar'),
+    // Driver view expand/collapse
+    driverViewToggleBtn: document.getElementById('driverViewToggleBtn')
 };
+
+// Driver view state
+let isDriverMode = false;
+
+function setDriverMode(enabled) {
+    isDriverMode = enabled;
+    document.body.classList.toggle('driver-mode', enabled);
+
+    if (elements.driverViewToggleBtn) {
+        elements.driverViewToggleBtn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+        elements.driverViewToggleBtn.title = enabled ? 'Return to Control Center View' : 'Expand Driver View';
+
+        const icon = elements.driverViewToggleBtn.querySelector('.driver-view-toggle-icon');
+        if (icon) icon.textContent = enabled ? '⤡' : '⤢';
+    }
+
+    // When returning to control center view, Leaflet needs a size invalidation
+    if (!enabled && map) {
+        setTimeout(() => {
+            try {
+                map.invalidateSize(true);
+            } catch (e) {
+                console.warn('Map invalidateSize failed:', e);
+            }
+        }, 50);
+    }
+}
+
+function toggleDriverMode() {
+    setDriverMode(!isDriverMode);
+}
 
 // Initialize Speech Synthesis
 function initSpeechSynthesis() {
@@ -1263,6 +1296,16 @@ elements.simSpeed.addEventListener('change', changeSimulationSpeed);
 document.addEventListener('DOMContentLoaded', () => {
     initSpeechSynthesis();
     initMap();
+
+    // Driver view expand/collapse
+    if (elements.driverViewToggleBtn) {
+        elements.driverViewToggleBtn.addEventListener('click', toggleDriverMode);
+    }
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isDriverMode) {
+            setDriverMode(false);
+        }
+    });
     
     // Load voices when available
     if (speechSynthesis) {

@@ -308,6 +308,100 @@ h4 {
 }
 
 /* ============================================================================
+   DRIVER VIEW - EXPAND/COLLAPSE TOGGLE + FULLSCREEN MODE
+   ============================================================================ */
+.driver-view-fab {
+    position: sticky;
+    bottom: var(--spacing-lg);
+    display: flex;
+    justify-content: flex-end;
+    pointer-events: none; /* allow scroll; button re-enables */
+}
+
+.driver-view-toggle-btn {
+    pointer-events: auto;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-full);
+    border: 2px solid rgba(255, 255, 255, 0.65);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    color: white;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+}
+
+.driver-view-toggle-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-xl);
+    filter: brightness(1.02);
+}
+
+.driver-view-toggle-btn:active {
+    transform: translateY(0);
+}
+
+.driver-view-toggle-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.35), var(--shadow-xl);
+}
+
+.driver-view-toggle-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+body.driver-mode {
+    overflow: hidden;
+}
+
+body.driver-mode .header,
+body.driver-mode .control-panel,
+body.driver-mode .status-bar,
+body.driver-mode .map-container {
+    display: none !important;
+}
+
+body.driver-mode .container {
+    height: 100vh;
+}
+
+body.driver-mode .main-content {
+    height: 100vh;
+}
+
+body.driver-mode .info-panel {
+    flex: 1 1 auto;
+    overflow: hidden; /* content scrolls inside the driver container */
+    border: none;
+    background: transparent;
+}
+
+body.driver-mode .driver-view-container {
+    position: fixed;
+    inset: 0;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    padding: var(--spacing-2xl);
+    background: var(--color-bg-primary);
+    z-index: var(--z-modal);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+body.driver-mode .driver-view-fab {
+    position: fixed;
+    right: var(--spacing-2xl);
+    bottom: var(--spacing-2xl);
+    z-index: calc(var(--z-modal) + 1);
+    pointer-events: auto;
+}
+
+/* ============================================================================
    INFO CARDS
    ============================================================================ */
 .info-card {
@@ -1306,6 +1400,15 @@ h4 {
         margin: var(--spacing-md);
         padding: var(--spacing-md);
         gap: var(--spacing-md);
+    }
+
+    body.driver-mode .driver-view-container {
+        padding: var(--spacing-lg);
+    }
+
+    body.driver-mode .driver-view-fab {
+        right: var(--spacing-lg);
+        bottom: var(--spacing-lg);
     }
     
     .action-indicator {

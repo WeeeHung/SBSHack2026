@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Predictive Coasting - Driver Interface</title>
-    
+
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
-    
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
     <link rel="stylesheet" href="static/style.css">
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <h1>Predictive Coasting System</h1>
+            <h1>Predictive Coasting System (Control Center View)</h1>
             <div class="header-info">
                 <span id="headerBusInfo">Bus -- | Direction -</span>
             </div>
@@ -137,6 +138,14 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Driver View Expand/Collapse Toggle -->
+                <div class="driver-view-fab" aria-hidden="false">
+                    <button id="driverViewToggleBtn" class="driver-view-toggle-btn" type="button" aria-pressed="false"
+                        title="Expand Driver View">
+                        <span class="driver-view-toggle-icon" aria-hidden="true">⤢</span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -210,7 +219,7 @@
                     <label for="busNo">Bus Number:</label>
                     <input type="number" id="busNo" value="147" min="1" max="999">
                 </div>
-                
+
                 <div class="input-group">
                     <label for="direction">Direction:</label>
                     <select id="direction">
@@ -261,13 +270,13 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
-    
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
     <!-- Simulation Engine -->
     <script src="static/simulation.js"></script>
-    
+
     <!-- Main App -->
     <script src="static/app.js"></script>
 </body>
+
 </html>
